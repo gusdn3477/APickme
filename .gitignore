@@ -1,6 +1,7 @@
 user-service/target
 apigateway-service/target
 *.xml
+!pom.xml
 config-service/.idea/workspace.xml
 *.jar
 *.original
