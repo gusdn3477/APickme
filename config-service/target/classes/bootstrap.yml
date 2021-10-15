@@ -1,0 +1,9 @@
+encrypt:
+  key-store:
+    #location: file:///C:\MSA_study_Git\Catalog_Microservice\config-service\apiEncryptionKey.jks
+    #인텔리제이로 돌릴때는 위에처럼 해야할것 같고, 도커에서 돌릴때는 아래처럼 해야할것 같습니다
+    location: file:/apiEncryptionKey.jks
+    password: 1q2w3e4r
+    alias: apiEncryptionKey
+#  key: abcdefghijklmnopqrstuvwxyz1234567890
+#uri: https://github.com/hariBoWoo/my-spring-cloud-config.git/keystore/apiEncryptionKey.jks

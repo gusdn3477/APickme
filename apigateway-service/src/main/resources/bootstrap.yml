@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    config:
+      uri: http://config-service:8888
+      name: docker-user-service
+      enabled: true

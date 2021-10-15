@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    config:
+      uri: http://config-service:8888
+      name: docker-service
+#      uri: http://127.0.0.1:8888
+#      name: user-service
+#  profiles:
+#    active: dev

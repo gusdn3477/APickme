@@ -1,0 +1,109 @@
+server:
+  port: 8000
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+spring:
+  application:
+    name: api-gateway-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    gateway:
+      routes:
+        #        - id: user-service
+        #          uri: lb://USER-SERVICE
+        #          predicates:
+        #            - Path=/user-service/**
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/login
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/users
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+            - Method=GET,DELETE,PUT,PATCH
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/actuator/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: catalog-service
+          uri: lb://CATALOG-SERVICE
+          predicates:
+            - Path=/catalog-service/**
+          filters:
+            - RewritePath=/catalog-service/(?<segment>.*), /$\{segment}
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/**
+          filters:
+            - RewritePath=/order-service/(?<segment>.*), /$\{segment}
+        - id: cart-service
+          uri: lb://CART-SERVICE
+          predicates:
+            - Path=/cart-service/**
+          filters:
+            - RewritePath=/cart-service/(?<segment>.*), /$\{segment}
+
+      #        - id: first-service
+      ##          uri: http://localhost:8081/
+      #          uri: lb://MY-FIRST-SERVICE
+      #          predicates:
+      #            - Path=/first-service/**
+      #          filters:
+      #            - CustomFilter
+      #            - LoggingFilter
+      #        - id: second-service
+      ##          uri: http://localhost:8082/
+      #          uri: lb://MY-SECOND-SERVICE
+      #          predicates:
+      #            - Path=/second-service/**
+      #          filters:
+      #            - CustomFilter
+      #            - LoggingFilter
+#      default-filters:
+#        - name: GlobalFilter
+#          args:
+#            baseMessage: Spring Cloud Gateway Global Filter
+#            preLogger: true
+#            postLogger: true
+
+logging:
+  level:
+    com:
+      orderservice: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, httptrace, info, busrefresh
