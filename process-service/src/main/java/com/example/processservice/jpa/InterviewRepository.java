@@ -4,4 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface InterviewRepository extends CrudRepository<InterviewEntity, Long> {
 
+    Iterable<InterviewEntity> findByJobsNo(Integer jobsNo);
 }

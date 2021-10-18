@@ -18,5 +18,6 @@ public class InterviewDto implements Serializable {
     private Date secondInterview;
     private String secondInterviewer;
     private Integer secondInterviewScore;
+    private Integer jobsNo;
     private String secondInterviewResult;
 }

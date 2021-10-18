@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface WrittenRepository extends CrudRepository<WrittenRepository, Long> {
 
-
+    Iterable<WrittenEntity> findByJobsNo(Integer jobsNo);
 }

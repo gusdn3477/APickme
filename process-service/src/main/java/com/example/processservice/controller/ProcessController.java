@@ -3,9 +3,12 @@ package com.example.processservice.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
@@ -26,7 +29,7 @@ public class ProcessController {
     }
 
     @PutMapping("/process/written-test/score")
-    public String writtenTestScore(){
+    public ResponseEntity<List<>> writtenTestScore(){
         return "작성중";
     }
 

@@ -11,5 +11,5 @@ public class WrittenDto implements Serializable {
     private String empNo;
     private Integer writtenScore;
     private String writtenResult;
-
+    private Integer jobsNo;
 }

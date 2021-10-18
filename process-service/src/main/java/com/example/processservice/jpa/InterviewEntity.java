@@ -42,6 +42,8 @@ public class InterviewEntity implements Serializable {
     private Integer secondInterviewScore;
     @Column(length=20)
     private String secondInterviewResult;
+    @Column
+    private Integer jobsNo;
 
     @Column(nullable = false, updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")

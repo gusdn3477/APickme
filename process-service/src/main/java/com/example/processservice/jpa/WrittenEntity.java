@@ -27,6 +27,8 @@ public class WrittenEntity implements Serializable {
     @Column(nullable = false, length = 20)
     private String empNo;
     @Column
+    private Integer jobsNo;
+    @Column
     private Integer writtenScore;
     @Column(length=20)
     private String writtenResult;
