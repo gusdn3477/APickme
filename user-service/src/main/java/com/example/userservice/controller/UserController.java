@@ -47,6 +47,12 @@ public class UserController {
         return env.getProperty("greeting.message");
     }
 
+
+
+
+
+
+    /*일반 사용자 회원가입*/
     @PostMapping("/users")
     public ResponseEntity createUser(@RequestBody @Valid RequestUser user) {
         ModelMapper mapper = new ModelMapper();

@@ -7,10 +7,13 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${random.value}}
+#    prefer-ip-address: true
 
 spring:
   application:
-    name: api-gateway-service
+    name: apigateway-service
   rabbitmq:
     host: 127.0.0.1
     port: 5672
@@ -19,10 +22,10 @@ spring:
   cloud:
     gateway:
       routes:
-        #        - id: user-service
-        #          uri: lb://USER-SERVICE
-        #          predicates:
-        #            - Path=/user-service/**
+#        - id: user-service
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/user-service/**
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -43,10 +46,12 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
-            - Method=GET,DELETE,PUT,PATCH
+            - Method=GET
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#            - AuthorizationHeaderFilter  #이작업은 필터 처리 해준다.
+
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -67,12 +72,6 @@ spring:
             - Path=/order-service/**
           filters:
             - RewritePath=/order-service/(?<segment>.*), /$\{segment}
-        - id: cart-service
-          uri: lb://CART-SERVICE
-          predicates:
-            - Path=/cart-service/**
-          filters:
-            - RewritePath=/cart-service/(?<segment>.*), /$\{segment}
 
       #        - id: first-service
       ##          uri: http://localhost:8081/
@@ -106,4 +105,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, httptrace, info, busrefresh
+        include: refresh, health, beans, httptrace, busrefresh, info
+
+token:
+  expiration_time: 86400000
+  secret: user_token

@@ -1,6 +1,7 @@
 spring:
   cloud:
     config:
-      uri: http://config-service:8888
-      name: docker-user-service
-      enabled: true
+      uri: http://127.0.0.1:18888
+      name: config-service
+#  profiles:
+#    activ: prod

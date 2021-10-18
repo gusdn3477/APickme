@@ -11,13 +11,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
     private String email;
-    private String name;
-    private String pwd;
+    private String applyName;
+    private String password;
     private String userId;
-    private Date createdAt;
+    private Date registerDate;
+    private String phoneNum;
+    private String address;
 
     private String decryptedPwd;
     private String encryptedPwd;
 
-    private List<ResponseOrder> orders;
+//    private List<ResponseOrder> orders;
 }

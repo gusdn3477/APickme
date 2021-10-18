@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userEntity = mapper.map(userDto, UserEntity.class);
-        userEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userDto.getPwd()));
+        userEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userDto.getPassword()));
 
         userRepository.save(userEntity);
 
@@ -85,14 +85,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByUserId(String userId) {
-        UserEntity userEntity = userRepository.findByUserId(userId);
-
-        if (userEntity == null)
-            throw new UsernameNotFoundException("User not found");
-
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserDto userDto = mapper.map(userEntity, UserDto.class);
+//        UserEntity userEntity = userRepository.findByUserId(userId);
+//
+//        if (userEntity == null)
+//            throw new UsernameNotFoundException("User not found");
+//
+//        ModelMapper mapper = new ModelMapper();
+//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        UserDto userDto = mapper.map(userEntity, UserDto.class);
 
         /* order-service에서 주문 내역 조회
          *  #1) RestTemplate
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
         /* #2) Open Feign */
 //        List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
-        List<ResponseOrder> ordersList = null;
+//        List<ResponseOrder> ordersList = null;
 //        try {
 //            ordersList = orderServiceClient.getOrders(userId);
 //        } catch (FeignException ex) {
@@ -114,15 +114,15 @@ public class UserServiceImpl implements UserService {
 //        }
 
         /* Circuit Breaker */
-        log.info("Before call order-service");
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
-        ordersList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId),
-                throwable -> new ArrayList<>());
-        log.info("After call order-service");
-
-        userDto.setOrders(ordersList);
-
-        return userDto;
+//        log.info("Before call order-service");
+//        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
+//        ordersList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId),
+//                throwable -> new ArrayList<>());
+//        log.info("After call order-service");
+//
+//        userDto.setOrders(ordersList);
+//
+        return null;
     }
 
     @Override
