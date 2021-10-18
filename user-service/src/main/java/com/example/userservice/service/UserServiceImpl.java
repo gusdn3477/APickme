@@ -23,7 +23,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -73,7 +72,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         userDto.setUserId(UUID.randomUUID().toString());
-        //userDto.setCreatedAt(now()); 어노테이션으로 자동저장인것같음
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -97,30 +95,30 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = mapper.map(userEntity, UserDto.class);
 
         /* order-service에서 주문 내역 조회
-        *  #1) RestTemplate
-        * */
-/*        List<ResponseOrder> ordersList = new ArrayList<>();
-        String orderUrl = String.format(env.getProperty("order-service.url"), userId);
-        ResponseEntity<List<ResponseOrder>> responseOrderList = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<ResponseOrder>>() {
-                });
-        ordersList = responseOrderList.getBody();*/
+         *  #1) RestTemplate
+         * */
+//        List<ResponseOrder> ordersList = new ArrayList<>();
+//        String orderUrl = String.format(env.getProperty("order-service.url"), userId);
+//        ResponseEntity<List<ResponseOrder>> responseOrderList = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<ResponseOrder>>() {
+//                });
+//        ordersList = responseOrderList.getBody();
 
         /* #2) Open Feign */
-       // List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
+//        List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
         List<ResponseOrder> ordersList = null;
-        try {
-            ordersList = orderServiceClient.getOrders(userId); //feign client 사용부분 => 여기서 처리 후에 125번줄의 dto로 넣어줌
-        } catch (FeignException ex) {
-            log.error(ex.getMessage());
-        }
+//        try {
+//            ordersList = orderServiceClient.getOrders(userId);
+//        } catch (FeignException ex) {
+//            log.error(ex.getMessage());
+//        }
 
-/*        *//* Circuit Breaker *//*
+        /* Circuit Breaker */
         log.info("Before call order-service");
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
         ordersList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId),
                 throwable -> new ArrayList<>());
-        log.info("After call order-service");*/
+        log.info("After call order-service");
 
         userDto.setOrders(ordersList);
 
@@ -144,37 +142,4 @@ public class UserServiceImpl implements UserService {
     public Iterable<UserEntity> getUserByAll() {
         return userRepository.findAll();
     }
-
-    @Override
-    public void deleteUser(String userId) {
-        userRepository.deleteByUserId(userId);
-
-    }
-
-    @Override
-    public UserDto updateByUserId(UserDto userDto, UserDto userDetails) {
-
-        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
-        ModelMapper mapper = new ModelMapper();
-        UserDto userUpdateDto = mapper.map(userEntity, UserDto.class);
-
-        userUpdateDto.setName(userDetails.getName());
-        userUpdateDto.setPwd(userDetails.getPwd());
-        userUpdateDto.setAddress(userDetails.getAddress());
-        userUpdateDto.setPhone(userDetails.getPhone());
-
-        ModelMapper usermapper = new ModelMapper();
-        usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserEntity userUpdateEntity = usermapper.map(userUpdateDto, UserEntity.class);
-
-        userUpdateEntity.setId(userEntity.getId());
-        userUpdateEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userUpdateDto.getPwd()));
-
-        userRepository.save(userUpdateEntity);
-
-        return null;
-    }
-
-
-
 }

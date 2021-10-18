@@ -1,3 +1,4 @@
+
 package com.example.userservice.security;
 
 import com.example.userservice.service.UserService;
@@ -29,23 +30,20 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 //        http.authorizeRequests().antMatchers("/users/**").permitAll();
         http.authorizeRequests().antMatchers("/health_check/**").permitAll();
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
-        http.authorizeRequests().antMatchers("/swagger-ui/**").permitAll();
-        http.authorizeRequests().antMatchers("/v2/**").permitAll();
-//        http.authorizeRequests().antMatchers("/users/**").permitAll();
-        http.authorizeRequests().antMatchers("/actuator/**").permitAll();
-        http.authorizeRequests()
-                .antMatchers("/**")
-                //.hasIpAddress(env.getProperty("gateway.ip"))
-                .access("hasIpAddress('127.0.0.1') or hasIpAddress('10.0.0.37') or hasIpAddress('52.20.91.194')")
-                .and()
-                .addFilter(getAuthenticationFilter());
-
+       http.authorizeRequests().antMatchers("/actuator/**").permitAll();
+//        http.authorizeRequests()
+//                .antMatchers("/**")
+//                .hasIpAddress(env.getProperty("gateway.ip"))
+////                .access("hasIpAddress('172.18.0.5') or hasIpAddress('127.0.0.1')")
+//                .and()
+//                .addFilter(getAuthenticationFilter());
+//        ;
         http.headers().frameOptions().disable();
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(
-                                        authenticationManager(), userService, env);
+                authenticationManager(), userService, env);
 
         return authenticationFilter;
     }
