@@ -1,4 +1,4 @@
-package com.example.catalogservice.jpa;
+package com.example.processservice.jpa;
 
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
@@ -9,11 +9,12 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "catalog")
-public class CatalogEntity implements Serializable {
+@Table(name = "process")
+public class ProcessEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false, length = 120, unique = true)
     private String productId;
@@ -32,4 +33,5 @@ public class CatalogEntity implements Serializable {
     @Column(nullable = false, updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private Date createdAt;
+
 }

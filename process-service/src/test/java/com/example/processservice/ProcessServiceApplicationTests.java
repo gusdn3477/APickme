@@ -1,10 +1,10 @@
-package com.example.catalogservice;
+package com.example.processservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CatalogServiceApplicationTests {
+class ProcessServiceApplicationTests {
 
     @Test
     void contextLoads() {
