@@ -3,8 +3,11 @@ package com.example.userservice.controller;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.service.UserService;
+import com.example.userservice.vo.RequestDeleteUser;
+import com.example.userservice.vo.RequestUpdateUser;
 import com.example.userservice.vo.RequestUser;
 import com.example.userservice.vo.ResponseUser;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +51,8 @@ public class UserController {
     }
 
 
-
-
-
-
     /*일반 사용자 회원가입*/
-    @PostMapping("/users")
+    @PostMapping("/users/register")
     public ResponseEntity createUser(@RequestBody @Valid RequestUser user) {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -65,6 +64,64 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
+
+
+
+    /*일반 사용자(지원자) 회원삭제(탈퇴)*/
+    @DeleteMapping("/users")
+    public ResponseEntity<String> deleteUser(@RequestBody @Valid RequestDeleteUser  user){
+
+//        System.out.println("userId: "+ user.getUserId());
+//        System.out.println("email: "+ user.getEmail());
+//        System.out.println("password: "+ user.getPassword());
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDto userDto = mapper.map(user, UserDto.class);
+
+        boolean status = userService.deleteUser(userDto.getUserId(),userDto.getEmail(), userDto.getPassword());
+
+        String okMsg = "delete userId , 200 OK";
+        String errorMsg = "error~";
+
+        if(status) {
+            return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
+        }
+    }
+
+
+    /* 일반사용자(지원자) 정보 수정*/
+    @PutMapping("/users")
+    public ResponseEntity<String> updateUser(@RequestBody @Valid RequestUpdateUser user){
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDto userDetails = mapper.map(user, UserDto.class);
+
+        UserDto userDto = userService.getUserByUserId(user.getUserId());
+
+        userService.updateByUserId(userDto, userDetails);
+
+        String okMsg = "update user , 200 OK";
+        return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+    }
+
+
+    /* 유저 정보 수정*/
+    @PutMapping("/users/{userId}")
+//    public void updateUser(@PathVariable("userId") String userId, @RequestBody @Valid RequestUpdateUser user){
+//
+//        ModelMapper mapper = new ModelMapper();
+//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        UserDto userDetails = mapper.map(user, UserDto.class);
+//
+//        UserDto userDto = userService.getUserByUserId(userId);
+//
+//        userService.updateByUserId(userDto, userDetails);
+//    }
+
 
     /* 전체 사용자 목록 */
     @GetMapping("/users")

@@ -13,5 +13,11 @@ public interface UserService extends UserDetailsService {
 
     /* 전체 사용자 목록 반환 */
     Iterable<UserEntity> getUserByAll();
+
+    /*일반사용자(지원자) 탈퇴*/
+    boolean deleteUser(String userId, String email, String password);
+
+    /* 일반사용자(지원자) 수정*/
+    UserDto updateByUserId(UserDto userDto, UserDto userDetails);
 }
 

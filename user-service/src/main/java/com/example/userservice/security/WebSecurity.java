@@ -1,4 +1,3 @@
-
 package com.example.userservice.security;
 
 import com.example.userservice.service.UserService;
@@ -26,21 +25,33 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable();
         http.authorizeRequests().antMatchers("/users/**").permitAll();
         http.authorizeRequests().antMatchers("/health_check/**").permitAll();
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
-       http.authorizeRequests().antMatchers("/actuator/**").permitAll();
-//        http.authorizeRequests()
-//                .antMatchers("/**")
+        http.authorizeRequests().antMatchers("/swagger-ui/**").permitAll();
+        http.authorizeRequests().antMatchers("/v2/**").permitAll();
+        http.authorizeRequests().antMatchers("/logout/**").permitAll();
+//        http.authorizeRequests().antMatchers("/actuator/**").permitAll();
+        http.authorizeRequests()
+                .antMatchers("/**")
 //                .hasIpAddress(env.getProperty("gateway.ip"))
-////                .access("hasIpAddress('172.18.0.5') or hasIpAddress('127.0.0.1')")
-//                .and()
-//                .addFilter(getAuthenticationFilter());
-//        ;
+                .access("hasIpAddress('172.30.144.1') or hasIpAddress('172.18.0.5') or hasIpAddress('127.0.0.1')")
+                .and()
+                .addFilter(getAuthenticationFilter());
+        ;
+       // http.logout().logoutSuccessUrl("/").permitAll(); //일단 로그아웃 후 리다이렉트 url 임시로 작성.
+         http.logout().logoutSuccessUrl("/www.naver.com").permitAll();
         http.headers().frameOptions().disable();
     }
+
+    //logoutUrl("/doLogout")
+    //.logoutSuccessUrl("/login");
+
+    //http.logout()
+    //     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+    //     .logoutSuccessUrl("/")
+    //     .invalidateHttpSession(true);
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(

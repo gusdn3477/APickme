@@ -4,18 +4,12 @@ import com.example.userservice.client.OrderServiceClient;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.jpa.UserRepository;
-import com.example.userservice.vo.ResponseOrder;
-import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -83,46 +76,87 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /* 일반 사용자(지원자) 삭제*/
+    @Override
+    public boolean deleteUser(String userId, String email, String password) {
+
+        UserEntity userEntity = userRepository.findByUserId(userId);
+        ModelMapper mapper = new ModelMapper();
+        UserDto userDeleteDto = mapper.map(userEntity, UserDto.class);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if(encoder.matches(password, userDeleteDto.getEncryptedPwd())){
+            userRepository.deleteByUserId(userId);
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+    /* 일반 사용자(지원자) 수정*/ //UserDto가 데이터베이스에서 userId로 찾아온 userDto , userDetails는 RequestBOdy 에 수정할 dto
+    @Override
+    public UserDto updateByUserId(UserDto userDto, UserDto userDetails) {
+        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+        ModelMapper mapper = new ModelMapper();
+        UserDto userUpdateDto = mapper.map(userEntity, UserDto.class);
+
+        userUpdateDto.setAddress(userDetails.getAddress());
+        userUpdateDto.setPhoneNum(userDetails.getPhoneNum());
+
+        ModelMapper usermapper = new ModelMapper();
+        usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserEntity userUpdateEntity = usermapper.map(userUpdateDto, UserEntity.class);
+
+        userUpdateEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userUpdateDto.getPassword()));
+
+        userRepository.save(userUpdateEntity);
+
+        return null;
+    }
+
+
+    //    private String userId;
+    //    private String password;
+    //    private String address;
+    //    private String phoneNum;
+
+//    @Override
+//    public UserDto updateByUserId(UserDto userDto, UserDto userDetails) {
+//
+//        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+//        ModelMapper mapper = new ModelMapper();
+//        UserDto userUpdateDto = mapper.map(userEntity, UserDto.class);
+//
+//        userUpdateDto.setName(userDetails.getName());
+//        userUpdateDto.setPwd(userDetails.getPwd());
+//        userUpdateDto.setAddress(userDetails.getAddress());
+//        userUpdateDto.setPhone(userDetails.getPhone());
+//
+//        ModelMapper usermapper = new ModelMapper();
+//        usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        UserEntity userUpdateEntity = usermapper.map(userUpdateDto, UserEntity.class);
+//
+//        userUpdateEntity.setId(userEntity.getId());
+//        userUpdateEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userUpdateDto.getPwd()));
+//
+//        userRepository.save(userUpdateEntity);
+//
+//        return null;
+//    }
+
     @Override
     public UserDto getUserByUserId(String userId) {
-//        UserEntity userEntity = userRepository.findByUserId(userId);
-//
-//        if (userEntity == null)
-//            throw new UsernameNotFoundException("User not found");
-//
-//        ModelMapper mapper = new ModelMapper();
-//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-//        UserDto userDto = mapper.map(userEntity, UserDto.class);
+        UserEntity userEntity = userRepository.findByUserId(userId);
 
-        /* order-service에서 주문 내역 조회
-         *  #1) RestTemplate
-         * */
-//        List<ResponseOrder> ordersList = new ArrayList<>();
-//        String orderUrl = String.format(env.getProperty("order-service.url"), userId);
-//        ResponseEntity<List<ResponseOrder>> responseOrderList = restTemplate.exchange(orderUrl, HttpMethod.GET, null,
-//                new ParameterizedTypeReference<List<ResponseOrder>>() {
-//                });
-//        ordersList = responseOrderList.getBody();
+        if (userEntity == null)
+            throw new UsernameNotFoundException("User not found");
 
-        /* #2) Open Feign */
-//        List<ResponseOrder> ordersList = orderServiceClient.getOrders(userId);
-//        List<ResponseOrder> ordersList = null;
-//        try {
-//            ordersList = orderServiceClient.getOrders(userId);
-//        } catch (FeignException ex) {
-//            log.error(ex.getMessage());
-//        }
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDto userDto = mapper.map(userEntity, UserDto.class);
 
-        /* Circuit Breaker */
-//        log.info("Before call order-service");
-//        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
-//        ordersList = circuitBreaker.run(() -> orderServiceClient.getOrders(userId),
-//                throwable -> new ArrayList<>());
-//        log.info("After call order-service");
-//
-//        userDto.setOrders(ordersList);
-//
-        return null;
+        return userDto;
     }
 
     @Override
@@ -142,4 +176,6 @@ public class UserServiceImpl implements UserService {
     public Iterable<UserEntity> getUserByAll() {
         return userRepository.findAll();
     }
+
+
 }
