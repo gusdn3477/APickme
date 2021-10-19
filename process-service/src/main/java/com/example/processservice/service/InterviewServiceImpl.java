@@ -19,7 +19,7 @@ public class InterviewServiceImpl implements InterviewService{
     }
 
     @Override
-    public Iterable<InterviewEntity> getInterviewListByJobsNo(Integer jobsNo){
+    public Iterable<InterviewEntity> getInterviewListByJobsNo(Integer jobsNo){ // 공고번호에 해당하는 지원자 조회
         return interviewRepository.findByJobsNo(jobsNo);
     }
 }

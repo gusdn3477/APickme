@@ -1,5 +1,10 @@
 package com.example.processservice.controller;
 
+import com.example.processservice.jpa.InterviewEntity;
+import com.example.processservice.jpa.WrittenEntity;
+import com.example.processservice.service.InterviewService;
+import com.example.processservice.service.WrittenService;
+import com.example.processservice.vo.ResponseWritten;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -16,9 +21,13 @@ import java.util.List;
 public class ProcessController {
 
     Environment env;
+    InterviewService interviewService;
+    WrittenService writtenService;
 
     @Autowired
-    public ProcessController(Environment env){
+    public ProcessController(Environment env, InterviewService interviewService, WrittenService writtenService){
+        this.interviewService = interviewService;
+        this.writtenService = writtenService;
         this.env = env;
     }
 
@@ -29,8 +38,10 @@ public class ProcessController {
     }
 
     @PutMapping("/process/written-test/score")
-    public ResponseEntity<List<>> writtenTestScore(){
-        return "작성중";
+    public ResponseEntity<List<ResponseWritten>> writtenTestScore(ResponseWritten responseWritten){
+
+        log.info("필기 자동 채점 서비스");
+        Iterable<WrittenEntity> writtenList =
     }
 
     @PutMapping("/process/written-test/result")

@@ -20,7 +20,7 @@ public class WrittenServiceImpl implements WrittenService{
     }
 
     @Override
-    public Iterable<WrittenEntity> getWrittenListByJobsNo(Integer jobsNo){
+    public Iterable<WrittenEntity> getWrittenListByJobsNo(Integer jobsNo){ // 공고번호에 해당하는 지원자 조회
         return writtenRepository.findByJobsNo(jobsNo);
     }
 }

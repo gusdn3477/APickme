@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class RequestPutInterview {
+public class ResponseInterview {
     private String applyNum;
     private String userId;
     private String empNo;
