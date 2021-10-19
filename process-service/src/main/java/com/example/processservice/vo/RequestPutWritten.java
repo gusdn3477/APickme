@@ -11,5 +11,5 @@ public class RequestPutWritten {
     private String jobsNo;
     private Integer writtenScore;
     private String writtenResult;
-
+    private Integer count;
 }

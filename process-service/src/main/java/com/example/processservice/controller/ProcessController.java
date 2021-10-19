@@ -4,15 +4,19 @@ import com.example.processservice.jpa.InterviewEntity;
 import com.example.processservice.jpa.WrittenEntity;
 import com.example.processservice.service.InterviewService;
 import com.example.processservice.service.WrittenService;
+import com.example.processservice.vo.RequestPutWritten;
 import com.example.processservice.vo.ResponseWritten;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,15 +42,30 @@ public class ProcessController {
     }
 
     @PutMapping("/process/written-test/score")
-    public ResponseEntity<List<ResponseWritten>> writtenTestScore(ResponseWritten responseWritten){
+    public ResponseEntity<List<ResponseWritten>> writtenTestScore(@RequestBody RequestPutWritten requestPutWritten){
 
         log.info("필기 자동 채점 서비스");
-        Iterable<WrittenEntity> writtenList =
+        writtenService.writtenScore(requestPutWritten.getJobsNo());
+        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(requestPutWritten.getJobsNo());
+        List<ResponseWritten> result = new ArrayList<>();
+        writtenList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseWritten.class));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PutMapping("/process/written-test/result")
-    public String writtenTestResult(){
-        return "작성중";
+    public ResponseEntity<List<ResponseWritten>> writtenTestResult(@RequestBody RequestPutWritten requestPutWritten){
+        log.info("필기 자동 합/불 서비스");
+        writtenService.checkPassOrNot(requestPutWritten.getJobsNo(), requestPutWritten.getCount());
+        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(requestPutWritten.getJobsNo());
+        List<ResponseWritten> result = new ArrayList<>();
+        writtenList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseWritten.class));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping("/process/written-test")

@@ -4,5 +4,5 @@ import com.example.processservice.jpa.InterviewEntity;
 
 public interface InterviewService {
 
-    Iterable<InterviewEntity> getInterviewListByJobsNo(Integer jobsNo);
+    Iterable<InterviewEntity> getInterviewListByJobsNo(String jobsNo);
 }

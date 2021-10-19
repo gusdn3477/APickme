@@ -3,10 +3,7 @@ package com.example.processservice.jpa;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,10 +13,11 @@ import java.util.Date;
 public class InterviewEntity implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, length = 20, unique = true)
-    private String applyNum;
+    private Long applyNum;
 
-    @Id
+//    @Id
     @Column(nullable = false, length = 20, unique = true)
     private String userId;
 
@@ -31,7 +29,7 @@ public class InterviewEntity implements Serializable {
     private String firstInterviewer;
     @Column
     private Integer firstInterviewScore;
-    @Column(length=20)
+    @Column(length=5)
     private String firstInterviewResult;
 
     @Column
@@ -43,7 +41,7 @@ public class InterviewEntity implements Serializable {
     @Column(length=20)
     private String secondInterviewResult;
     @Column
-    private Integer jobsNo;
+    private String jobsNo;
 
     @Column(nullable = false, updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")

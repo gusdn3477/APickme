@@ -12,25 +12,26 @@ import java.util.Date;
 @Table(name = "written")
 public class WrittenEntity implements Serializable {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private String id;
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, length = 20, unique = true)
+    private Long id;
+
+//    @Id
     @Column(nullable = false, length = 20, unique = true)
     private String applyNum;
 
-    @Id
+//    @Id
     @Column(nullable = false, length = 20, unique = true)
     private String userId;
 
     @Column(nullable = false, length = 20)
     private String empNo;
     @Column
-    private Integer jobsNo;
+    private String jobsNo;
     @Column
     private Integer writtenScore;
-    @Column(length=20)
+    @Column(length=5)
     private String writtenResult;
     @Column(nullable = false, updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")

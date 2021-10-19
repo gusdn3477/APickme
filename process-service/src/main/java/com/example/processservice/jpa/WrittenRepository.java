@@ -2,7 +2,8 @@ package com.example.processservice.jpa;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface WrittenRepository extends CrudRepository<WrittenRepository, Long> {
+public interface WrittenRepository extends CrudRepository<WrittenEntity, Long> {
 
-    Iterable<WrittenEntity> findByJobsNo(Integer jobsNo);
+    Iterable<WrittenEntity> findByJobsNo(String jobsNo);
+    Iterable<WrittenEntity> findByJobsNoOrderByWrittenScoreDesc(String jobsNo);
 }
