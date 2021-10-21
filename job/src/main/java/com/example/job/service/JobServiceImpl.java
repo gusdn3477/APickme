@@ -44,5 +44,10 @@ public class JobServiceImpl implements JobService{
         return jobRepository.findAllByCorpNo2(corpNo2);
     }
 
+    @Override
+    public JobEntity getJob(String jobsNo){
+        return jobRepository.findByJobsNo(jobsNo);
+    }
+
 
 }

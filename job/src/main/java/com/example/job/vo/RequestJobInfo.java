@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 public class RequestJobInfo {
     @NotNull
-    private Long jobsNo;
+    private String jobsNo;
     private String corpNo2; //기업코드?
     private String empNo;
     private String jobsTitle;

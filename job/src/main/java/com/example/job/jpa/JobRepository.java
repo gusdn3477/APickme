@@ -6,6 +6,7 @@ import java.util.Date;
 
 public interface JobRepository extends CrudRepository<JobEntity, Long>{
     Iterable<JobEntity> findAllByCorpNo2(String corpNo2);
+    JobEntity findByJobsNo(String jobsNo);
 
 
 

@@ -3,6 +3,7 @@ package com.example.job.controller;
 import com.example.job.dto.JobDto;
 import com.example.job.jpa.JobEntity;
 import com.example.job.service.JobService;
+import com.example.job.vo.RequestJobDetail;
 import com.example.job.vo.RequestJobInfo;
 import com.example.job.vo.ResponseJob;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //import javax.validation.Valid;
 
+import javax.ws.rs.Path;
 import java.util.*;
 
 @RestController
@@ -63,6 +65,17 @@ public class JobController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
+
+    @GetMapping("/jobs/{jobsNo}")
+    public ResponseEntity<JobEntity> getJobDetail(@PathVariable("jobsNo") String jobsNo){
+        JobEntity jobDetailList = jobService.getJob(jobsNo);
+//
+//        ModelMapper mapper = new ModelMapper();
+//        mapper.getConfiguration().getMatchingStrategy();
+        return ResponseEntity.status(HttpStatus.OK).body(jobDetailList);
+    }
+
+
 
 
     @PostMapping("/jobs")
