@@ -9,8 +9,8 @@ public interface WrittenService {
     WrittenEntity createWrittenPerson(WrittenDto writtenDto);
 
     Iterable<WrittenEntity> getWrittenListByJobsNo(String jobsNo);
-    Iterable<WrittenEntity> checkPassOrNot(String jobsNo, Integer count);
-    Iterable<WrittenEntity> writtenScore(String jobsNo);
-    Iterable<WrittenEntity> getWrittenPassList(String writtenResult);
+    Iterable<WrittenEntity> checkPassOrNot(WrittenDto writtenDto);
+    Iterable<WrittenEntity> writtenScore(WrittenDto writtenDto);
+    Iterable<WrittenEntity> getWrittenPassList(String writtenResult); // 합격자 리스트
 
 }

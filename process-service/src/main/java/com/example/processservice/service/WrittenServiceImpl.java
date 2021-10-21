@@ -42,16 +42,14 @@ public class WrittenServiceImpl implements WrittenService{
     }
 
     @Override
-    public Iterable<WrittenEntity> writtenScore(String jobsNo){
+    public Iterable<WrittenEntity> writtenScore(WrittenDto writtenDto){
 
-        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNo(jobsNo);
+        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoAndEmpNo(writtenDto.getJobsNo(), writtenDto.getEmpNo());
+        if (writtenEntity == null){
+            return null;
+        }
         writtenEntity.forEach(v -> {
             v.setWrittenScore((int)(Math.random()*101));
-//            ModelMapper mapper = new ModelMapper();
-//            mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-//            WrittenDto writtenDto = mapper.map(v, WrittenDto.class);
-//            writtenDto.setWrittenScore((int)Math.random()*101);
-//            writtenRepository.save(writtenDto);
         });
         writtenRepository.saveAll(writtenEntity);
         return writtenEntity;
@@ -65,10 +63,13 @@ public class WrittenServiceImpl implements WrittenService{
     }
 
     @Override
-    public Iterable<WrittenEntity> checkPassOrNot(String jobsNo, Integer count){
+    public Iterable<WrittenEntity> checkPassOrNot(WrittenDto writtenDto){
 
-        AtomicInteger cnt = new AtomicInteger(count);
-        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoOrderByWrittenScoreDesc(jobsNo);
+        AtomicInteger cnt = new AtomicInteger(writtenDto.getCount());
+        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoOrderByWrittenScoreDesc(writtenDto.getJobsNo());
+        if(writtenEntity == null){
+            return null;
+        }
         writtenEntity.forEach(v -> {
             if(cnt.get() > 0) {
                 v.setWrittenResult("P");
@@ -78,11 +79,6 @@ public class WrittenServiceImpl implements WrittenService{
             else{
                 v.setWrittenResult(("F"));
             }
-//            ModelMapper mapper = new ModelMapper();
-//            mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-//            WrittenDto writtenDto = mapper.map(v, WrittenDto.class);
-//            writtenDto.setWrittenScore((int)Math.random()*101);
-//            writtenRepository.save(writtenDto);
         });
 
         writtenRepository.saveAll(writtenEntity);

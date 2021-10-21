@@ -27,7 +27,7 @@ public class InterviewEntity implements Serializable {
     @Column(nullable = false, length = 20)
     private String empNo;
     @Column
-    private Date firstInterview;
+    private Date firstInterviewDate;
     @Column
     private String firstInterviewer;
     @Column
@@ -36,7 +36,7 @@ public class InterviewEntity implements Serializable {
     private String firstInterviewResult;
 
     @Column
-    private Date secondInterview;
+    private Date secondInterviewDate;
     @Column
     private String secondInterviewer;
     @Column

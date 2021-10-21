@@ -49,7 +49,12 @@ public class ProcessController {
     public ResponseEntity<List<ResponseWritten>> writtenTestScore(@RequestBody RequestPutWritten requestPutWritten){
 
         log.info("필기 자동 채점 서비스");
-        writtenService.writtenScore(requestPutWritten.getJobsNo());
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//
+        WrittenDto writtenDto = mapper.map(requestPutWritten, WrittenDto.class);
+
+        writtenService.writtenScore(writtenDto);
         Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(requestPutWritten.getJobsNo());
         List<ResponseWritten> result = new ArrayList<>();
         writtenList.forEach(v -> {
@@ -62,7 +67,12 @@ public class ProcessController {
     @PutMapping("/process/written-test/result")
     public ResponseEntity<List<ResponseWritten>> writtenTestResult(@RequestBody RequestPutWritten requestPutWritten){
         log.info("필기 자동 합/불 서비스");
-        writtenService.checkPassOrNot(requestPutWritten.getJobsNo(), requestPutWritten.getCount());
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//
+        WrittenDto writtenDto = mapper.map(requestPutWritten, WrittenDto.class);
+        writtenService.checkPassOrNot(writtenDto);
+
         Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(requestPutWritten.getJobsNo());
         List<ResponseWritten> result = new ArrayList<>();
         writtenList.forEach(v -> {
@@ -98,10 +108,11 @@ public class ProcessController {
         interviewDto.setApplyNum(requestPutInterview.getApplyNum());
 
         InterviewEntity interviewEntity = interviewService.allocateFirstInterviewer(interviewDto);
-        if(interviewEntity.getFirstInterviewer() != null){
-            return "1차 면접관 할당 성공";
+        if(interviewEntity == null){
+            return "1차 면접관 할당 실패!";
         }
-        return "1차 면접관 할당 실패";
+
+        return "1차 면접관 할당 성공!";
     }
 
     //1차 면접관 채점
@@ -116,10 +127,10 @@ public class ProcessController {
         interviewDto.setFirstInterviewScore(requestPutInterview.getFirstInterviewScore());
 
         InterviewEntity interviewEntity = interviewService.scoreFirstInterviewer(interviewDto);
-        if(interviewEntity.getFirstInterviewScore() != null){
-            return "1차 면접 채점 성공";
+        if(interviewEntity == null){
+            return "1차 면접 채점 실패!";
         }
-        return "1차 면접 채점 실패";
+        return "1차 면접 채점 성공!";
     }
 
     //1차 면접관 결과
@@ -128,7 +139,7 @@ public class ProcessController {
         return "작성중";
     }
 
-    //여기부터 2차 면접
+    //여기부터 2차 면접 -> 2차 면접관 할당
     @PutMapping("/process/second-interview/allocate")
     public String secondInterviewAllocate(@RequestBody RequestPutInterview requestPutInterview) {
 
@@ -141,10 +152,10 @@ public class ProcessController {
         interviewDto.setApplyNum(requestPutInterview.getApplyNum());
 
         InterviewEntity interviewEntity = interviewService.allocateSecondInterviewer(interviewDto);
-        if(interviewEntity.getSecondInterviewer() != null){
-            return "2차 면접관 할당 성공";
+        if(interviewEntity == null){
+            return "2차 면접관 할당 실패!";
         }
-        return "2차 면접관 할당 실패";
+        return "2차 면접관 할당 성공";
     }
 
     // 2차 면접 채점
@@ -159,10 +170,10 @@ public class ProcessController {
         interviewDto.setSecondInterviewScore(requestPutInterview.getSecondInterviewScore());
 
         InterviewEntity interviewEntity = interviewService.scoreSecondInterviewer(interviewDto);
-        if(interviewEntity.getSecondInterviewScore() != null){
-            return "2차 면접 채점 성공";
+        if(interviewEntity == null){
+            return "2차 면접 채점 실패";
         }
-        return "2차 면접 채점 실패";
+        return "2차 면접 채점 성공";
     }
 
     @PutMapping("/process/second-interview/result")

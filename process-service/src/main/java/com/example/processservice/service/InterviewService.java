@@ -19,6 +19,6 @@ public interface InterviewService {
     InterviewEntity allocateSecondInterviewer(InterviewDto interviewDto);
     InterviewEntity scoreSecondInterviewer(InterviewDto interviewDto);
 
-    Iterable<InterviewEntity> createInterviewPeople(List<WrittenDto> writtenDtos);
+    Iterable<InterviewEntity> createInterviewPeople(List<WrittenDto> writtenDto);
     Iterable<InterviewEntity> getInterviewListByJobsNo(String jobsNo);
 }

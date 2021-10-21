@@ -11,6 +11,6 @@ public class WrittenDto implements Serializable {
     private String empNo;
     private Integer writtenScore;
     private String writtenResult;
-    private Integer jobsNo;
+    private String jobsNo;
     private Integer count; // 합격자 수
 }
