@@ -1,18 +1,18 @@
 package com.example.hrservice;
 
+import feign.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-//@EnableFeignClients
+@EnableFeignClients
 @EnableJpaAuditing
 public class HrServiceApplication {
 
@@ -31,12 +31,11 @@ public class HrServiceApplication {
 //        return new RestTemplate();
 //    }
 
-/* 오픈페인쓸때 쓰자
     @Bean
     public Logger.Level feignLoggerLevel() {
         return Logger.Level.FULL;
     }
-*/
+
 
     @Bean
     public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
