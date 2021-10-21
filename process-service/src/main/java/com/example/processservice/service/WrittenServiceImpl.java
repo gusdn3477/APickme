@@ -1,9 +1,12 @@
 package com.example.processservice.service;
 
+import com.example.processservice.dto.WrittenDto;
 import com.example.processservice.jpa.WrittenEntity;
 import com.example.processservice.jpa.WrittenRepository;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,18 @@ public class WrittenServiceImpl implements WrittenService{
     @Autowired
     public WrittenServiceImpl(WrittenRepository writtenRepository){
         this.writtenRepository = writtenRepository;
+    }
+
+    // 면접자 개인 생성 => 단체도 만들면 좋을듯
+    @Override
+    public WrittenEntity createWrittenPerson(WrittenDto writtenDto){
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        WrittenEntity writtenEntity = mapper.map(writtenDto, WrittenEntity.class);
+
+        writtenRepository.save(writtenEntity);
+        return writtenEntity;
     }
 
     @Override
@@ -40,6 +55,13 @@ public class WrittenServiceImpl implements WrittenService{
         });
         writtenRepository.saveAll(writtenEntity);
         return writtenEntity;
+    }
+
+    @Override
+    public Iterable<WrittenEntity> getWrittenPassList(String writtenResult){
+
+        Iterable<WrittenEntity> passList = writtenRepository.findByWrittenResult(writtenResult);
+        return passList;
     }
 
     @Override

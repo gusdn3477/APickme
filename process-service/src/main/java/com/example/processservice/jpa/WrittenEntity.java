@@ -31,7 +31,7 @@ public class WrittenEntity implements Serializable {
     private String jobsNo;
     @Column
     private Integer writtenScore;
-    @Column(length=5)
+    @Column
     private String writtenResult;
     @Column(nullable = false, updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")

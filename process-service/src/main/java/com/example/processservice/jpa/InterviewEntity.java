@@ -15,7 +15,10 @@ public class InterviewEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, length = 20, unique = true)
-    private Long applyNum;
+    private Long id;
+
+    @Column(nullable = false, length = 20, unique = true)
+    private String applyNum;
 
 //    @Id
     @Column(nullable = false, length = 20, unique = true)
@@ -29,7 +32,7 @@ public class InterviewEntity implements Serializable {
     private String firstInterviewer;
     @Column
     private Integer firstInterviewScore;
-    @Column(length=5)
+    @Column
     private String firstInterviewResult;
 
     @Column
@@ -38,7 +41,7 @@ public class InterviewEntity implements Serializable {
     private String secondInterviewer;
     @Column
     private Integer secondInterviewScore;
-    @Column(length=20)
+    @Column
     private String secondInterviewResult;
     @Column
     private String jobsNo;
