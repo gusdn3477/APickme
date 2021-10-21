@@ -1,12 +1,10 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.service.UserService;
-import com.example.userservice.vo.RequestDeleteUser;
-import com.example.userservice.vo.RequestUpdateUser;
-import com.example.userservice.vo.RequestUser;
-import com.example.userservice.vo.ResponseUser;
+import com.example.userservice.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -109,21 +107,7 @@ public class UserController {
     }
 
 
-    /* 유저 정보 수정*/
-    @PutMapping("/users/{userId}")
-//    public void updateUser(@PathVariable("userId") String userId, @RequestBody @Valid RequestUpdateUser user){
-//
-//        ModelMapper mapper = new ModelMapper();
-//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-//        UserDto userDetails = mapper.map(user, UserDto.class);
-//
-//        UserDto userDto = userService.getUserByUserId(userId);
-//
-//        userService.updateByUserId(userDto, userDetails);
-//    }
-
-
-    /* 전체 사용자 목록 */
+    /* 전체 일반사용자(지원자) 목록 */
     @GetMapping("/users")
     public List<ResponseUser> getUsers(HttpServletRequest request) {
         Iterable<UserEntity> usersList = userService.getUserByAll();
@@ -136,6 +120,8 @@ public class UserController {
         return result;
     }
 
+
+
     /* 사용자 상세 보기 (with 주문 목록) */
     @GetMapping("/users/{userId}")
     public ResponseEntity<ResponseUser> getUser(@PathVariable("userId") String userId) {
@@ -145,4 +131,37 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
+
+
+    /* 지원자 공고 지원하기*/
+    @PostMapping("/users/apply")
+    public ResponseEntity<ResponseApply> createApply(@RequestBody @Valid RequestApply apply){
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ApplyDto applyDto = mapper.map(apply, ApplyDto.class);
+
+        userService.createApply(applyDto);
+
+        UserDto userDto = new UserDto();
+        ResponseApply returnValue = new ModelMapper().map(applyDto, ResponseApply.class);
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+
+    }
+
+    /*일반 사용자 회원가입*/
+//    @PostMapping("/users/register")
+//    public ResponseEntity createUser(@RequestBody @Valid RequestUser user) {
+//        ModelMapper mapper = new ModelMapper();
+//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        UserDto userDto = mapper.map(user, UserDto.class);
+//        userService.createUser(userDto);
+//
+//        // convert UserDto to ResponseUser
+//        ResponseUser responseUser = mapper.map(userDto, ResponseUser.class);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
+//    }
+
+
 }

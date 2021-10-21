@@ -13,9 +13,11 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseUser {
     private String email;
-    private String name;
+    private String applyName;
     private String userId;
-
+    private String address;
+    private String phoneNum;
+    private String registerDate;
 }
 
-
+   // 리스트로 사용자 이름, 이메일, 가입일, 휴대폰 번호 등 출력

@@ -1,9 +1,12 @@
 package com.example.userservice.service;
 
 import com.example.userservice.client.OrderServiceClient;
+import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
+import com.example.userservice.entity.ApplyEntity;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.jpa.UserRepository;
+import com.example.userservice.jpa.ApplyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -25,7 +28,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     BCryptPasswordEncoder bCryptPasswordEncoder;
-
+    ApplyRepository applyRepository;
     Environment env;
     RestTemplate restTemplate;
 
@@ -39,8 +42,10 @@ public class UserServiceImpl implements UserService {
                            Environment env,
                            RestTemplate restTemplate,
                            OrderServiceClient orderServiceClient,
-                           CircuitBreakerFactory circuitBreakerFactory) {
+                           CircuitBreakerFactory circuitBreakerFactory,
+                           ApplyRepository applyRepository ) {
         this.userRepository = userRepository;
+        this.applyRepository = applyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.env = env;
         this.restTemplate = restTemplate;
@@ -61,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
-
+    /*지원자 회원가입*/
     @Override
     public UserDto createUser(UserDto userDto) {
         userDto.setUserId(UUID.randomUUID().toString());
@@ -103,47 +108,38 @@ public class UserServiceImpl implements UserService {
 
         userUpdateDto.setAddress(userDetails.getAddress());
         userUpdateDto.setPhoneNum(userDetails.getPhoneNum());
+        userUpdateDto.setPassword(userDetails.getPassword());
 
         ModelMapper usermapper = new ModelMapper();
         usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userUpdateEntity = usermapper.map(userUpdateDto, UserEntity.class);
 
+        userUpdateEntity.setId(userEntity.getId());
         userUpdateEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userUpdateDto.getPassword()));
 
         userRepository.save(userUpdateEntity);
 
+
+        return null;
+    }
+
+    /* 지원자 공고 지원하기*/
+    @Override
+    public ApplyDto createApply(ApplyDto applyDto) {
+        applyDto.setApplyNum(UUID.randomUUID().toString());
+
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ApplyEntity applyEntity = mapper.map(applyDto, ApplyEntity.class);
+
+        applyRepository.save(applyEntity);
         return null;
     }
 
 
-    //    private String userId;
-    //    private String password;
-    //    private String address;
-    //    private String phoneNum;
 
-//    @Override
-//    public UserDto updateByUserId(UserDto userDto, UserDto userDetails) {
-//
-//        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
-//        ModelMapper mapper = new ModelMapper();
-//        UserDto userUpdateDto = mapper.map(userEntity, UserDto.class);
-//
-//        userUpdateDto.setName(userDetails.getName());
-//        userUpdateDto.setPwd(userDetails.getPwd());
-//        userUpdateDto.setAddress(userDetails.getAddress());
-//        userUpdateDto.setPhone(userDetails.getPhone());
-//
-//        ModelMapper usermapper = new ModelMapper();
-//        usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-//        UserEntity userUpdateEntity = usermapper.map(userUpdateDto, UserEntity.class);
-//
-//        userUpdateEntity.setId(userEntity.getId());
-//        userUpdateEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userUpdateDto.getPwd()));
-//
-//        userRepository.save(userUpdateEntity);
-//
-//        return null;
-//    }
+
 
     @Override
     public UserDto getUserByUserId(String userId) {
