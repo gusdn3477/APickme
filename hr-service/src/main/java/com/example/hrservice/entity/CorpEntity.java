@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name="company")
 public class CorpEntity {
     @Id
-    @Column(nullable = false, length = 30, unique = true)
+    @Column(nullable = false, length = 50, unique = true)
     private String corpNo;
 
     @Column(nullable = false, length = 50)

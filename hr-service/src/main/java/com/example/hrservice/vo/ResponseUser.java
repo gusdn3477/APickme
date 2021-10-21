@@ -1,22 +1,15 @@
-package com.example.hrservice.dto;
+package com.example.hrservice.vo;
 
-import com.example.hrservice.vo.ResponsePc;
 import lombok.Data;
 
 import java.util.List;
 
-
 @Data
-public class HrDto {
-
+public class ResponseUser {
     private String empNo; //uuid
-    private String corpNo; //uuid
     private String email;
     private String name;
-    private String pwd;
-    private String encryptedPwd;
     private String nickname;
-    private String corpName;
     private String parents;
     private String auth;
 
