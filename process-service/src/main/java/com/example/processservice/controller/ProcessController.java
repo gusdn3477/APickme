@@ -1,0 +1,109 @@
+package com.example.processservice.controller;
+
+import com.example.processservice.jpa.InterviewEntity;
+import com.example.processservice.jpa.WrittenEntity;
+import com.example.processservice.service.InterviewService;
+import com.example.processservice.service.WrittenService;
+import com.example.processservice.vo.RequestPutWritten;
+import com.example.processservice.vo.ResponseWritten;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/")
+@Slf4j
+public class ProcessController {
+
+    Environment env;
+    InterviewService interviewService;
+    WrittenService writtenService;
+
+    @Autowired
+    public ProcessController(Environment env, InterviewService interviewService, WrittenService writtenService){
+        this.interviewService = interviewService;
+        this.writtenService = writtenService;
+        this.env = env;
+    }
+
+    @GetMapping("/health_check")
+    public String status() {
+        return String.format("It's Working in Catalog Service on PORT %s",
+                env.getProperty("local.server.port"));
+    }
+
+    @PutMapping("/process/written-test/score")
+    public ResponseEntity<List<ResponseWritten>> writtenTestScore(@RequestBody RequestPutWritten requestPutWritten){
+
+        log.info("필기 자동 채점 서비스");
+        writtenService.writtenScore(requestPutWritten.getJobsNo());
+        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(requestPutWritten.getJobsNo());
+        List<ResponseWritten> result = new ArrayList<>();
+        writtenList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseWritten.class));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PutMapping("/process/written-test/result")
+    public ResponseEntity<List<ResponseWritten>> writtenTestResult(@RequestBody RequestPutWritten requestPutWritten){
+        log.info("필기 자동 합/불 서비스");
+        writtenService.checkPassOrNot(requestPutWritten.getJobsNo(), requestPutWritten.getCount());
+        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(requestPutWritten.getJobsNo());
+        List<ResponseWritten> result = new ArrayList<>();
+        writtenList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseWritten.class));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PostMapping("/process/written-test")
+    public String writtenTest(){
+        //합격자 명단 받아서 interview 테이블에 데이터 넣기
+        return "작성중";
+    }
+
+    //여기부터 1차 면접
+    @PutMapping("/process/first-interview/allocate")
+    public String firstInterviewAllocate(){
+        return "작성중";
+    }
+
+    @PutMapping("/process/first-interview/score")
+    public String firstInterviewScore(){
+        return "작성중";
+    }
+
+    @PutMapping("/process/first-interview/result")
+    public String firstInterviewResult(){
+        return "작성중";
+    }
+
+    //여기부터 2차 면접
+    @PutMapping("/process/second-interview/allocate")
+    public String secondInterviewAllocate(){
+        return "작성중";
+    }
+
+    @PutMapping("/process/second-interview/score")
+    public String secondInterviewScore(){
+        return "작성중";
+    }
+
+    @PutMapping("/process/second-interview/result")
+    public String secondInterviewResult(){
+        return "작성중";
+    }
+
+}
