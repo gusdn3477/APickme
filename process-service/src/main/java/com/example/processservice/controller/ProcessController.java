@@ -55,7 +55,7 @@ public class ProcessController {
         WrittenDto writtenDto = mapper.map(requestPutWritten, WrittenDto.class);
 
         writtenService.writtenScore(writtenDto);
-        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(requestPutWritten.getJobsNo());
+        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNoAndEmpNo(writtenDto);
         List<ResponseWritten> result = new ArrayList<>();
         writtenList.forEach(v -> {
             result.add(new ModelMapper().map(v, ResponseWritten.class));
@@ -73,7 +73,7 @@ public class ProcessController {
         WrittenDto writtenDto = mapper.map(requestPutWritten, WrittenDto.class);
         writtenService.checkPassOrNot(writtenDto);
 
-        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(requestPutWritten.getJobsNo());
+        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNoAndEmpNo(writtenDto);
         List<ResponseWritten> result = new ArrayList<>();
         writtenList.forEach(v -> {
             result.add(new ModelMapper().map(v, ResponseWritten.class));

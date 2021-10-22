@@ -37,10 +37,11 @@ public class WrittenServiceImpl implements WrittenService{
     }
 
     @Override
-    public Iterable<WrittenEntity> getWrittenListByJobsNo(String jobsNo){ // 공고번호에 해당하는 지원자 조회
-        return writtenRepository.findByJobsNo(jobsNo);
+    public Iterable<WrittenEntity> getWrittenListByJobsNoAndEmpNo(WrittenDto writtenDto){ // 공고번호에 해당하는 지원자 조회
+        return writtenRepository.findByJobsNoAndEmpNo(writtenDto.getJobsNo(), writtenDto.getEmpNo());
     }
 
+    //채점하기 서비스
     @Override
     public Iterable<WrittenEntity> writtenScore(WrittenDto writtenDto){
 
@@ -62,11 +63,12 @@ public class WrittenServiceImpl implements WrittenService{
         return passList;
     }
 
+    // P, F 정하기
     @Override
     public Iterable<WrittenEntity> checkPassOrNot(WrittenDto writtenDto){
 
         AtomicInteger cnt = new AtomicInteger(writtenDto.getCount());
-        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoOrderByWrittenScoreDesc(writtenDto.getJobsNo());
+        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoAndEmpNoOrderByWrittenScoreDesc(writtenDto.getJobsNo(), writtenDto.getEmpNo());
         if(writtenEntity == null){
             return null;
         }
