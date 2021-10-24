@@ -2,7 +2,6 @@ package com.example.hrservice.service;
 
 import com.example.hrservice.dto.HrDto;
 import com.example.hrservice.entity.HrEntity;
-import com.example.hrservice.vo.ResponseUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -20,4 +19,6 @@ public interface HrService extends UserDetailsService {
     HrDto getUserDetailsByEmail(String email);
 
     void updateNormal(HrDto hrDto);
+
+    void findPwd(String email);
 }

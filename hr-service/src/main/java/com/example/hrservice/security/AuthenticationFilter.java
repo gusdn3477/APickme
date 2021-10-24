@@ -69,8 +69,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader("token", token);
         response.addHeader("userId", userDetails.getEmpNo());
         //test 겸 추가
-        response.addHeader("email", userDetails.getEmail()); //이거랑
-        response.addHeader("Parent", userDetails.getParents());
-        response.addHeader("Auth", userDetails.getAuth()); //이건 필요 없을듯 F면 에러떠서
+        //response.addHeader("email", userDetails.getEmail()); //이거랑
+        //response.addHeader("Parent", userDetails.getParents());
+        //response.addHeader("Auth", userDetails.getAuth()); //이건 필요 없을듯 F면 에러떠서
+        response.addHeader("corpNo", userDetails.getCorpNo());
     }
 }
