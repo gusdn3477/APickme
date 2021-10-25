@@ -7,6 +7,7 @@ import com.example.hrservice.entity.CorpEntity;
 import com.example.hrservice.entity.HrEntity;
 import com.example.hrservice.jpa.CorpRepository;
 import com.example.hrservice.jpa.HrRepository;
+import com.example.hrservice.vo.RequestCheckPwd;
 import com.example.hrservice.vo.ResponsePc;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
@@ -212,5 +213,12 @@ public class HrServiceImpl implements HrService {
                 "임시 발급된 비밀번호 :  " + newPwd + "\n\n 비밀번호 발급을 요청하지 않으셨다면 관리자에게 전화하여 확인을 요청할 수 있습니다.");
 
         mailSender.send(message);
+    }
+
+    @Override
+    public Boolean getSimpleById(RequestCheckPwd checkPwdInfo) {
+        Optional<HrEntity> hrEntity = hrRepository.findById(checkPwdInfo.getEmpNo());
+
+        return bCryptPasswordEncoder.matches(checkPwdInfo.getPwd(), hrEntity.get().getEncryptedPwd());
     }
 }

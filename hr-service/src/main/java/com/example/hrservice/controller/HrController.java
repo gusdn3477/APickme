@@ -19,6 +19,8 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Boolean.FALSE;
+
 @Slf4j
 @RestController
 @RequestMapping("/")
@@ -125,14 +127,25 @@ public class HrController {
     public ResponseEntity findPwd(@RequestBody @Valid RequestFindPwd findPwdInfo){
 
         HrDto hrDto = hrService.getUserDetailsByEmail(findPwdInfo.getEmail());
-        String resultValue = "다시 확인하고 시도하세요.";
+        String resultValue = "FALSE";
         if (hrDto.getName().equals(findPwdInfo.getName())) {
 
             hrService.findPwd(hrDto.getEmail());
 
-            resultValue = "등록하신 이메일로 새로운 비밀번호를 발급하였습니다. \n이메일을 확인해주세요.";
+            resultValue = "TRUE";
         }
         return ResponseEntity.status(HttpStatus.OK).body(resultValue);
+    }
+
+    @Operation(summary = "비밀번호 유무 확익", description = "입력한 비밀번호가 있는 비밀번호 인지 확인한다.")
+    @PostMapping("/checkpwd")
+    public ResponseEntity checkPwd(@RequestBody RequestCheckPwd checkPwdInfo ){
+
+        Boolean resultValue = FALSE;
+        resultValue = hrService.getSimpleById(checkPwdInfo);
+
+        return ResponseEntity.status(HttpStatus.OK).body(resultValue);
+
     }
 
 
