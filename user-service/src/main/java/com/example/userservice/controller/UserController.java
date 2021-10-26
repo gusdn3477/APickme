@@ -163,5 +163,20 @@ public class UserController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
 //    }
 
+    /*지원자 비밀번호 찾기 */
+    @PostMapping("/findpwd")
+    public ResponseEntity findPwd(@RequestBody @Valid RequestFindPwd findPwdInfo){
+
+        UserDto userDto = userService.getUserDetailsByEmail(findPwdInfo.getEmail());
+        String resultValue = "FALSE";
+        if (userDto.getPhoneNum().equals(findPwdInfo.getPhoneNum())) {
+
+            userService.findPwd(userDto.getEmail());
+
+            resultValue = "TRUE";
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(resultValue);
+    }
+
 
 }

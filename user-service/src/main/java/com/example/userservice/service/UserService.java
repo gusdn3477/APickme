@@ -22,5 +22,8 @@ public interface UserService extends UserDetailsService {
     UserDto updateByUserId(UserDto userDto, UserDto userDetails);
 
     ApplyDto createApply(ApplyDto applyDto);
+
+    /*비밀번호 찾기*/
+    void findPwd(String email);
 }
 
