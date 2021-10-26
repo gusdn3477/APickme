@@ -14,7 +14,11 @@
     <name>apigateway-service</name>
     <description>Demo project for Spring Boot</description>
     <properties>
+<<<<<<< HEAD
+        <java.version>1.8</java.version>
+=======
         <java.version>11</java.version>
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
         <spring-cloud.version>2020.0.3</spring-cloud.version>
     </properties>
     <dependencies>
@@ -102,4 +106,8 @@
         </plugins>
     </build>
 
+<<<<<<< HEAD
 </project>
+=======
+</project>
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901

@@ -7,10 +7,13 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.instance_id:${random.value}}
+#    prefer-ip-address: true
 
 spring:
   application:
-    name: api-gateway-service
+    name: apigateway-service
   rabbitmq:
     host: 127.0.0.1
     port: 5672
@@ -19,10 +22,10 @@ spring:
   cloud:
     gateway:
       routes:
-        #        - id: user-service
-        #          uri: lb://USER-SERVICE
-        #          predicates:
-        #            - Path=/user-service/**
+#        - id: user-service
+#          uri: lb://USER-SERVICE
+#          predicates:
+#            - Path=/user-service/**
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -34,7 +37,7 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/user-service/users
+            - Path=/user-service/logout
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
@@ -42,11 +45,49 @@ spring:
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
-            - Path=/user-service/**
-            - Method=GET,DELETE,PUT,PATCH
+            - Path=/user-service/users/register
+            - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/users
+            - Method=DELETE
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/users
+            - Method=PUT
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/users/apply
+            - Method=POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+            - Method=GET
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
@@ -67,12 +108,6 @@ spring:
             - Path=/order-service/**
           filters:
             - RewritePath=/order-service/(?<segment>.*), /$\{segment}
-        - id: cart-service
-          uri: lb://CART-SERVICE
-          predicates:
-            - Path=/cart-service/**
-          filters:
-            - RewritePath=/cart-service/(?<segment>.*), /$\{segment}
 
       #        - id: first-service
       ##          uri: http://localhost:8081/
@@ -106,4 +141,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, httptrace, info, busrefresh
+        include: refresh, health, beans, httptrace, busrefresh, info
+
+token:
+  expiration_time: 86400000
+  secret: user_token

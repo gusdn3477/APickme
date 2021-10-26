@@ -7,13 +7,17 @@ import com.example.hrservice.entity.CorpEntity;
 import com.example.hrservice.entity.HrEntity;
 import com.example.hrservice.jpa.CorpRepository;
 import com.example.hrservice.jpa.HrRepository;
+import com.example.hrservice.vo.RequestCheckPwd;
 import com.example.hrservice.vo.ResponsePc;
-import com.example.hrservice.vo.ResponseUser;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,14 +37,21 @@ public class HrServiceImpl implements HrService {
     HrRepository hrRepository;
     CorpRepository corpRepository;
     PcServiceClient pcServiceClient;
+    CircuitBreakerFactory circuitBreakerFactory;
+    JavaMailSender mailSender;
+
+
 
     @Autowired
     public HrServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, HrRepository hrRepository,
-                         CorpRepository corpRepository, PcServiceClient pcServiceClient) {
+                         CorpRepository corpRepository, PcServiceClient pcServiceClient,
+                         CircuitBreakerFactory circuitBreakerFactory, JavaMailSender mailSender) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.hrRepository = hrRepository;
         this.corpRepository = corpRepository;
         this.pcServiceClient = pcServiceClient;
+        this.circuitBreakerFactory = circuitBreakerFactory;
+        this.mailSender = mailSender;
     }
 
     @Override
@@ -136,15 +147,21 @@ public class HrServiceImpl implements HrService {
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        HrDto hrDto = mapper.map(hrEntity, HrDto.class);
+        HrDto hrDto = mapper.map(hrEntity.get(), HrDto.class);
 
         // Open feign
         List<ResponsePc> pcList = null;
-        try {
-            pcList = pcServiceClient.getPcs(empNo);
-        } catch (FeignException ex) {
-            log.error(ex.getMessage());
-        }
+//        try {
+//            pcList = pcServiceClient.getPcs(empNo);
+//        } catch (FeignException ex) {
+//            log.error(ex.getMessage());
+//        }
+        // Circuit Breaker
+        log.info("------------------------------------------------------Start Feign");
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
+        pcList = circuitBreaker.run(() -> pcServiceClient.getPcs(empNo),
+                throwable -> new ArrayList<>());
+        log.info("------------------------------------------------------End Feign");
 
         hrDto.setPcs(pcList);
 
@@ -167,7 +184,41 @@ public class HrServiceImpl implements HrService {
 
         hrRepository.save(normalEntity);
 
-        return ;
     }
 
+    @Override
+    public void findPwd(String email) {
+
+        // PW 임시발급
+        HrEntity hrEntity = hrRepository.findByEmail(email);
+        String name = hrEntity.getName();
+        String newPwd = UUID.randomUUID().toString();
+        hrEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(newPwd));
+
+        hrRepository.save(hrEntity);
+
+        //메일 전송
+        sendMail(email, name, newPwd);
+
+
+    }
+
+    public void sendMail(String email, String name, String newPwd) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setTo(email);
+        message.setSubject("A Pick Me - 비밀번호 변경 안내드립니다.");
+        message.setText(" 안녕하세요. A Pick Me 입니다. \n\n" +
+                name+ " 님의 비밀번호 찾기 요청이 발생하였습니다. 아래의 임시 비밀번호가 발급 되었으니 아래 비밀번호로 로그인 후 비밀번호 변경을 해 주시기 바랍니다.\n\n\t" +
+                "임시 발급된 비밀번호 :  " + newPwd + "\n\n 비밀번호 발급을 요청하지 않으셨다면 관리자에게 전화하여 확인을 요청할 수 있습니다.");
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public Boolean getSimpleById(RequestCheckPwd checkPwdInfo) {
+        Optional<HrEntity> hrEntity = hrRepository.findById(checkPwdInfo.getEmpNo());
+
+        return bCryptPasswordEncoder.matches(checkPwdInfo.getPwd(), hrEntity.get().getEncryptedPwd());
+    }
 }

@@ -10,26 +10,26 @@ spring:
     port: 5672
     username: guest
     password: guest
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
   jpa:
     hibernate:
       ddl-auto: update
-#    h2:
-#    console:
-#      enabled: true
-#      settings:
-#        web-allow-others: true
-#      path: /h2-console
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:testdb
-#    username: sa
-#    password:
-  zipkin:
-    base-url: http://localhost:9411
-    enabled: true
-  sleuth:
-    sampler:
-      probability: 1.0
+#  zipkin:
+#    base-url: http://localhost:9411
+#    enabled: true
+#  sleuth:
+#    sampler:
+#      probability: 1.0
 
 eureka:
   client:
@@ -38,20 +38,22 @@ eureka:
     service-url:
       defaultZone: http://localhost:8761/eureka
   instance:
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
 greeting:
   message: Welcome to the simple E-commerce.
 
-#token:
-#  expiration_time: 864000000
-#  secret: user_token
+token:
+  expiration_time: 86400000
+  secret: user_token
+#secret은 토큰을 생성할 때 어떤 키를 가지고 생성할것인지 지정
 management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, httptrace, info, busrefresh
+        include: info,refresh,health,beans,busrefresh
 
 logging:
   level:
     com.example.userservice.client: DEBUG
+

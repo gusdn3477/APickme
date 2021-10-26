@@ -1,11 +1,10 @@
 package com.example.userservice.controller;
 
+import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.service.UserService;
-import com.example.userservice.vo.RequestUpdateUser;
-import com.example.userservice.vo.RequestUser;
-import com.example.userservice.vo.ResponseUser;
+import com.example.userservice.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -22,7 +21,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequestMapping("/")
 public class UserController {
@@ -39,8 +37,8 @@ public class UserController {
     @GetMapping("/health_check")
     public String status(HttpServletRequest request) {
         return String.format("It's Working in User Service, " +
-                "port(local.server.port)=%s, port(server.port)=%s, " +
-                "token_secret=%s, token_expiration_time=%s, gateway_ip=%s",
+                        "port(local.server.port)=%s, port(server.port)=%s, " +
+                        "token_secret=%s, token_expiration_time=%s, gateway_ip=%s",
                 env.getProperty("local.server.port"), env.getProperty("server.port"),
                 env.getProperty("token.secret"), env.getProperty("token.expiration_time"), env.getProperty("gateway.ip"));
     }
@@ -50,7 +48,9 @@ public class UserController {
         return env.getProperty("greeting.message");
     }
 
-    @PostMapping("/users")
+
+    /*일반 사용자 회원가입*/
+    @PostMapping("/users/register")
     public ResponseEntity createUser(@RequestBody @Valid RequestUser user) {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -63,9 +63,53 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
 
-    /* 전체 사용자 목록 */
+
+
+    /*일반 사용자(지원자) 회원삭제(탈퇴)*/
+    @DeleteMapping("/users")
+    public ResponseEntity<String> deleteUser(@RequestBody @Valid RequestDeleteUser  user){
+
+//        System.out.println("userId: "+ user.getUserId());
+//        System.out.println("email: "+ user.getEmail());
+//        System.out.println("password: "+ user.getPassword());
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDto userDto = mapper.map(user, UserDto.class);
+
+        boolean status = userService.deleteUser(userDto.getUserId(),userDto.getEmail(), userDto.getPassword());
+
+        String okMsg = "delete userId , 200 OK";
+        String errorMsg = "error~";
+
+        if(status) {
+            return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
+        }
+    }
+
+
+    /* 일반사용자(지원자) 정보 수정*/
+    @PutMapping("/users")
+    public ResponseEntity<String> updateUser(@RequestBody @Valid RequestUpdateUser user){
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDto userDetails = mapper.map(user, UserDto.class);
+
+        UserDto userDto = userService.getUserByUserId(user.getUserId());
+
+        userService.updateByUserId(userDto, userDetails);
+
+        String okMsg = "update user , 200 OK";
+        return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+    }
+
+
+    /* 전체 일반사용자(지원자) 목록 */
     @GetMapping("/users")
-    public List<ResponseUser> getUsers() {
+    public List<ResponseUser> getUsers(HttpServletRequest request) {
         Iterable<UserEntity> usersList = userService.getUserByAll();
         List<ResponseUser> result = new ArrayList<>();
 
@@ -73,11 +117,12 @@ public class UserController {
             result.add(new ModelMapper().map(v, ResponseUser.class));
         });
 
-        log.info("gateway ip   "+ env.getProperty("gateway.ip"));
         return result;
     }
 
-    /* 사용자 상세 보기 (with 주문 목록) => 여기선 주문 목록이 나옴*/
+
+
+    /* 사용자 상세 보기 (with 주문 목록) */
     @GetMapping("/users/{userId}")
     public ResponseEntity<ResponseUser> getUser(@PathVariable("userId") String userId) {
         UserDto userDto = userService.getUserByUserId(userId);
@@ -87,25 +132,36 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
-    /* 사용자 탈퇴 */
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable("userId") String userId){
 
-        String msg = "Done";
-        userService.deleteUser(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(msg);
-    }
-
-    /* 유저 정보 수정*/
-    @PutMapping("/users/{userId}")
-    public void updateUser(@PathVariable("userId") String userId, @RequestBody @Valid RequestUpdateUser user){
+    /* 지원자 공고 지원하기*/
+    @PostMapping("/users/apply")
+    public ResponseEntity<ResponseApply> createApply(@RequestBody @Valid RequestApply apply){
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserDto userDetails = mapper.map(user, UserDto.class);
+        ApplyDto applyDto = mapper.map(apply, ApplyDto.class);
 
-        UserDto userDto = userService.getUserByUserId(userId);
+        userService.createApply(applyDto);
 
-        userService.updateByUserId(userDto, userDetails);
+        UserDto userDto = new UserDto();
+        ResponseApply returnValue = new ModelMapper().map(applyDto, ResponseApply.class);
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+
     }
+
+    /*일반 사용자 회원가입*/
+//    @PostMapping("/users/register")
+//    public ResponseEntity createUser(@RequestBody @Valid RequestUser user) {
+//        ModelMapper mapper = new ModelMapper();
+//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        UserDto userDto = mapper.map(user, UserDto.class);
+//        userService.createUser(userDto);
+//
+//        // convert UserDto to ResponseUser
+//        ResponseUser responseUser = mapper.map(userDto, ResponseUser.class);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
+//    }
+
+
 }
