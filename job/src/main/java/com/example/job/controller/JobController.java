@@ -3,6 +3,7 @@ package com.example.job.controller;
 import com.example.job.dto.JobDto;
 import com.example.job.jpa.JobEntity;
 import com.example.job.service.JobService;
+import com.example.job.vo.RequestDeleteJob;
 import com.example.job.vo.RequestJobDetail;
 import com.example.job.vo.RequestJobInfo;
 import com.example.job.vo.ResponseJob;
@@ -16,7 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 //import javax.validation.Valid;
 
-import javax.ws.rs.Path;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 @RestController
@@ -53,9 +55,9 @@ public class JobController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/{corpNo2}/jobs")
-    public ResponseEntity<List<ResponseJob>> getCorpJob(@PathVariable("corpNo2") String corpNo2){
-        Iterable<JobEntity> jobCorpList = jobService.getCorpAllJobs(corpNo2);
+    @GetMapping("/{corpNo}/jobs")
+    public ResponseEntity<List<ResponseJob>> getCorpJob(@PathVariable("corpNo") String corpNo){
+        Iterable<JobEntity> jobCorpList = jobService.getCorpAllJobs(corpNo);
 
         List<ResponseJob> result = new ArrayList<>();
         jobCorpList.forEach(v -> {
@@ -73,6 +75,16 @@ public class JobController {
 //        ModelMapper mapper = new ModelMapper();
 //        mapper.getConfiguration().getMatchingStrategy();
         return ResponseEntity.status(HttpStatus.OK).body(jobDetailList);
+    }
+
+    @GetMapping("/jobs/available")
+    public ResponseEntity<Iterable<JobEntity>> getApplyAvailable(){
+        Date now = new Date();
+        Iterable<JobEntity> applyAvailable = jobService.getApplyAvailable(now,now);
+
+        return ResponseEntity.status(HttpStatus.OK).body(applyAvailable);
+
+
     }
 
 
@@ -94,6 +106,33 @@ public class JobController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseJob);
 
 
+    }
+
+    @PutMapping("/jobs")
+    public String upDateJob(@RequestBody RequestJobInfo requestJobInfo){
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        JobDto jobDto = mapper.map(requestJobInfo, JobDto.class);
+        JobEntity jobEntity = jobService.updateJob(jobDto);
+
+        if(jobEntity==null){
+            return "수정 실패";
+        }
+        return "수정에 성공하였습니다";
+    }
+
+    @DeleteMapping("/jobs")
+    public String deleteJob(@RequestBody RequestDeleteJob requestDeleteJob){
+        String empNo = requestDeleteJob.getEmpNo();
+        String jobsNo = requestDeleteJob.getJobsNo();
+        JobEntity jobEntity = jobService.getJob(jobsNo);
+        String result = "삭제 실패";
+        if(jobEntity.getEmpNo().equals(empNo)){
+            jobService.deleteJob(jobsNo);
+            result = "삭제 성공";
+        }
+        return result;
     }
 
 //    @DeleteMapping("/jobs/")

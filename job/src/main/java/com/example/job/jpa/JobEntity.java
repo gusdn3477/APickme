@@ -23,7 +23,7 @@ public class JobEntity implements Serializable {
     private String jobsNo;
 
     @Column(length = 10)
-    private String corpNo2;
+    private String corpNo;
 
     @Column(length = 10)
     private String empNo;

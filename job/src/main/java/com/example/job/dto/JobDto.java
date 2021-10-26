@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class JobDto implements Serializable{
     private String jobsNo; // 공고번호
-    private String corpNo2; //기업코드?
+    private String corpNo; //기업코드?
     private String empNo; // 인사담당자코드
     private String jobsTitle; //제목
     private String jobsContext; //내용
