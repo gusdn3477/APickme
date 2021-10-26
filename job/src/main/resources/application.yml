@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 50004
 
 spring:
   application:
@@ -61,12 +61,12 @@ spring:
 #token:
 #  expiration_time: 864000000
 #  secret: user_token
-management:
-  endpoints:
-    web:
-      exposure:
-        include: refresh, health, beans, httptrace, info, busrefresh
-
-logging:
-  level:
-    com.example.userservice.client: DEBUG
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: refresh, health, beans, httptrace, info, busrefresh
+#
+#logging:
+#  level:
+#    com.example.userservice.client: DEBUG

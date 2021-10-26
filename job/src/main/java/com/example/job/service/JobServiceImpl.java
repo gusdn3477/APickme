@@ -11,6 +11,8 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 
 @Data
 @Slf4j
@@ -40,14 +42,43 @@ public class JobServiceImpl implements JobService{
         return jobRepository.findAll();
     }
     @Override
-    public Iterable<JobEntity> getCorpAllJobs(String corpNo2){
-        return jobRepository.findAllByCorpNo2(corpNo2);
+    public Iterable<JobEntity> getCorpAllJobs(String corpNo){
+        return jobRepository.findAllByCorpNo(corpNo);
     }
 
     @Override
     public JobEntity getJob(String jobsNo){
         return jobRepository.findByJobsNo(jobsNo);
     }
+
+    @Override
+    public Iterable<JobEntity> getApplyAvailable(Date curTime, Date endTime){
+        return jobRepository.findByApplyStartBeforeAndApplyEndAfter(curTime, endTime);
+
+    }
+
+    @Override
+    public JobEntity updateJob(JobDto jobDto){
+        JobEntity jobEntity = jobRepository.findByJobsNoAndEmpNo(jobDto.getJobsNo(), jobDto.getEmpNo());
+        if(jobEntity == null){
+            return null;
+        }
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        jobEntity = mapper.map(jobDto, JobEntity.class);
+        jobRepository.save(jobEntity);
+        return jobEntity;
+    }
+
+    @Override
+    @Transactional
+    public void deleteJob(String jobsNo){
+        jobRepository.deleteByJobsNo(jobsNo);
+        }
+
+
+
+
 
 
 }

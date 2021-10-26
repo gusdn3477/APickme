@@ -11,7 +11,7 @@ import java.util.Date;
 public class ResponseJob {
     @NotNull
     private String jobsNo; // 공고번호
-    private String corpNo2; //기업코드?
+    private String corpNo; //기업코드?
     private String empNo; // 인사담당자코드
     private String jobsTitle; //제목
     private String jobsContext; //내용

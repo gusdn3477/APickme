@@ -9,7 +9,7 @@ import java.util.Date;
 public class RequestJobInfo {
     @NotNull
     private String jobsNo;
-    private String corpNo2; //기업코드?
+    private String corpNo; //기업코드?
     private String empNo;
     private String jobsTitle;
     private String jobsContext;
