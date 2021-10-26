@@ -14,7 +14,11 @@
     <name>user-service</name>
     <description>Demo project for Spring Boot</description>
     <properties>
+<<<<<<< HEAD
         <java.version>1.8</java.version>
+=======
+        <java.version>11</java.version>
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
         <spring-cloud.version>2020.0.3</spring-cloud.version>
     </properties>
     <dependencies>
@@ -115,6 +119,30 @@
             <artifactId>spring-cloud-starter-zipkin</artifactId>
             <version>2.2.8.RELEASE</version>
         </dependency>
+<<<<<<< HEAD
+=======
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>2.7.4</version>
+        </dependency>
+        <!--swagger-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
 
     </dependencies>
     <dependencyManagement>
@@ -134,6 +162,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+<<<<<<< HEAD
+=======
+                <version>2.5.3</version>
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
                 <configuration>
                     <excludes>
                         <exclude>

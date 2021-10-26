@@ -12,9 +12,15 @@
     <artifactId>config-service</artifactId>
     <version>1.0</version>
     <name>config-service</name>
+<<<<<<< HEAD
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
+=======
+    <description>config-service</description>
+    <properties>
+        <java.version>11</java.version>
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
         <spring-cloud.version>2020.0.3</spring-cloud.version>
     </properties>
     <dependencies>
@@ -28,21 +34,34 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>
+<<<<<<< HEAD
 
+=======
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
+<<<<<<< HEAD
+=======
+
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -65,4 +84,8 @@
         </plugins>
     </build>
 
+<<<<<<< HEAD
 </project>
+=======
+</project>
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901

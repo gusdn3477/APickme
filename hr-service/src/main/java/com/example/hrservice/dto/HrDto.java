@@ -1,6 +1,9 @@
 package com.example.hrservice.dto;
 
+import com.example.hrservice.vo.ResponsePc;
 import lombok.Data;
+
+import java.util.List;
 
 
 @Data
@@ -16,4 +19,6 @@ public class HrDto {
     private String corpName;
     private String parents;
     private String auth;
+
+    private List<ResponsePc> pcs;
 }

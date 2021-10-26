@@ -8,7 +8,7 @@ spring:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:testdb
     username: sa
-    password:
+    password: sa
 
   jpa:
     hibernate:
@@ -19,6 +19,18 @@ spring:
         settings:
           web-allow-others: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tmaxFinal@gmail.com
+    password: fjxnyscaqrtuvztb
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 
 
@@ -58,9 +70,7 @@ eureka:
   instance:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.instance_id:${random.value}}
 
-#token:
-#  expiration_time: 864000000
-#  secret: user_token
+
 management:
   endpoints:
     web:
@@ -69,4 +79,18 @@ management:
 
 logging:
   level:
-    com.example.userservice.client: DEBUG
+    com.example.hrservice.client: DEBUG
+
+
+  #token:
+#  expiration_time: 864000000
+#  secret: user_token
+#gateway:
+#  ip: 127.0.0.1
+#
+#token:
+#  expiration_time: 864000000
+#  secret: '{cipher}AQBSTibIkDoa4vgGNtMfiTI660f+Uj7m2gDVPCG+rH13VFlnpWmEmnoZtK9Ih3NHYr3yJZuo6PCENNuwP2+oAAC2uMwnO/NPzq0HRbOMIkAY570w9x0ZS7NMiRAKJ4u3l6cSI2dAXzYhWSbBcVEiIrMdlL5kuL8ZOXUIAcheEkaKiWk1UTAEH3+russ6yvSHjqBKbW1y1Ofd085X/9wdccT++WnkCu3i4B5zy2MiGKFAWAXdKlQB+yKPqvwKH69tGSTehH1ZJ7/xaUCS2poWbDHrgVXM4SiHhdkQejAZY9Ai+boQgu5VuDUY3jl/kW9H2L0Gl5oBTjNQ43QfquRnnAjdNcWui2IP8OgueKS79yGH5gzhxHnV/gYdFPpn11jhAFA29lr97PAjXzEvZY2ywnhm'
+
+  #spring.mail.properties.mail.smtp.timeout=5000
+

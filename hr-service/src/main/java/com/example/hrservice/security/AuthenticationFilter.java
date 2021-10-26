@@ -1,9 +1,8 @@
-/*
 package com.example.hrservice.security;
 
-import com.example.userservice.dto.UserDto;
-import com.example.userservice.service.UserService;
-import com.example.userservice.vo.RequestLogin;
+import com.example.hrservice.dto.HrDto;
+import com.example.hrservice.service.HrService;
+import com.example.hrservice.vo.RequestLogin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,14 +25,14 @@ import java.util.Date;
 
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private UserService userService;
+    private HrService hrService;
     private Environment env;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
-                                UserService userService,
+                                HrService hrService,
                                 Environment env) {
         super.setAuthenticationManager(authenticationManager);
-        this.userService = userService;
+        this.hrService = hrService;
         this.env = env;
     }
 
@@ -45,7 +44,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
             return getAuthenticationManager().authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            creds.getEmail(), creds.getPassword(), new ArrayList<>())
+                            creds.getEmail(), creds.getPwd(), new ArrayList<>())
             );
 
         } catch (IOException e) {
@@ -59,16 +58,20 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         String userName = ((User)authResult.getPrincipal()).getUsername();
-        UserDto userDetails = userService.getUserDetailsByEmail(userName);
+        HrDto userDetails = hrService.getUserDetailsByEmail(userName);
 
         String token = Jwts.builder()
-                .setSubject(userDetails.getUserId())
+                .setSubject(userDetails.getEmpNo())
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("token.expiration_time"))))
                 .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
                 .compact();
 
         response.addHeader("token", token);
-        response.addHeader("userId", userDetails.getUserId());
+        response.addHeader("userId", userDetails.getEmpNo());
+        //test 겸 추가
+        //response.addHeader("email", userDetails.getEmail()); //이거랑
+        //response.addHeader("Parent", userDetails.getParents());
+        //response.addHeader("Auth", userDetails.getAuth()); //이건 필요 없을듯 F면 에러떠서
+        response.addHeader("corpNo", userDetails.getCorpNo());
     }
 }
-*/
