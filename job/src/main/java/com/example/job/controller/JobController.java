@@ -1,7 +1,9 @@
 package com.example.job.controller;
 
 import com.example.job.dto.JobDto;
+import com.example.job.dto.JobProcessDto;
 import com.example.job.jpa.JobEntity;
+import com.example.job.jpa.JobProcessEntity;
 import com.example.job.service.JobService;
 import com.example.job.vo.RequestDeleteJob;
 import com.example.job.vo.RequestJobDetail;
@@ -15,11 +17,13 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 //import javax.validation.Valid;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
@@ -93,11 +97,16 @@ public class JobController {
     @PostMapping("/jobs")
     public ResponseEntity<ResponseJob> createJob(@RequestBody RequestJobInfo job){
         log.info("Before add job data");
-
+        String jobsUUID = UUID.randomUUID().toString();
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
         JobDto jobDto = mapper.map(job, JobDto.class);
-        jobService.createJob(jobDto);
+        JobProcessDto jobProcessDto = mapper.map(job, JobProcessDto.class);
+//        jobDto.setJobsNo(jobsUUID);
+        jobService.createJob(jobsUUID,jobDto);
+        jobService.createJobProcess(jobsUUID,jobProcessDto);
+
 
         // convert JobDto to ResponseJob
         ResponseJob responseJob = mapper.map(jobDto, ResponseJob.class);
@@ -114,12 +123,18 @@ public class JobController {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         JobDto jobDto = mapper.map(requestJobInfo, JobDto.class);
-        JobEntity jobEntity = jobService.updateJob(jobDto);
+        JobProcessDto jobProcessDto = mapper.map(requestJobInfo, JobProcessDto.class);
+
+        JobEntity jobEntity = jobService.updateJob(jobDto, jobProcessDto);
 
         if(jobEntity==null){
             return "수정 실패";
         }
-        return "수정에 성공하였습니다";
+        else{
+            JobProcessEntity jobProcessEntity = jobService.updateProcess(jobProcessDto);
+            return "수정에 성공하였습니다";
+        }
+
     }
 
     @DeleteMapping("/jobs")

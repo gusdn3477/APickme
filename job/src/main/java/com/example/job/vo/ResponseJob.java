@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @JsonInclude
 public class ResponseJob {
-    @NotNull
+
     private String jobsNo; // 공고번호
     private String corpNo; //기업코드?
     private String empNo; // 인사담당자코드
@@ -25,8 +25,8 @@ public class ResponseJob {
     private String employType;
     private String workDetail; //업무내용
     private Date applyEnd; //지원마감일
-    private Date intvStart1; //면접1시작일
-    private Date intvEnd1;
-    private Date intvStart2;
-    private Date intvEnd2;
+    private Date intv1Start; //면접1시작일
+    private Date intv1End;
+    private Date intv2Start;
+    private Date intv2End;
 }
