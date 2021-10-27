@@ -107,7 +107,7 @@ public class HrController {
         String normalId = norMalEmpNo.getEmpNo();
         hrService.deleteNormal(normalId);
         return ResponseEntity.status(HttpStatus.OK).body("Normal employee 삭제 완료");
-    }*/
+    }
 
     @Operation(summary = "인사직원 탈퇴", description = "normal 인사직원이 탈퇴할 수 있다.")
     @DeleteMapping("/hr")
