@@ -1,8 +1,11 @@
 package com.example.job.service;
 
 import com.example.job.dto.JobDto;
+import com.example.job.dto.JobProcessDto;
 import com.example.job.jpa.JobEntity;
+import com.example.job.jpa.JobProcessEntity;
 import com.example.job.jpa.JobRepository;
+import com.example.job.jpa.JobProcessRepository;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,23 +22,39 @@ import java.util.Date;
 @Service
 public class JobServiceImpl implements JobService{
     JobRepository jobRepository;
+    JobProcessRepository jobProcessRepository;
 
     @Autowired
-    public JobServiceImpl(JobRepository jobRepository){
+    public JobServiceImpl(JobRepository jobRepository, JobProcessRepository jobProcessRepository) {
         this.jobRepository = jobRepository;
+        this.jobProcessRepository = jobProcessRepository;
     }
 
 
     @Override
-    public JobEntity createJob(JobDto jobDto) {
-
+    public JobEntity createJob(String UUID,JobDto jobDto) {
+        jobDto.setJobsNo(UUID);
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         JobEntity jobEntity = mapper.map(jobDto, JobEntity.class);
+
         jobRepository.save(jobEntity);
 
         return null;
     }
+
+    @Override
+    public JobProcessEntity createJobProcess(String UUID, JobProcessDto jobProcessDto){
+        jobProcessDto.setJobsNo(UUID);
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        JobProcessEntity jobProcessEntity = mapper.map(jobProcessDto, JobProcessEntity.class);
+
+        jobProcessRepository.save(jobProcessEntity);
+
+        return null;
+    }
+
 
     @Override
     public Iterable<JobEntity> getAllJobs() {
@@ -58,24 +77,45 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
-    public JobEntity updateJob(JobDto jobDto){
+    public JobProcessEntity updateProcess(JobProcessDto jobProcessDto){
+        JobProcessEntity jobProcessEntity = jobProcessRepository.findByJobsNo(jobProcessDto.getJobsNo());
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        jobProcessEntity = mapper.map(jobProcessDto,JobProcessEntity.class);
+        jobProcessRepository.save(jobProcessEntity);
+        return jobProcessEntity;
+
+    }
+    @Override
+    public JobEntity updateJob(JobDto jobDto, JobProcessDto jobProcessDto){
+//        JobEntity jobEntity = jobRepository.findByJobsNoAndEmpNo(jobDto.getJobsNo(), jobDto.getEmpNo());
         JobEntity jobEntity = jobRepository.findByJobsNoAndEmpNo(jobDto.getJobsNo(), jobDto.getEmpNo());
+
         if(jobEntity == null){
             return null;
         }
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        jobEntity = mapper.map(jobDto, JobEntity.class);
-        jobRepository.save(jobEntity);
-        return jobEntity;
+        else {
+//            updateProcess(jobProcessDto);
+            ModelMapper mapper = new ModelMapper();
+            mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+            jobEntity = mapper.map(jobDto, JobEntity.class);
+
+            jobRepository.save(jobEntity);
+
+            return jobEntity; }
     }
 
     @Override
     @Transactional
     public void deleteJob(String jobsNo){
+
         jobRepository.deleteByJobsNo(jobsNo);
+        jobProcessRepository.deleteByJobsNo(jobsNo);
         }
 
+    @Override
+    @Transactional
+    public void deleteJobProcess(String jobsNo){jobRepository.deleteByJobsNo(jobsNo);}
 
 
 
