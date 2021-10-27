@@ -12,7 +12,7 @@ public interface HrService extends UserDetailsService {
     HrDto createSuperUser(HrDto hrDto);
     HrDto createNormalUser(String empNo, HrDto hrDto);
 
-    List<HrEntity> getNormalsAll(String corpNo);
+    List<HrEntity> getNormalsAll(String empNo);
 
     HrDto getNormalById(String empNo);
 
