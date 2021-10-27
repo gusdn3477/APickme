@@ -101,12 +101,24 @@ public class HrController {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 
-    @Operation(summary = "인사직원 삭제", description = "super 인사 관리자가 등록한 normal 인사직원의 계정을 삭제한다.")
+    /*@Operation(summary = "인사직원 삭제", description = "super 인사 관리자가 등록한 normal 인사직원의 계정을 삭제한다.")
     @DeleteMapping()
     public ResponseEntity deleteNormal(@RequestBody RequestUser norMalEmpNo){
 
         String normalId = norMalEmpNo.getEmpNo();
         hrService.deleteNormal(normalId);
+        return ResponseEntity.status(HttpStatus.OK).body("Normal employee 삭제 완료");
+    }*/
+
+    @Operation(summary = "인사직원 탈퇴", description = "normal 인사직원이 탈퇴할 수 있다.")
+    @DeleteMapping()
+    public ResponseEntity deleteNormal(@RequestBody RequestUser norMalEmpNo){
+
+        String normalId = norMalEmpNo.getEmpNo();
+        if (hrService.getSimpleById(norMalEmpNo)){
+            hrService.deleteNormal(normalId);
+        }else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호를 확인해 주세요.");
+
         return ResponseEntity.status(HttpStatus.OK).body("Normal employee 삭제 완료");
     }
 
@@ -139,7 +151,7 @@ public class HrController {
 
     @Operation(summary = "비밀번호 유무 확익", description = "입력한 비밀번호가 있는 비밀번호 인지 확인한다.")
     @PostMapping("/checkpwd")
-    public ResponseEntity checkPwd(@RequestBody RequestCheckPwd checkPwdInfo ){
+    public ResponseEntity checkPwd(@RequestBody RequestUser checkPwdInfo ){
 
         Boolean resultValue = FALSE;
         resultValue = hrService.getSimpleById(checkPwdInfo);

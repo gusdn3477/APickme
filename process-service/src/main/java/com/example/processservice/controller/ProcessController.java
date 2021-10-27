@@ -1,5 +1,6 @@
 package com.example.processservice.controller;
 
+import com.example.processservice.client.JobServiceClient;
 import com.example.processservice.dto.InterviewDto;
 import com.example.processservice.dto.WrittenDto;
 import com.example.processservice.jpa.InterviewEntity;
@@ -8,11 +9,14 @@ import com.example.processservice.service.InterviewService;
 import com.example.processservice.service.WrittenService;
 import com.example.processservice.vo.RequestPutInterview;
 import com.example.processservice.vo.RequestPutWritten;
+import com.example.processservice.vo.ResponseJob;
 import com.example.processservice.vo.ResponseWritten;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,12 +35,19 @@ public class ProcessController {
     Environment env;
     InterviewService interviewService;
     WrittenService writtenService;
+    CircuitBreakerFactory circuitBreakerFactory;
+    JobServiceClient jobServiceClient;
 
     @Autowired
-    public ProcessController(Environment env, InterviewService interviewService, WrittenService writtenService){
+    public ProcessController(Environment env, InterviewService interviewService,
+                             WrittenService writtenService,CircuitBreakerFactory circuitBreakerFactory,
+                             JobServiceClient jobServiceClient){
         this.interviewService = interviewService;
         this.writtenService = writtenService;
         this.env = env;
+        this.circuitBreakerFactory = circuitBreakerFactory;
+        this.jobServiceClient = jobServiceClient;
+
     }
 
     @GetMapping("/health_check")
@@ -180,5 +191,23 @@ public class ProcessController {
     public String secondInterviewResult(){
         return "작성중";
     }
+
+    // 자신이 담당인 공고 가져오기 ->feign
+    @GetMapping("/process/{empNo}")
+    public ResponseEntity getJobs(@PathVariable String empNo){
+        // Open feign
+        List<ResponseJob> jobList = null;
+        // Circuit Breaker
+        log.info("------------------------------------------------------Start Feign");
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
+        jobList = circuitBreaker.run(() -> jobServiceClient.getJobs(empNo),
+                throwable -> new ArrayList<>());
+        log.info("------------------------------------------------------End Feign");
+
+        return ResponseEntity.status(HttpStatus.OK).body(jobList);
+    }
+
+    // 자신이 담당하는 공고별 지원자 조회?
+    // 자신이 담당하는 공고별 지원자 점수 조회?
 
 }
