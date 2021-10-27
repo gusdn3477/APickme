@@ -148,7 +148,7 @@ public class HrController {
         return ResponseEntity.status(HttpStatus.OK).body(resultValue);
     }
 
-    @Operation(summary = "비밀번호 유무 확익", description = "입력한 비밀번호가 있는 비밀번호 인지 확인한다.")
+    @Operation(summary = "비밀번호 유무 확인", description = "입력한 비밀번호가 있는 비밀번호 인지 확인한다.")
     @PostMapping("/hr/checkpwd")
     public ResponseEntity checkPwd(@RequestBody RequestUser checkPwdInfo ){
 
