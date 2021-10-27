@@ -133,10 +133,10 @@ public class HrServiceImpl implements HrService {
     }
 
     @Override
-    public List<HrEntity> getNormalsAll(String empNo) {
-
-        Optional<HrEntity> superEntity = hrRepository.findById(empNo);
-        String corpNo = superEntity.get().getCorpNo();
+    public List<HrEntity> getNormalsAll(String corpNo) {
+//변경전에 사용
+//        Optional<HrEntity> superEntity = hrRepository.findById(empNo);
+//        String corpNo = superEntity.get().getCorpNo();
 
         return hrRepository.findByCorpNo(corpNo);
     }
