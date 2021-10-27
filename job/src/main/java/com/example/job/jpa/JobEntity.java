@@ -16,10 +16,7 @@ import java.util.Date;
 @Table(name = "jobs")
 public class JobEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 100)
     private String jobsNo;
 
     @Column(length = 10)
@@ -69,19 +66,19 @@ public class JobEntity implements Serializable {
 
     @Column()
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private Date intvStart1;
+    private Date intv1Start;
 
     @Column()
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private Date intvEnd1;
+    private Date intv1End;
 
     @Column()
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private Date intvStart2;
+    private Date intv2Start;
 
     @Column()
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
-    private Date intvEnd2;
+    private Date intv2End;
 
     @Column()
     private String workDetail;
