@@ -23,7 +23,7 @@ import static java.lang.Boolean.FALSE;
 
 @Slf4j
 @RestController
-@RequestMapping("/hr")
+@RequestMapping("/")
 public class HrController {
 
     private final HrService hrService;
@@ -77,7 +77,7 @@ public class HrController {
         return ResponseEntity.status(HttpStatus.CREATED).body("입력 완료");
     }
 
-    /*@Operation(summary = "인사직원 전체 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 모두를 리스트로 확인할 수 있다.")
+    @Operation(summary = "인사직원 전체 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 모두를 리스트로 확인할 수 있다.")
     @GetMapping("/{superId}")
     public List<ResponseUser> getNormals(@PathVariable("superId") String superId){
 
@@ -89,22 +89,8 @@ public class HrController {
         });
 
         return result;
-    }*/
-    @Operation(summary = "인사직원 전체 조회", description = "인사직원이 같은 회사에 속한 인사직원 모두를 리스트로 확인할 수 있다.")
-    @GetMapping("/{corpNo}")
-    public List<ResponseUser> getNormals(@PathVariable("corpNo") String corpNo){
-
-        Iterable<HrEntity> normalsList = hrService.getNormalsAll(corpNo);
-        List<ResponseUser> result = new ArrayList<>();
-
-        normalsList.forEach(v -> {
-            result.add(new ModelMapper().map(v, ResponseUser.class));
-        });
-
-        return result;
     }
 
-/* 보류
     @Operation(summary = "인사직원 상세 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 한명의 상세정보와 담당하는 면접를 확인할 수 있다.")
     @GetMapping("/detail/{empNo}")
     public ResponseEntity getNormal(@PathVariable("empNo") String empNo){
@@ -113,10 +99,9 @@ public class HrController {
         ResponseUser returnValue = new ModelMapper().map(hrDto, ResponseUser.class);
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
-    }*/
+    }
 
-    /* 삭제는 일단 없고 탈퇴하기로 바뀜
-    @Operation(summary = "인사직원 삭제", description = "super 인사 관리자가 등록한 normal 인사직원의 계정을 삭제한다.")
+    /*@Operation(summary = "인사직원 삭제", description = "super 인사 관리자가 등록한 normal 인사직원의 계정을 삭제한다.")
     @DeleteMapping()
     public ResponseEntity deleteNormal(@RequestBody RequestUser norMalEmpNo){
 
