@@ -29,7 +29,6 @@ public class HrController {
     private final HrService hrService;
     private final Environment env;
 
-
     @Autowired
     public HrController(HrService hrService,
                         Environment env) {
@@ -48,7 +47,7 @@ public class HrController {
     }
 
     @Operation(summary = "Super의 가입 요청", description = "super 인사담당자가 관리자에게 계정을 신청한다.")
-    @PostMapping("/request")
+    @PostMapping("/hr/request")
     public ResponseEntity createSuperUser(@RequestBody @Valid RequestSuperInfo superInfo){
 
         ModelMapper mapper = new ModelMapper();
@@ -63,7 +62,7 @@ public class HrController {
     }
 
     @Operation(summary = "인사직원 등록", description = "super 인사 관리자가 normal 인사직원을 할당한다.")
-    @PostMapping("/register")
+    @PostMapping("/hr/register")
     public ResponseEntity createNormalUser(@RequestBody @Valid RequestNormalInfo normalInfo){
 
         String empNo;
@@ -78,7 +77,7 @@ public class HrController {
     }
 
     @Operation(summary = "인사직원 전체 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 모두를 리스트로 확인할 수 있다.")
-    @GetMapping("/{superId}")
+    @GetMapping("/hr/{superId}")
     public List<ResponseUser> getNormals(@PathVariable("superId") String superId){
 
         Iterable<HrEntity> normalsList = hrService.getNormalsAll(superId);
@@ -92,7 +91,7 @@ public class HrController {
     }
 
     @Operation(summary = "인사직원 상세 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 한명의 상세정보와 담당하는 면접를 확인할 수 있다.")
-    @GetMapping("/detail/{empNo}")
+    @GetMapping("/hr/detail/{empNo}")
     public ResponseEntity getNormal(@PathVariable("empNo") String empNo){
 
         HrDto hrDto = hrService.getNormalById(empNo);
@@ -111,7 +110,7 @@ public class HrController {
     }*/
 
     @Operation(summary = "인사직원 탈퇴", description = "normal 인사직원이 탈퇴할 수 있다.")
-    @DeleteMapping()
+    @DeleteMapping("/hr")
     public ResponseEntity deleteNormal(@RequestBody RequestUser norMalEmpNo){
 
         String normalId = norMalEmpNo.getEmpNo();
@@ -123,7 +122,7 @@ public class HrController {
     }
 
     @Operation(summary = "인사직원 정보수정", description = "normal 인사 직원이 이름, PWD, 닉네임을 수정할 수 있다.")
-    @PutMapping()
+    @PutMapping("/hr")
     public ResponseEntity updateNormal(@RequestBody RequestPutInfo putInfo){
 
         ModelMapper mapper = new ModelMapper();
@@ -135,7 +134,7 @@ public class HrController {
     }
 
     @Operation(summary = "인사직원 비밀번호 변경", description = "normal 인사 직원이 입력한 이메일과 이름을 통해 확인한 후 임시 비밀 번호를 발급 해준다.")
-    @PostMapping("/findpwd")
+    @PostMapping("/hr/findpwd")
     public ResponseEntity findPwd(@RequestBody @Valid RequestFindPwd findPwdInfo){
 
         HrDto hrDto = hrService.getUserDetailsByEmail(findPwdInfo.getEmail());
@@ -150,7 +149,7 @@ public class HrController {
     }
 
     @Operation(summary = "비밀번호 유무 확익", description = "입력한 비밀번호가 있는 비밀번호 인지 확인한다.")
-    @PostMapping("/checkpwd")
+    @PostMapping("/hr/checkpwd")
     public ResponseEntity checkPwd(@RequestBody RequestUser checkPwdInfo ){
 
         Boolean resultValue = FALSE;
