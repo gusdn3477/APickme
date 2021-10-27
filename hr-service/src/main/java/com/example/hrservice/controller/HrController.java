@@ -36,7 +36,7 @@ public class HrController {
         this.env = env;
     }
 
-// 테스트 용이므로 완료시 삭제
+    // 테스트 용이므로 완료시 삭제
     @GetMapping("/health_check")
     public String status(HttpServletRequest request) {
         return String.format("It's Working in User Service, " +
@@ -78,6 +78,7 @@ public class HrController {
 
     @Operation(summary = "인사직원 전체 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 모두를 리스트로 확인할 수 있다.")
     @GetMapping("/hr/{superId}")
+
     public List<ResponseUser> getNormals(@PathVariable("superId") String superId){
 
         Iterable<HrEntity> normalsList = hrService.getNormalsAll(superId);
@@ -88,7 +89,7 @@ public class HrController {
         });
 
         return result;
-    }
+    }*/
 
     @Operation(summary = "인사직원 상세 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 한명의 상세정보와 담당하는 면접를 확인할 수 있다.")
     @GetMapping("/hr/detail/{empNo}")
@@ -107,7 +108,7 @@ public class HrController {
         String normalId = norMalEmpNo.getEmpNo();
         hrService.deleteNormal(normalId);
         return ResponseEntity.status(HttpStatus.OK).body("Normal employee 삭제 완료");
-    }*/
+    }
 
     @Operation(summary = "인사직원 탈퇴", description = "normal 인사직원이 탈퇴할 수 있다.")
     @DeleteMapping("/hr")
