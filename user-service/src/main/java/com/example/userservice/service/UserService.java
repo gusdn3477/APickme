@@ -34,9 +34,9 @@ public interface UserService extends UserDetailsService {
 
     Iterable<ApplyEntity> getApplyByAll();
 
-
-
     /* 지원 삭제*/
    
+    /*비밀번호 찾기*/
+    void findPwd(String email);
 }
 

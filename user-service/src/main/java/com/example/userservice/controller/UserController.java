@@ -151,7 +151,6 @@ public class UserController {
 
     }
 
-
     /* 지원자 공고 삭제하기 */
     @DeleteMapping("/users/apply")
     public ResponseEntity<String> deleteApply(@RequestBody @Valid RequestDeleteApply apply){
@@ -210,6 +209,20 @@ public class UserController {
     public List<ResponseApplyDetail> getApplyDetails(@PathVariable("userId") String userId, @PathVariable("jobsNo") String jobsNo){
 
         return null;
+    }
+    /*지원자 비밀번호 찾기 */
+    @PostMapping("/findpwd")
+    public ResponseEntity findPwd(@RequestBody @Valid RequestFindPwd findPwdInfo){
+
+        UserDto userDto = userService.getUserDetailsByEmail(findPwdInfo.getEmail());
+        String resultValue = "FALSE";
+        if (userDto.getPhoneNum().equals(findPwdInfo.getPhoneNum())) {
+
+            userService.findPwd(userDto.getEmail());
+
+            resultValue = "TRUE";
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(resultValue);
     }
 
 }

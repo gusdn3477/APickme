@@ -251,5 +251,29 @@ public class UserServiceImpl implements UserService {
     public Iterable<ApplyEntity> getApplyByAll() {
         return applyRepository.findAll();
     }
+    public void findPwd(String email) {
 
+        // PW 임시발급
+        UserEntity userEntity = userRepository.findByEmail(email);
+        String name = userEntity.getApplyName();
+        String newPwd = UUID.randomUUID().toString();
+        userEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(newPwd));
+
+        userRepository.save(userEntity);
+
+        //메일 전송
+        sendMail(email, name, newPwd);
+    }
+
+    public void sendMail(String email, String name, String newPwd) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setTo(email);
+        message.setSubject("A Pick Me - 비밀번호 변경 안내드립니다.");
+        message.setText(" 안녕하세요. A Pick Me 입니다. \n\n" +
+                name+ " 님의 비밀번호 찾기 요청이 발생하였습니다. 아래의 임시 비밀번호가 발급 되었으니 아래 비밀번호로 로그인 후 비밀번호 변경을 해 주시기 바랍니다.\n\n\t" +
+                "임시 발급된 비밀번호 :  " + newPwd + "\n\n 비밀번호 발급을 요청하지 않으셨다면 관리자에게 전화하여 확인을 요청할 수 있습니다.");
+
+        mailSender.send(message);
+    }
 }
