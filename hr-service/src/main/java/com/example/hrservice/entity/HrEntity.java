@@ -28,8 +28,6 @@ public class HrEntity {
     private String parents;
     @Column(nullable = false, length = 60)
     private String encryptedPwd;
-    @Column(length = 20)
-    private String nickname;
 
     @Column( length = 6)
     @ColumnDefault("false")

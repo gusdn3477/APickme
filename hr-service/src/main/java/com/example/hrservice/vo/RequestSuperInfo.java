@@ -15,7 +15,6 @@ public class RequestSuperInfo {
     private String name;
     @NotNull
     private String pwd;
-    private String nickname;
     @NotNull
     private String corpName;
     //private String parents;

@@ -3,6 +3,7 @@ package com.example.hrservice.service;
 import com.example.hrservice.dto.HrDto;
 import com.example.hrservice.entity.HrEntity;
 import com.example.hrservice.vo.RequestCheckPwd;
+import com.example.hrservice.vo.RequestUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -23,5 +24,5 @@ public interface HrService extends UserDetailsService {
 
     void findPwd(String email);
 
-    Boolean getSimpleById(RequestCheckPwd checkPwdInfo);
+    Boolean getSimpleById(RequestUser checkPwdInfo);
 }

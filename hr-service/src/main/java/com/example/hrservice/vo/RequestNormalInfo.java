@@ -14,7 +14,6 @@ public class RequestNormalInfo {
     @NotNull
     private String pwd;
     private String empNo;
-    private String nickname;
     //private String corpName;
     //private String parents;
 }

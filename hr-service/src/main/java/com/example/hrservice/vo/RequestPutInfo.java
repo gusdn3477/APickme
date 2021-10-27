@@ -10,5 +10,4 @@ public class RequestPutInfo {
     // update 값
     private String name;
     private String pwd;
-    private String nickname;
 }

@@ -8,6 +8,7 @@ import com.example.hrservice.entity.HrEntity;
 import com.example.hrservice.jpa.CorpRepository;
 import com.example.hrservice.jpa.HrRepository;
 import com.example.hrservice.vo.RequestCheckPwd;
+import com.example.hrservice.vo.RequestUser;
 import com.example.hrservice.vo.ResponsePc;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
@@ -179,7 +180,6 @@ public class HrServiceImpl implements HrService {
         HrEntity normalEntity = hrRepository.findById(hrDto.getEmpNo()).get();
 
         normalEntity.setName(hrDto.getName());
-        normalEntity.setNickname(hrDto.getNickname());
         normalEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(hrDto.getPwd()));
 
         hrRepository.save(normalEntity);
@@ -216,7 +216,7 @@ public class HrServiceImpl implements HrService {
     }
 
     @Override
-    public Boolean getSimpleById(RequestCheckPwd checkPwdInfo) {
+    public Boolean getSimpleById(RequestUser checkPwdInfo) {
         Optional<HrEntity> hrEntity = hrRepository.findById(checkPwdInfo.getEmpNo());
 
         return bCryptPasswordEncoder.matches(checkPwdInfo.getPwd(), hrEntity.get().getEncryptedPwd());
