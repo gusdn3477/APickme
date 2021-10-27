@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
     ApplyRepository applyRepository;
     Environment env;
     RestTemplate restTemplate;
-
+    JavaMailSender mailSender;
     OrderServiceClient orderServiceClient;
 
     CircuitBreakerFactory circuitBreakerFactory;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
                            RestTemplate restTemplate,
                            OrderServiceClient orderServiceClient,
                            CircuitBreakerFactory circuitBreakerFactory,
-                           ApplyRepository applyRepository ) {
+                           ApplyRepository applyRepository) {
         this.userRepository = userRepository;
         this.applyRepository = applyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
