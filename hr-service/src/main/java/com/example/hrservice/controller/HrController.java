@@ -23,7 +23,7 @@ import static java.lang.Boolean.FALSE;
 
 @Slf4j
 @RestController
-@RequestMapping("/hr")
+@RequestMapping("/")
 public class HrController {
 
     private final HrService hrService;
