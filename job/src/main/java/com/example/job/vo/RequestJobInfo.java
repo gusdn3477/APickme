@@ -7,7 +7,6 @@ import java.util.Date;
 
 @Data
 public class RequestJobInfo {
-    @NotNull
     private String jobsNo;
     private String corpNo; //기업코드?
     private String empNo;
@@ -23,9 +22,16 @@ public class RequestJobInfo {
     private String employType;
     private String workDetail; //업무내용
     private Date applyEnd; //지원마감일
-    private Date intvStart1; //면접1시작일
-    private Date intvEnd1;
-    private Date intvStart2;
-    private Date intvEnd2;
+    private Date intv1Start; //면접1시작일
+    private Date intv1End;
+    private Date intv2Start;
+    private Date intv2End;
+
+    private float writtenMultiple;
+    private Integer writtenPass;
+    private float intv1Multiple;
+    private Integer intv1Pass;
+    private float intv2Multiple;
+    private Integer intv2Pass;
 
 }

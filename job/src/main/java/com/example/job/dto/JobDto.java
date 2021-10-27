@@ -21,10 +21,10 @@ public class JobDto implements Serializable{
     private Date applyStart; //지원시작일
     private String workDetail; //업무내용
     private Date applyEnd; //지원마감일
-    private Date intvStart1; //면접1시작일
-    private Date intvEnd1;
-    private Date intvStart2;
-    private Date intvEnd2;
+    private Date intv1Start; //면접1시작일
+    private Date intv1End;
+    private Date intv2Start;
+    private Date intv2End2;
 
 
 
