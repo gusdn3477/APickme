@@ -36,7 +36,7 @@ public class HrController {
         this.env = env;
     }
 
-// 테스트 용이므로 완료시 삭제
+    // 테스트 용이므로 완료시 삭제
     @GetMapping("/health_check")
     public String status(HttpServletRequest request) {
         return String.format("It's Working in User Service, " +
