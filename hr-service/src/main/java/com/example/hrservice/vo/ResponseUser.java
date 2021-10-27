@@ -12,5 +12,5 @@ public class ResponseUser {
     private String parents;
     private String auth;
 
-    private List<ResponsePc> pcs;
+    //private List<ResponsePc> pcs;
 }
