@@ -164,7 +164,7 @@ public class UserController {
 //    }
 
     /*지원자 비밀번호 찾기 */
-    @PostMapping("/findpwd")
+    @PostMapping("/users/findpwd")
     public ResponseEntity findPwd(@RequestBody @Valid RequestFindPwd findPwdInfo){
 
         UserDto userDto = userService.getUserDetailsByEmail(findPwdInfo.getEmail());
