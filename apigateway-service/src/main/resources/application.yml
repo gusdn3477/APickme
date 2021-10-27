@@ -96,19 +96,36 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: catalog-service
-          uri: lb://CATALOG-SERVICE
-          predicates:
-            - Path=/catalog-service/**
-          filters:
-            - RewritePath=/catalog-service/(?<segment>.*), /$\{segment}
-        - id: order-service
-          uri: lb://ORDER-SERVICE
-          predicates:
-            - Path=/order-service/**
-          filters:
-            - RewritePath=/order-service/(?<segment>.*), /$\{segment}
 
+        ## 박현우
+        - id: process-service
+          uri: lb://PROCESS-SERVICE
+          predicates:
+            - Path=/process-service/**
+            - Method=GET,POST,PUT,DELETE
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/process-service/(?<segment>.*), /$\{segment}
+
+        ## 권진희
+        - id: hr-service
+          uri: lb://HR-SERVICE
+          predicates:
+            - Path=/hr-service/**
+            - Method=GET,POST,PUT,DELETE
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/process-service/(?<segment>.*), /$\{segment}
+
+        ## 윤희상
+        - id: job-service
+          uri: lb://JOB-SERVICE
+          predicates:
+            - Path=/job-service/**
+            - Method=GET,POST,PUT,DELETE
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/process-service/(?<segment>.*), /$\{segment}
       #        - id: first-service
       ##          uri: http://localhost:8081/
       #          uri: lb://MY-FIRST-SERVICE
