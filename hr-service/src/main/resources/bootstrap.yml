@@ -1,9 +1,0 @@
-spring:
-  cloud:
-    config:
-      uri: http://localhost:8888
-      name: hr-service
-  profiles:
-    active: dev
-
-#uri: http://config-service:8888

@@ -61,7 +61,7 @@ public class InterviewServiceImpl implements InterviewService{
     }
 
     @Override
-    public InterviewEntity getInterviewee(InterviewDto interviewDto){
+    서울특별시 중랑구 용마산로 228    public InterviewEntity getInterviewee(InterviewDto interviewDto){
         return interviewRepository.findByApplyNum(interviewDto.getApplyNum());
     }
 
