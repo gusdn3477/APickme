@@ -20,7 +20,7 @@ public class UserEntity {
     private String applyName;
     @Column(nullable = false, unique = true)
     private String userId;
-    @Column(nullable = true, unique = true)
+    @Column(nullable = false, unique = true)
     private String encryptedPwd;
 
     @Column(nullable = true)

@@ -2,6 +2,7 @@ package com.example.userservice.controller;
 
 import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
+import com.example.userservice.entity.ApplyEntity;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.*;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.ws.rs.DELETE;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -122,7 +124,7 @@ public class UserController {
 
 
 
-    /* 사용자 상세 보기 (with 주문 목록) */
+    /* 사용자 상세 보기  */
     @GetMapping("/users/{userId}")
     public ResponseEntity<ResponseUser> getUser(@PathVariable("userId") String userId) {
         UserDto userDto = userService.getUserByUserId(userId);
@@ -149,19 +151,65 @@ public class UserController {
 
     }
 
-    /*일반 사용자 회원가입*/
-//    @PostMapping("/users/register")
-//    public ResponseEntity createUser(@RequestBody @Valid RequestUser user) {
-//        ModelMapper mapper = new ModelMapper();
-//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-//        UserDto userDto = mapper.map(user, UserDto.class);
-//        userService.createUser(userDto);
-//
-//        // convert UserDto to ResponseUser
-//        ResponseUser responseUser = mapper.map(userDto, ResponseUser.class);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
-//    }
 
+    /* 지원자 공고 삭제하기 */
+    @DeleteMapping("/users/apply")
+    public ResponseEntity<String> deleteApply(@RequestBody @Valid RequestDeleteApply apply){
+
+                ModelMapper mapper = new ModelMapper();
+                mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+                ApplyDto applyDto = mapper.map(apply, ApplyDto.class);
+
+                boolean status = userService.deleteApply(applyDto.getJobsNo(), applyDto.getComfirmPassword(), applyDto.getPassword(), applyDto.getUserId());
+
+
+
+                String okMsg = "delete userId , 200 OK";
+                String errorMsg = "error~";
+
+                if(status) {
+                    return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+                }else{
+                    return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
+                }
+
+    }
+
+    /* 공고 정보 수정*/
+    @PutMapping("/users/apply")
+    public ResponseEntity<String> updateApply(@RequestBody @Valid RequestUpdateApply apply){
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ApplyDto applyDetails = mapper.map(apply, ApplyDto.class);
+
+        ApplyDto applyDto = userService.getApplyByJobsNo(apply.getJobsNo());
+
+        userService.updateByJobsNo(applyDto, applyDetails);
+
+        String okMsg = "update user , 200 OK";
+        return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+    }
+
+    /*내가 지원한 전체 공고(전형) 내역 리스트로 보기 ( 관리자+ 인사팀전체 + 자기자신만 )*/
+    @GetMapping("/apply/{userId}")
+    public List<ResponseApply> getApply(@PathVariable("userId") String userId){
+
+        Iterable<ApplyEntity> applysList = userService.getApplyByAll();
+
+        List<ResponseApply> result = new ArrayList<>();
+
+        applysList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseApply.class));
+        });
+
+        return result;
+    }
+
+    @GetMapping("/apply/{userId}/{jobsNo}")
+    public List<ResponseApplyDetail> getApplyDetails(@PathVariable("userId") String userId, @PathVariable("jobsNo") String jobsNo){
+
+        return null;
+    }
 
 }
