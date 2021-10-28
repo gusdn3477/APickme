@@ -14,7 +14,7 @@ public class JobDto implements Serializable{
     private Integer recruitNum; //채용인원
     private String favoriteLang; //선호언어
     private String jobLocation; //근무지역
-//    private Date createdAt; //생성일
+    private Date createdAt; //생성일
     private String jobType; //
     private String jobQualify;//지원자격
     private String employType; // 채용유형

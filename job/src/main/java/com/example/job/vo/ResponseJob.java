@@ -18,7 +18,7 @@ public class ResponseJob {
     private Integer recruitNum; //채용인원
     private String favoriteLang;
     private String jobLocation;
-//    private Date createdAt;
+    private Date createdAt;
     private String jobType;
     private String jobQualify;
     private Date applyStart;
