@@ -179,6 +179,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userEntity = userRepository.findByEmail(email);
         String name = userEntity.getApplyName();
         String newPwd = UUID.randomUUID().toString();
+
         userEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(newPwd));
 
         userRepository.save(userEntity);
