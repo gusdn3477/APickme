@@ -2,8 +2,13 @@ package com.example.userservice.service;
 
 import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
+import com.example.userservice.entity.ApplyEntity;
 import com.example.userservice.entity.UserEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+
+import java.util.Iterator;
+
 
 public interface UserService extends UserDetailsService {
     UserDto createUser(UserDto userDto);
@@ -25,5 +30,11 @@ public interface UserService extends UserDetailsService {
 
     /*비밀번호 찾기*/
     void findPwd(String email);
+
+    Iterable<ApplyEntity> getApplyByAll();
+
+    Iterable<ApplyEntity> getJobsAllApply(String jobsNo);
+
+
 }
 
