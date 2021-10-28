@@ -103,7 +103,7 @@ public class HrController {
 */
 
     @Operation(summary = "인사직원 삭제", description = "super 인사 관리자가 등록한 normal 인사직원의 계정을 삭제한다.")
-    @DeleteMapping()
+    @DeleteMapping("/hr/super")
     public ResponseEntity deleteIdBySuper(@RequestBody RequestDeleteUserBySuper req){
 
         if(hrService.deleteNorMalBySuper(req)) {
