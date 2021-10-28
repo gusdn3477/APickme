@@ -50,6 +50,10 @@ public class JobServiceImpl implements JobService{
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         JobProcessEntity jobProcessEntity = mapper.map(jobProcessDto, JobProcessEntity.class);
 
+        jobProcessEntity.setIntv1Pass((int) (jobProcessEntity.getRecruitNum()*jobProcessEntity.getIntv1Multiple()));
+        jobProcessEntity.setIntv2Pass((int) (jobProcessEntity.getRecruitNum()*jobProcessEntity.getIntv2Multiple()));
+        jobProcessEntity.setWrittenPass((int) (jobProcessEntity.getRecruitNum()*jobProcessEntity.getWrittenMultiple()));
+
         jobProcessRepository.save(jobProcessEntity);
 
         return null;
@@ -79,9 +83,13 @@ public class JobServiceImpl implements JobService{
     @Override
     public JobProcessEntity updateProcess(JobProcessDto jobProcessDto){
         JobProcessEntity jobProcessEntity = jobProcessRepository.findByJobsNo(jobProcessDto.getJobsNo());
+
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         jobProcessEntity = mapper.map(jobProcessDto,JobProcessEntity.class);
+        jobProcessEntity.setIntv1Pass((int) (jobProcessEntity.getRecruitNum()*jobProcessEntity.getIntv1Multiple()));
+        jobProcessEntity.setIntv2Pass((int) (jobProcessEntity.getRecruitNum()*jobProcessEntity.getIntv2Multiple()));
+        jobProcessEntity.setWrittenPass((int) (jobProcessEntity.getRecruitNum()*jobProcessEntity.getWrittenMultiple()));
         jobProcessRepository.save(jobProcessEntity);
         return jobProcessEntity;
 

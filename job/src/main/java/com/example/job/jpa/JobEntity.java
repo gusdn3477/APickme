@@ -41,9 +41,9 @@ public class JobEntity implements Serializable {
     @Column(nullable = false, length = 100)
     private String jobLocation;
 
-//    @Column(length = 100)
-//    @ColumnDefault(value = "CURRENT_TIMESTAMP")
-//    private Date createdAt;
+    @Column(length = 100)
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+    private Date createdAt;
 
     @Column(nullable = false, length = 100)
     private String jobType;

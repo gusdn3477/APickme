@@ -2,6 +2,7 @@ package com.example.job.jpa;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 
@@ -21,6 +22,7 @@ public class JobProcessEntity {
     private Integer recruitNum;
 
     @Column(length = 100)
+    @ColumnDefault(value = "0")
     private float writtenMultiple;
 //jobEntity 의 recnum * writtenmultiple
 //    int i = integernum.intValue()
@@ -34,12 +36,14 @@ public class JobProcessEntity {
     private Date writtenDate;
 
     @Column(length = 100)
+    @ColumnDefault(value = "0")
     private float intv1Multiple;
 
     @Column(length = 100)
     private Integer intv1Pass;
 
     @Column(length = 100)
+    @ColumnDefault(value = "0")
     private float intv2Multiple;
 
     @Column(length = 100)
