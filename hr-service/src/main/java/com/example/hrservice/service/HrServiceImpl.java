@@ -46,12 +46,13 @@ public class HrServiceImpl implements HrService {
     @Autowired
     public HrServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, HrRepository hrRepository,
                          CorpRepository corpRepository, PcServiceClient pcServiceClient,
-                         CircuitBreakerFactory circuitBreakerFactory) {
+                         CircuitBreakerFactory circuitBreakerFactory, JavaMailSender mailSender) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.hrRepository = hrRepository;
         this.corpRepository = corpRepository;
         this.pcServiceClient = pcServiceClient;
         this.circuitBreakerFactory = circuitBreakerFactory;
+        this.mailSender = mailSender;
     }
 
     @Override

@@ -20,6 +20,12 @@ spring:
           web-allow-others: true
     generate-ddl: true
 
+  datasource:
+    url: jdbc:mariadb://database-1.c4rcauqgpkcf.ap-northeast-3.rds.amazonaws.com:3306/tmax
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: admin
+    password: rnjswlsgml!
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -83,7 +89,9 @@ logging:
     com.example.hrservice.client: DEBUG
 
 
-
+token:
+  expiration_time: 86400000
+  secret: user_token
 
   #token:
 #  expiration_time: 864000000
