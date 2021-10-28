@@ -33,10 +33,11 @@ public class UserServiceImpl implements UserService {
     ApplyRepository applyRepository;
     Environment env;
     RestTemplate restTemplate;
-    JavaMailSender mailSender;
     OrderServiceClient orderServiceClient;
-
     CircuitBreakerFactory circuitBreakerFactory;
+
+    @Autowired
+    JavaMailSender mailSender;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -138,10 +139,6 @@ public class UserServiceImpl implements UserService {
         applyRepository.save(applyEntity);
         return null;
     }
-
-
-
-
 
     @Override
     public UserDto getUserByUserId(String userId) {

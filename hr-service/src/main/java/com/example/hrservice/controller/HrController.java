@@ -78,7 +78,6 @@ public class HrController {
 
     @Operation(summary = "인사직원 전체 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 모두를 리스트로 확인할 수 있다.")
     @GetMapping("/hr/{superId}")
-
     public List<ResponseUser> getNormals(@PathVariable("superId") String superId){
 
         Iterable<HrEntity> normalsList = hrService.getNormalsAll(superId);
@@ -89,7 +88,7 @@ public class HrController {
         });
 
         return result;
-    }*/
+    }
 
     @Operation(summary = "인사직원 상세 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 한명의 상세정보와 담당하는 면접를 확인할 수 있다.")
     @GetMapping("/hr/detail/{empNo}")
@@ -149,7 +148,7 @@ public class HrController {
         return ResponseEntity.status(HttpStatus.OK).body(resultValue);
     }
 
-    @Operation(summary = "비밀번호 유무 확익", description = "입력한 비밀번호가 있는 비밀번호 인지 확인한다.")
+    @Operation(summary = "비밀번호 유무 확인", description = "입력한 비밀번호가 있는 비밀번호 인지 확인한다.")
     @PostMapping("/hr/checkpwd")
     public ResponseEntity checkPwd(@RequestBody RequestUser checkPwdInfo ){
 

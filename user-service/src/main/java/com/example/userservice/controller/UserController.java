@@ -50,7 +50,7 @@ public class UserController {
 
 
     /*일반 사용자 회원가입*/
-    @PostMapping("/users/register")
+    @PostMapping("/users")
     public ResponseEntity createUser(@RequestBody @Valid RequestUser user) {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -164,7 +164,7 @@ public class UserController {
 //    }
 
     /*지원자 비밀번호 찾기 */
-    @PostMapping("/findpwd")
+    @PostMapping("/users/findpwd")
     public ResponseEntity findPwd(@RequestBody @Valid RequestFindPwd findPwdInfo){
 
         UserDto userDto = userService.getUserDetailsByEmail(findPwdInfo.getEmail());
