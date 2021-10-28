@@ -19,4 +19,6 @@ public class ApplyDto {
     private String applyContact; // 핸드폰 번호임
     private String portfolio;
     private Date applyDateTime;
+    private String password;
+    private String comfirmPassword;
 }

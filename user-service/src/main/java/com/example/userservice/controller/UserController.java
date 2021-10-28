@@ -198,6 +198,64 @@ public class UserController {
     }
 
 
+    /* 지원자 공고 삭제하기 */
+    @DeleteMapping("/users/apply")
+    public ResponseEntity<String> deleteApply(@RequestBody @Valid RequestDeleteApply apply){
 
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ApplyDto applyDto = mapper.map(apply, ApplyDto.class);
+
+        boolean status = userService.deleteApply(applyDto.getJobsNo(), applyDto.getComfirmPassword(), applyDto.getPassword(), applyDto.getUserId());
+
+
+
+        String okMsg = "delete userId , 200 OK";
+        String errorMsg = "error~";
+
+        if(status) {
+            return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
+        }
+
+    }
+
+    /* 공고 정보 수정*/
+    @PutMapping("/users/apply")
+    public ResponseEntity<String> updateApply(@RequestBody @Valid RequestUpdateApply apply){
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ApplyDto applyDetails = mapper.map(apply, ApplyDto.class);
+
+        ApplyDto applyDto = userService.getApplyByJobsNo(apply.getJobsNo());
+
+        userService.updateByJobsNo(applyDto, applyDetails);
+
+        String okMsg = "update user , 200 OK";
+        return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+    }
+
+    /*내가 지원한 전체 공고(전형) 내역 리스트로 보기 ( 관리자+ 인사팀전체 + 자기자신만 )*/
+    @GetMapping("/apply/{userId}")
+    public List<ResponseApply> getApply(@PathVariable("userId") String userId){
+
+        Iterable<ApplyEntity> applysList = userService.getApplyByAll();
+
+        List<ResponseApply> result = new ArrayList<>();
+
+        applysList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseApply.class));
+        });
+
+        return result;
+    }
+
+    @GetMapping("/apply/{userId}/{jobsNo}")
+    public List<ResponseApplyDetail> getApplyDetails(@PathVariable("userId") String userId, @PathVariable("jobsNo") String jobsNo){
+
+        return null;
+    }
 
 }

@@ -181,6 +181,74 @@ public class UserServiceImpl implements UserService {
     public Iterable<ApplyEntity> getJobsAllApply(String jobsNo) {return applyRepository.findAllByJobsNo(jobsNo);}
 
     @Override
+    public boolean deleteApply(String jobsNo, String comfirmPassword, String password, String userId) {
+        UserEntity userEntity = userRepository.findByUserId(userId);
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDto userDeleteDto = mapper.map(userEntity, UserDto.class);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        if(encoder.matches(password, userDeleteDto.getEncryptedPwd())){
+            applyRepository.deleteByJobsNo(jobsNo);
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    @Override
+    public ApplyDto getApplyByJobsNo(String jobsNo) {
+        ApplyEntity applyEntity = applyRepository.findByJobsNo(jobsNo);
+
+        if (applyEntity == null)
+            throw new UsernameNotFoundException("User not found");
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ApplyDto applyDto = mapper.map(applyEntity, ApplyDto.class);
+
+        return applyDto;
+    }
+
+    @Override
+    public ApplyDto updateByJobsNo(ApplyDto applyDto, ApplyDto applyDetails) {
+        ApplyEntity applyEntity = applyRepository.findByJobsNo(applyDto.getJobsNo());
+        ModelMapper mapper = new ModelMapper();
+        ApplyDto applyUpdateDto = mapper.map(applyEntity, ApplyDto.class);
+
+        applyUpdateDto.setPortfolio(applyDetails.getPortfolio());
+        applyUpdateDto.setApplyContact(applyDetails.getApplyContact());
+        applyUpdateDto.setApplyEmail(applyDetails.getApplyEmail());
+        applyUpdateDto.setApplyName(applyDetails.getApplyName());
+        applyUpdateDto.setPassword(applyDetails.getPassword());
+
+        ModelMapper applymapper = new ModelMapper();
+        applymapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ApplyEntity applyUpdateEntity = applymapper.map(applyUpdateDto, ApplyEntity.class);
+
+        applyUpdateEntity.setJobsNo(applyEntity.getJobsNo());
+
+        applyRepository.save(applyUpdateEntity);
+
+        return null;
+    }
+
+    @Override
+    public ApplyDto getApplyByUserId(String userId) {
+        ApplyEntity applyEntity = applyRepository.findByUserId(userId);
+
+        if (applyEntity == null)
+            throw new UsernameNotFoundException("User not found");
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        ApplyDto applyDto = mapper.map(applyEntity,ApplyDto.class);
+
+        return applyDto;
+    }
+
+    @Override
     public void findPwd(String email) {
 
         // PW 임시발급
