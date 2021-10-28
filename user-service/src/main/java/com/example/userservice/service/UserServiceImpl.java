@@ -172,6 +172,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+    //희상추가 = > 모든 지원자 보기
+    @Override
+    public Iterable<ApplyEntity> getApplyByAll() {return applyRepository.findAll();}
+
+    //희상추가 => 공고별 지원자 보기
+    @Override
+    public Iterable<ApplyEntity> getJobsAllApply(String jobsNo) {return applyRepository.findAllByJobsNo(jobsNo);}
+
     @Override
     public void findPwd(String email) {
 

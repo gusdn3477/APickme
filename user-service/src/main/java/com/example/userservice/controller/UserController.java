@@ -2,6 +2,7 @@ package com.example.userservice.controller;
 
 import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
+import com.example.userservice.entity.ApplyEntity;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.service.UserService;
 import com.example.userservice.vo.*;
@@ -120,6 +121,29 @@ public class UserController {
         return result;
     }
 
+    /* 지원내역 전체 보기 */
+    @GetMapping("/apply")
+    public ResponseEntity<List<ResponseApply>> getApply(){
+        Iterable<ApplyEntity> applyList = userService.getApplyByAll();
+        List<ResponseApply> result = new ArrayList<>();
+
+        applyList.forEach(v->{
+            result.add(new ModelMapper().map(v, ResponseApply.class));
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+    /* 공고별 지원내역 전체 보기 */
+    @GetMapping("/apply/{jobsNo}")
+    public ResponseEntity<List<ResponseApply>> getJobsNoApply(@PathVariable("jobsNo") String jobsNo){
+        Iterable<ApplyEntity> jobApplyList = userService.getJobsAllApply(jobsNo);
+        List<ResponseApply> result = new ArrayList<>();
+
+        jobApplyList.forEach(v->{
+            result.add(new ModelMapper().map(v, ResponseApply.class));
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
 
 
     /* 사용자 상세 보기 (with 주문 목록) */
@@ -177,6 +201,8 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(resultValue);
     }
+
+
 
 
 }
