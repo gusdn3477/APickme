@@ -101,15 +101,20 @@ public class HrController {
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
 */
-/*  @Operation(summary = "인사직원 삭제", description = "super 인사 관리자가 등록한 normal 인사직원의 계정을 삭제한다.")
-    @DeleteMapping()
-    public ResponseEntity deleteNormal(@RequestBody RequestUser norMalEmpNo){
 
-        String normalId = norMalEmpNo.getEmpNo();
-        hrService.deleteNormal(normalId);
-        return ResponseEntity.status(HttpStatus.OK).body("Normal employee 삭제 완료");
+    @Operation(summary = "인사직원 삭제", description = "super 인사 관리자가 등록한 normal 인사직원의 계정을 삭제한다.")
+    @DeleteMapping("/hr/super")
+    public ResponseEntity deleteIdBySuper(@RequestBody RequestDeleteUserBySuper req){
+
+        if(hrService.deleteNorMalBySuper(req)) {
+            return ResponseEntity.status(HttpStatus.OK).body("OK");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.OK).body("NO");
+        }
     }
-*/
+
+
     @Operation(summary = "인사직원 탈퇴", description = "normal 인사직원이 탈퇴할 수 있다.")
     @DeleteMapping("/hr")
     public ResponseEntity deleteNormal(@RequestBody RequestUser norMalEmpNo){

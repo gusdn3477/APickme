@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -33,4 +34,7 @@ public class HrEntity {
     @ColumnDefault("false")
     private String auth;
 
+    @Column(nullable = false, updatable = false, insertable = false)
+    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+    private Date registerDate;
 }
