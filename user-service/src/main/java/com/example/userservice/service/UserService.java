@@ -35,6 +35,16 @@ public interface UserService extends UserDetailsService {
 
     Iterable<ApplyEntity> getJobsAllApply(String jobsNo);
 
+    boolean deleteApply(String jobsNo, String comfirmPassword, String password, String userId);
+
+    ApplyDto getApplyByJobsNo(String jobsNo);
+
+    ApplyDto updateByJobsNo(ApplyDto applyDto, ApplyDto applyDetails);
+
+    ApplyDto getApplyByUserId(String userId);
+
+
+
 
 }
 
