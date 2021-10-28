@@ -190,7 +190,7 @@ public class UserController {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = mapper.map(request, UserDto.class);
         return ResponseEntity.status(HttpStatus.OK).body(userService.checkPwd(userDto));
-        
+
     }
     /*지원자 비밀번호 찾기 */
     @PostMapping("/users/findpwd")
@@ -268,4 +268,13 @@ public class UserController {
         return null;
     }
 
+    @PostMapping("/users/checkemail")
+    public Boolean checkEmail(@RequestBody @Valid RequestCheckEmail Info){
+
+        if(userService.checkEmail(Info.getEmail())){
+            return true;
+        }
+
+        return false;
+    }
 }

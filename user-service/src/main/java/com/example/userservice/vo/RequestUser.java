@@ -3,6 +3,7 @@ package com.example.userservice.vo;
 import lombok.Data;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.Id;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 @Data
 public class RequestUser {
 
+    @Id
     @NotNull(message = "Email cannot be null")
     @Size(min = 2, message = "Email not be less than two characters")
     @Email
@@ -25,6 +27,7 @@ public class RequestUser {
 
     private String phoneNum;
 
+    @NotNull
     private String applyName;
     @Nullable
     private String address;

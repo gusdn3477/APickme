@@ -35,9 +35,10 @@ public class UserServiceImpl implements UserService {
     RestTemplate restTemplate;
     OrderServiceClient orderServiceClient;
     CircuitBreakerFactory circuitBreakerFactory;
-
-    @Autowired
     JavaMailSender mailSender;
+
+//    @Autowired
+//    JavaMailSender mailSender;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
                            RestTemplate restTemplate,
                            OrderServiceClient orderServiceClient,
                            CircuitBreakerFactory circuitBreakerFactory,
-                           ApplyRepository applyRepository) {
+                           ApplyRepository applyRepository, JavaMailSender javaMailSender) {
         this.userRepository = userRepository;
         this.applyRepository = applyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -54,6 +55,7 @@ public class UserServiceImpl implements UserService {
         this.restTemplate = restTemplate;
         this.orderServiceClient = orderServiceClient;
         this.circuitBreakerFactory = circuitBreakerFactory;
+        this.mailSender = javaMailSender;
     }
 
     @Override
@@ -278,9 +280,20 @@ public class UserServiceImpl implements UserService {
         mailSender.send(message);
     }
 
+    @Override
     public boolean checkPwd(UserDto dto){
 
         UserEntity userEntity = userRepository.findByUserId(dto.getUserId());
         return bCryptPasswordEncoder.matches(dto.getPassword(), userEntity.getEncryptedPwd());
+    }
+
+    @Override
+    public boolean checkEmail(String email){
+
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if(userEntity == null){ // false면 겹치는 게 없다는 뜻
+            return false;
+        }
+        return true;
     }
 }

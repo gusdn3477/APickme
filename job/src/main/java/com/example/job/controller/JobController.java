@@ -47,6 +47,8 @@ public class JobController {
         return String.format("It's Working in Catalog Service on PORT %s",
                 env.getProperty("local.server.port"));
     }
+    
+    //공고 조회
     @GetMapping("/jobs")
     public ResponseEntity<List<ResponseJob>> getJob(){
         Iterable<JobEntity> jobList = jobService.getAllJobs();
@@ -69,33 +71,27 @@ public class JobController {
         });
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
-
     }
 
     @GetMapping("/jobs/{jobsNo}")
     public ResponseEntity<JobEntity> getJobDetail(@PathVariable("jobsNo") String jobsNo){
+        
         JobEntity jobDetailList = jobService.getJob(jobsNo);
-//
-//        ModelMapper mapper = new ModelMapper();
-//        mapper.getConfiguration().getMatchingStrategy();
         return ResponseEntity.status(HttpStatus.OK).body(jobDetailList);
     }
 
     @GetMapping("/jobs/available")
     public ResponseEntity<Iterable<JobEntity>> getApplyAvailable(){
+        
         Date now = new Date();
         Iterable<JobEntity> applyAvailable = jobService.getApplyAvailable(now,now);
-
         return ResponseEntity.status(HttpStatus.OK).body(applyAvailable);
-
-
+        
     }
-
-
-
 
     @PostMapping("/jobs")
     public ResponseEntity<ResponseJob> createJob(@RequestBody RequestJobInfo job){
+        
         log.info("Before add job data");
         String jobsUUID = UUID.randomUUID().toString();
         ModelMapper mapper = new ModelMapper();

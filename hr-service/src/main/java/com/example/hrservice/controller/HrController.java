@@ -165,7 +165,15 @@ public class HrController {
 
     }
 
+    @PostMapping("/hr/checkemail")
+    public Boolean checkEmail(@RequestBody @Valid RequestCheckEmail Info){
 
+        if(hrService.checkEmail(Info.getEmail())){
+            return true;
+        }
+
+        return false;
+    }
 
 
 }

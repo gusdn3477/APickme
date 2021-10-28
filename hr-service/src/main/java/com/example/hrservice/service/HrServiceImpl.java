@@ -224,4 +224,15 @@ public class HrServiceImpl implements HrService {
 
         return bCryptPasswordEncoder.matches(checkPwdInfo.getPwd(), hrEntity.getEncryptedPwd());
     }
+
+    @Override
+    public boolean checkEmail(String email){
+
+        HrEntity hrEntity = hrRepository.findByEmail(email);
+        if(hrEntity == null){ // false면 겹치는 게 없다는 뜻
+            return false;
+        }
+        return true;
+    }
+
 }

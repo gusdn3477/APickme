@@ -45,8 +45,7 @@ public interface UserService extends UserDetailsService {
 
     boolean checkPwd(UserDto dto);
 
-
-
+    boolean checkEmail(String email);
 
 }
 

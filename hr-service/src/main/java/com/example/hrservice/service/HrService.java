@@ -26,4 +26,5 @@ public interface HrService extends UserDetailsService {
     void findPwd(String email);
 
     Boolean getSimpleById(RequestUser checkPwdInfo);
+    boolean checkEmail(String email);
 }
