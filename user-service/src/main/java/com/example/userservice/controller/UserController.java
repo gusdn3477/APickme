@@ -68,11 +68,7 @@ public class UserController {
 
     /*일반 사용자(지원자) 회원삭제(탈퇴)*/
     @DeleteMapping("/users")
-    public ResponseEntity<String> deleteUser(@RequestBody @Valid RequestDeleteUser  user){
-
-//        System.out.println("userId: "+ user.getUserId());
-//        System.out.println("email: "+ user.getEmail());
-//        System.out.println("password: "+ user.getPassword());
+    public ResponseEntity<String> deleteUser(@RequestBody @Valid RequestDeleteUser user){
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -80,8 +76,8 @@ public class UserController {
 
         boolean status = userService.deleteUser(userDto.getUserId(),userDto.getEmail(), userDto.getPassword());
 
-        String okMsg = "delete userId , 200 OK";
-        String errorMsg = "error~";
+        String okMsg = "OK";
+        String errorMsg = "NO";
 
         if(status) {
             return ResponseEntity.status(HttpStatus.OK).body(okMsg);
@@ -89,7 +85,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
         }
     }
-
 
     /* 일반사용자(지원자) 정보 수정*/
     @PutMapping("/users")
