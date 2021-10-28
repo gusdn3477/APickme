@@ -8,6 +8,7 @@ import com.example.hrservice.entity.HrEntity;
 import com.example.hrservice.jpa.CorpRepository;
 import com.example.hrservice.jpa.HrRepository;
 import com.example.hrservice.vo.RequestCheckPwd;
+import com.example.hrservice.vo.RequestDeleteUserBySuper;
 import com.example.hrservice.vo.RequestUser;
 import com.example.hrservice.vo.ResponsePc;
 import feign.FeignException;
@@ -40,8 +41,6 @@ public class HrServiceImpl implements HrService {
     PcServiceClient pcServiceClient;
     CircuitBreakerFactory circuitBreakerFactory;
     JavaMailSender mailSender;
-
-
 
     @Autowired
     public HrServiceImpl(BCryptPasswordEncoder bCryptPasswordEncoder, HrRepository hrRepository,
@@ -101,6 +100,7 @@ public class HrServiceImpl implements HrService {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         HrEntity hrEntity = mapper.map(hrDto, HrEntity.class);
         hrEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(hrDto.getPwd()));
+        hrEntity.setAuth("true");
         hrRepository.save(hrEntity);
 
         //4Admin Table
@@ -152,12 +152,6 @@ public class HrServiceImpl implements HrService {
 
         // Open feign
         List<ResponsePc> pcList = null;
-//        try {
-//            pcList = pcServiceClient.getPcs(empNo);
-//        } catch (FeignException ex) {
-//            log.error(ex.getMessage());
-//        }
-        // Circuit Breaker
         log.info("------------------------------------------------------Start Feign");
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
         pcList = circuitBreaker.run(() -> pcServiceClient.getPcs(empNo),
@@ -169,19 +163,27 @@ public class HrServiceImpl implements HrService {
         return hrDto;
     }
 
-    @Override
+    @Override // 회원탈퇴
     public void deleteNormal(String empNo) {
         hrRepository.deleteById(empNo);
+    }
+
+    @Override
+    public Boolean deleteNorMalBySuper(RequestDeleteUserBySuper dto){
+
+        if(dto.getParents() == "admin"){
+            hrRepository.deleteByEmpNo(dto.getEmpNo());
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void updateNormal(HrDto hrDto) {
 
         HrEntity normalEntity = hrRepository.findById(hrDto.getEmpNo()).get();
-
         normalEntity.setName(hrDto.getName());
         normalEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(hrDto.getPwd()));
-
         hrRepository.save(normalEntity);
 
     }
@@ -194,7 +196,6 @@ public class HrServiceImpl implements HrService {
         String name = hrEntity.getName();
         String newPwd = UUID.randomUUID().toString();
         hrEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(newPwd));
-
         hrRepository.save(hrEntity);
 
         //메일 전송

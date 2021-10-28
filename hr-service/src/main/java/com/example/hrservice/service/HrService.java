@@ -3,6 +3,7 @@ package com.example.hrservice.service;
 import com.example.hrservice.dto.HrDto;
 import com.example.hrservice.entity.HrEntity;
 import com.example.hrservice.vo.RequestCheckPwd;
+import com.example.hrservice.vo.RequestDeleteUserBySuper;
 import com.example.hrservice.vo.RequestUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -17,11 +18,11 @@ public interface HrService extends UserDetailsService {
     HrDto getNormalById(String empNo);
 
     void deleteNormal(String empNo);
+    Boolean deleteNorMalBySuper(RequestDeleteUserBySuper dto);
 
     HrDto getUserDetailsByEmail(String email);
 
     void updateNormal(HrDto hrDto);
-
     void findPwd(String email);
 
     Boolean getSimpleById(RequestUser checkPwdInfo);
