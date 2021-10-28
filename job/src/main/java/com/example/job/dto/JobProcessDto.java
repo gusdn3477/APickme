@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Data
 public class JobProcessDto implements Serializable {
     private String jobsNo;
+    private Integer recruitNum;
     private float writtenMultiple;
     private Integer writtenPass;
     private float intv1Multiple;
