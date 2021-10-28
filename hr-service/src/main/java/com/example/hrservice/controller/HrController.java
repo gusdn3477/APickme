@@ -106,10 +106,10 @@ public class HrController {
     public ResponseEntity deleteIdBySuper(@RequestBody RequestDeleteUserBySuper req){
 
         if(hrService.deleteNorMalBySuper(req)) {
-            return ResponseEntity.status(HttpStatus.OK).body("OK");
+            return ResponseEntity.status(HttpStatus.OK).body("OK"); //지워짐
         }
         else{
-            return ResponseEntity.status(HttpStatus.OK).body("NO");
+            return ResponseEntity.status(HttpStatus.OK).body("NO"); //안 지워짐
         }
     }
 

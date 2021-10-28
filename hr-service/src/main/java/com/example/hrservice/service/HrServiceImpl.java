@@ -171,7 +171,7 @@ public class HrServiceImpl implements HrService {
     @Override // 회원 삭제
     public Boolean deleteNorMalBySuper(RequestDeleteUserBySuper dto){
 
-        if(dto.getParents().equals("admin")){
+        if((dto.getParents()).equals("admin")){
             hrRepository.deleteByEmpNo(dto.getEmpNo());
             return true;
         }

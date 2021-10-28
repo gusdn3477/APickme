@@ -12,6 +12,6 @@ public interface HrRepository extends CrudRepository<HrEntity, String> {
     HrEntity findByEmpNo(String empNo);
 
     @Transactional
-    HrEntity deleteByEmpNo(String empNo);
+    void deleteByEmpNo(String empNo);
     //List<HrEntity> findByEmpNo(String empNo);
 }
