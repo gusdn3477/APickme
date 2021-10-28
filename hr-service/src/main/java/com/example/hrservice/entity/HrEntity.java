@@ -34,7 +34,7 @@ public class HrEntity {
     @ColumnDefault("false")
     private String auth;
 
-    @Column(nullable = false, updatable = false, insertable = false)
-    @ColumnDefault(value = "CURRENT_TIMESTAMP")
-    private Date registerDate;
+//    @Column(nullable = false, updatable = false, insertable = false)
+//    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+//    private Date registerDate;
 }

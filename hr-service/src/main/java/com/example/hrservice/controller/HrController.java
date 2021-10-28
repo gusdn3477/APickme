@@ -90,7 +90,7 @@ public class HrController {
         return result;
     }
 
-/*
+
     @Operation(summary = "인사직원 상세 조회", description = "super 인사 관리자가 같은 회사에 속한 인사직원 한명의 상세정보와 담당하는 면접를 확인할 수 있다.")
     @GetMapping("/hr/detail/{empNo}")
     public ResponseEntity getNormal(@PathVariable("empNo") String empNo){
@@ -100,7 +100,7 @@ public class HrController {
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
-*/
+
 
     @Operation(summary = "인사직원 삭제", description = "super 인사 관리자가 등록한 normal 인사직원의 계정을 삭제한다.")
     @DeleteMapping("/hr/super")

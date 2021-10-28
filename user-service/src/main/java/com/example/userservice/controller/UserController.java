@@ -182,6 +182,16 @@ public class UserController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
 //    }
 
+    /* 비밀번호 체크 */
+    @PostMapping("/users/checkpwd")
+    public ResponseEntity checkPwd(@RequestBody @Valid RequestCheckPwd request){
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDto userDto = mapper.map(request, UserDto.class);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.checkPwd(userDto));
+        
+    }
     /*지원자 비밀번호 찾기 */
     @PostMapping("/users/findpwd")
     public ResponseEntity findPwd(@RequestBody @Valid RequestFindPwd findPwdInfo){

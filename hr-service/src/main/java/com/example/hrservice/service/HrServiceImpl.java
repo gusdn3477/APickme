@@ -218,8 +218,10 @@ public class HrServiceImpl implements HrService {
 
     @Override
     public Boolean getSimpleById(RequestUser checkPwdInfo) {
-        Optional<HrEntity> hrEntity = hrRepository.findById(checkPwdInfo.getEmpNo());
 
-        return bCryptPasswordEncoder.matches(checkPwdInfo.getPwd(), hrEntity.get().getEncryptedPwd());
+        HrEntity hrEntity = hrRepository.findByEmpNo(checkPwdInfo.getEmpNo());
+//        Optional<HrEntity> hrEntity = hrRepository.findById(checkPwdInfo.getEmpNo());
+
+        return bCryptPasswordEncoder.matches(checkPwdInfo.getPwd(), hrEntity.getEncryptedPwd());
     }
 }

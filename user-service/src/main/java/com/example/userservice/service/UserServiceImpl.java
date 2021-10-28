@@ -277,4 +277,10 @@ public class UserServiceImpl implements UserService {
 
         mailSender.send(message);
     }
+
+    public boolean checkPwd(UserDto dto){
+
+        UserEntity userEntity = userRepository.findByUserId(dto.getUserId());
+        return bCryptPasswordEncoder.matches(dto.getPassword(), userEntity.getEncryptedPwd());
+    }
 }

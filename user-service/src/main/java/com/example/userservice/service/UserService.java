@@ -43,6 +43,8 @@ public interface UserService extends UserDetailsService {
 
     ApplyDto getApplyByUserId(String userId);
 
+    boolean checkPwd(UserDto dto);
+
 
 
 
