@@ -9,3 +9,4 @@ config-service/.idea/workspace.xml
 *.lst
 *.txt
 *.dump
+*.iml
