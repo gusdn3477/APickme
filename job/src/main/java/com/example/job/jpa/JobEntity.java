@@ -16,7 +16,7 @@ import java.util.Date;
 @Table(name = "jobs")
 public class JobEntity implements Serializable {
     @Id
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 50, unique = true)
     private String jobsNo;
 
     @Column(length = 10)
@@ -26,61 +26,61 @@ public class JobEntity implements Serializable {
     private String empNo;
 
 
-    @Column(nullable= false)
+    @Column(nullable= false, length = 100)
     private String jobsTitle;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 200)
     private String jobsContext;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private Integer recruitNum;
 
-    @Column()
+    @Column(length = 30)
     private String favoriteLang;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String jobLocation;
 
-    @Column(nullable = false, updatable = false, insertable = false)
-    @ColumnDefault(value = "CURRENT_TIMESTAMP")
-    private Date createdAt;
+//    @Column(length = 100)
+//    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+//    private Date createdAt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String jobType;
 
-    @Column()
+    @Column(length = 100)
     @ColumnDefault("'자격 무관'") //지원자격
     private String jobQualify;
 
-    @Column()
+    @Column(length = 100)
     @ColumnDefault("'무관'")
     private String employType; //채용유형 무관/신입/
 
-    @Column()
+    @Column(length = 100)
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
     private Date applyStart;
 
-    @Column()
+    @Column(length = 100)
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
     private Date applyEnd;
 
-    @Column()
+    @Column(length = 100)
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
     private Date intv1Start;
 
-    @Column()
+    @Column(length = 100)
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
     private Date intv1End;
 
-    @Column()
+    @Column(length = 100)
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
     private Date intv2Start;
 
-    @Column()
+    @Column(length = 100)
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
     private Date intv2End;
 
-    @Column()
+    @Column(length = 100)
     private String workDetail;
 
 

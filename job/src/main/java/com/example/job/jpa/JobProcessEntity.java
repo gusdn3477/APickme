@@ -14,32 +14,35 @@ import java.util.Date;
 @Table(name = "jobprocess")
 public class JobProcessEntity {
     @Id
-    @Column(length = 100)
+    @Column(nullable = false, length = 50, unique = true)
     private String jobsNo;
 
-    @Column
+    @Column(length = 100)
+    private Integer recruitNum;
+
+    @Column(length = 100)
     private float writtenMultiple;
 //jobEntity 의 recnum * writtenmultiple
 //    int i = integernum.intValue()
 //    Integer integernum = new Integer(i)
 
-    @Column
+    @Column(length = 100)
     private Integer writtenPass;
 
-    @Column
+    @Column(length = 100)
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
     private Date writtenDate;
 
-    @Column
+    @Column(length = 100)
     private float intv1Multiple;
 
-    @Column
+    @Column(length = 100)
     private Integer intv1Pass;
 
-    @Column
+    @Column(length = 100)
     private float intv2Multiple;
 
-    @Column
+    @Column(length = 100)
     private Integer intv2Pass;
 
 }
