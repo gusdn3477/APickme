@@ -56,7 +56,6 @@ public class HrController {
         HrDto hrDto = mapper.map(superInfo, HrDto.class);
         hrDto = hrService.createSuperUser(hrDto);
 
-        //return ResponseEntity.status(HttpStatus.CREATED).body("가입신청이 완료되었습니다.");
         return ResponseEntity.status(HttpStatus.CREATED).body(hrDto.getEmpNo());
 
     }

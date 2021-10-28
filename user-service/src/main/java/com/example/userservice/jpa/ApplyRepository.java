@@ -11,11 +11,7 @@ public interface ApplyRepository extends CrudRepository<ApplyEntity , String> {
     @Transactional
     void deleteByJobsNo(String jobsNo);
 
-
-
     ApplyEntity findByJobsNo(String jobsNo);
-
-
 
     ApplyEntity findByUserId(String userId);
 
