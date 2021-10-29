@@ -6,4 +6,4 @@ spring:
   profiles:
     active: dev
 
-#uri: http://config-service:8888
+#uri: http://config-service:8888 연습용
