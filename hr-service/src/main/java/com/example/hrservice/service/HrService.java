@@ -18,7 +18,7 @@ public interface HrService extends UserDetailsService {
     HrDto getNormalById(String empNo);
 
     void deleteNormal(String empNo);
-    Boolean deleteNorMalBySuper(RequestDeleteUserBySuper dto);
+    Boolean deleteNorMalBySuper(String parents, String empNo);
 
     HrDto getUserDetailsByEmail(String email);
 

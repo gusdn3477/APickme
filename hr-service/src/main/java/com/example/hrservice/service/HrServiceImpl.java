@@ -169,10 +169,10 @@ public class HrServiceImpl implements HrService {
     }
 
     @Override // 회원 삭제
-    public Boolean deleteNorMalBySuper(RequestDeleteUserBySuper dto){
+    public Boolean deleteNorMalBySuper(String parents, String empNo){
 
-        if((dto.getParents()).equals("admin")){
-            hrRepository.deleteByEmpNo(dto.getEmpNo());
+        if(parents.equals("admin")){
+            hrRepository.deleteByEmpNo(empNo);
             return true;
         }
         return false;
@@ -200,8 +200,6 @@ public class HrServiceImpl implements HrService {
 
         //메일 전송
         sendMail(email, name, newPwd);
-
-
     }
 
     public void sendMail(String email, String name, String newPwd) {

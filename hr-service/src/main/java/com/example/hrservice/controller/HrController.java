@@ -105,7 +105,7 @@ public class HrController {
     @DeleteMapping("/hr/super")
     public ResponseEntity deleteIdBySuper(@RequestBody RequestDeleteUserBySuper req){
 
-        if(hrService.deleteNorMalBySuper(req)) {
+        if(hrService.deleteNorMalBySuper(req.getParents(), req.getEmpNo())) {
             return ResponseEntity.status(HttpStatus.OK).body("OK"); //지워짐
         }
         else{
