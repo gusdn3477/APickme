@@ -163,9 +163,11 @@
 
         <!-- Oauth2.0 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
+            <version>5.4.5</version>
         </dependency>
+
 
     </dependencies>
     <dependencyManagement>
