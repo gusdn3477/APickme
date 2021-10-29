@@ -42,6 +42,9 @@ spring:
           starttls:
             enable: true
             required: true
+  profiles:
+    include: oauth
+
 #  zipkin:
 #    base-url: http://localhost:9411
 #    enabled: true
