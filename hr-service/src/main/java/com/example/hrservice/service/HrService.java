@@ -1,5 +1,6 @@
 package com.example.hrservice.service;
 
+import com.example.hrservice.dto.CorpDto;
 import com.example.hrservice.dto.HrDto;
 import com.example.hrservice.entity.HrEntity;
 import com.example.hrservice.vo.RequestCheckPwd;
@@ -27,4 +28,7 @@ public interface HrService extends UserDetailsService {
 
     Boolean getSimpleById(RequestUser checkPwdInfo);
     boolean checkEmail(String email);
+
+    // Corp 관련
+    CorpDto getCorpName(String corpName);
 }

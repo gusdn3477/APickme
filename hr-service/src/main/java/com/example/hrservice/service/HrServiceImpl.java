@@ -233,4 +233,16 @@ public class HrServiceImpl implements HrService {
         return true;
     }
 
+    @Override
+    public CorpDto getCorpName(String corpNo){
+
+        CorpEntity corpEntity = corpRepository.findByCorpNo(corpNo);
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        CorpDto corpDto = mapper.map(corpEntity, CorpDto.class);
+
+        return corpDto;
+    }
+
 }

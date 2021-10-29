@@ -6,5 +6,4 @@ import lombok.Data;
 public class CorpDto {
     private String corpNo; //uuid
     private String corpName;
-
 }

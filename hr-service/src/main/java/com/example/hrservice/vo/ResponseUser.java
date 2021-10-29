@@ -9,6 +9,7 @@ public class ResponseUser {
     private String empNo; //uuid
     private String email;
     private String name;
+    private String corpNo;
     private String parents;
     private String auth;
 

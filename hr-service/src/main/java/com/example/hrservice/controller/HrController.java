@@ -1,5 +1,6 @@
 package com.example.hrservice.controller;
 
+import com.example.hrservice.dto.CorpDto;
 import com.example.hrservice.dto.HrDto;
 import com.example.hrservice.entity.HrEntity;
 import com.example.hrservice.service.HrService;
@@ -164,15 +165,27 @@ public class HrController {
 
     }
 
+    // 비밀번호 체크 페이지(성공시 넘어감)
     @PostMapping("/hr/checkemail")
     public Boolean checkEmail(@RequestBody @Valid RequestCheckEmail Info){
 
         if(hrService.checkEmail(Info.getEmail())){
             return true;
         }
-
         return false;
     }
+
+    // 회사 이름 얻기
+    @GetMapping("/hr/findcorpname/{corpNo}")
+    public ResponseEntity getCorpName(@PathVariable("corpNo") String corpNo){
+
+        CorpDto corpDto = hrService.getCorpName(corpNo);
+        ResponseCorp returnValue = new ModelMapper().map(corpDto, ResponseCorp.class);
+
+        return ResponseEntity.status(HttpStatus.OK).body(returnValue);
+
+    }
+
 
 
 }
