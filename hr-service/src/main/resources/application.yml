@@ -39,7 +39,8 @@ spring:
             enable: true
             required: true
 
-
+  profiles:
+    include: oauth
 
 
 #  jpa:
@@ -89,9 +90,9 @@ logging:
     com.example.hrservice.client: DEBUG
 
 
-#token:
-#  expiration_time: 86400000
-#  secret: user_token
+token:
+  expiration_time: 86400000
+  secret: user_token
 
   #token:
 #  expiration_time: 864000000
@@ -116,3 +117,4 @@ springdoc:
     disable-swagger-default-url: true
   show-actuator: true
   packages-to-scan: com.example.hrservice.controller
+
