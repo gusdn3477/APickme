@@ -1,8 +1,10 @@
 package com.example.processservice.controller;
 
 import com.example.processservice.client.JobServiceClient;
+import com.example.processservice.dto.ApplyDto;
 import com.example.processservice.dto.InterviewDto;
 import com.example.processservice.dto.WrittenDto;
+import com.example.processservice.jpa.ApplyEntity;
 import com.example.processservice.jpa.InterviewEntity;
 import com.example.processservice.jpa.WrittenEntity;
 import com.example.processservice.service.InterviewService;
@@ -192,22 +194,36 @@ public class ProcessController {
         return "작성중";
     }
 
-    // 자신이 담당인 공고 가져오기 ->feign
-    @GetMapping("/process/{empNo}")
-    public ResponseEntity getJobs(@PathVariable String empNo){
-        // Open feign
-        List<ResponseJob> jobList = null;
-        // Circuit Breaker
-        log.info("------------------------------------------------------Start Feign");
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
-        jobList = circuitBreaker.run(() -> jobServiceClient.getJobs(empNo),
-                throwable -> new ArrayList<>());
-        log.info("------------------------------------------------------End Feign");
+//    // 자신이 담당인 공고 가져오기 -> 이제 필요 없다!!!!!
+//    @GetMapping("/process/{empNo}")
+//    public ResponseEntity getJobs(@PathVariable String empNo){
+//        // Open feign
+//        List<ResponseJob> jobList = null;
+//        // Circuit Breaker
+//        log.info("------------------------------------------------------Start Feign");
+//        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
+//        jobList = circuitBreaker.run(() -> jobServiceClient.getJobs(empNo),
+//                throwable -> new ArrayList<>());
+//        log.info("------------------------------------------------------End Feign");
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(jobList);
+//    }
 
-        return ResponseEntity.status(HttpStatus.OK).body(jobList);
+    // 자신이 담당하는 공고별 지원자 조회?  -> 이제 필요 없다!!!!!
+    // 자신이 담당하는 공고별 지원자 점수 조회?   -> 이제 필요 없다!!!!!
+
+    // 공고마감시 필기전형으로 지원자 데이터 넘기기
+    @GetMapping("/process/{jobsNo}")
+    public ResponseEntity setWritten(@PathVariable String jobsNo){
+
+        List<WrittenDto> applyList= writtenService.getApplicantList(jobsNo);
+        writtenService.createWrittenPerson(applyList);
+
+        return ResponseEntity.status(HttpStatus.OK).body("데이터 옮기기 성공");
     }
 
-    // 자신이 담당하는 공고별 지원자 조회?
-    // 자신이 담당하는 공고별 지원자 점수 조회?
+
+
+
 
 }
