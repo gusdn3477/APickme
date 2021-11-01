@@ -16,11 +16,11 @@ public class RequestJobInfo {
     private Integer recruitNum;
     private String favoriteLang;
     private String jobLocation;
-    private String jobType;
+    private String jobType; // 고용 유형
+    private String employType; // 고용 형태
     private String jobQualify;
-    private Date applyStart;
-    private String employType;
     private String workDetail; //업무내용
+    private Date applyStart;
     private Date applyEnd; //지원마감일
     private Date intv1Start; //면접1시작일
     private Date intv1End;
