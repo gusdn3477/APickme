@@ -23,10 +23,7 @@ public class JobProcessEntity {
 
     @Column(length = 100)
     @ColumnDefault(value = "0")
-    private float writtenMultiple;
-//jobEntity 의 recnum * writtenmultiple
-//    int i = integernum.intValue()
-//    Integer integernum = new Integer(i)
+    private Float writtenMultiple;
 
     @Column(length = 100)
     private Integer writtenPass;
@@ -37,14 +34,14 @@ public class JobProcessEntity {
 
     @Column(length = 100)
     @ColumnDefault(value = "0")
-    private float intv1Multiple;
+    private Float intv1Multiple;
 
     @Column(length = 100)
     private Integer intv1Pass;
 
     @Column(length = 100)
     @ColumnDefault(value = "0")
-    private float intv2Multiple;
+    private Float intv2Multiple;
 
     @Column(length = 100)
     private Integer intv2Pass;

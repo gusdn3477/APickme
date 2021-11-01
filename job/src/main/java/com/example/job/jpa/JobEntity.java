@@ -21,11 +21,8 @@ public class JobEntity implements Serializable {
 
     @Column(length = 10)
     private String corpNo;
-
     @Column(length = 10)
     private String empNo;
-
-
     @Column(nullable= false, length = 100)
     private String jobsTitle;
 
