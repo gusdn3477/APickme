@@ -18,33 +18,33 @@ public class InterviewEntity implements Serializable {
     private Long id;
 
     @Column(nullable = false, length = 20, unique = true)
-    private String applyNum;
+    private String applyNum; //ㅇ
 
 //    @Id
     @Column(nullable = false, length = 20, unique = true)
-    private String userId;
+    private String userId; //ㅇ
 
     @Column(nullable = false, length = 20)
-    private String empNo;
+    private String empNo; //ㅇ
     @Column
-    private Date firstInterviewDate;
+    private Date firstInterviewDate; //ㅇ
     @Column
-    private String firstInterviewer;
+    private String firstInterviewer; //ㅇ
     @Column
-    private Integer firstInterviewScore;
+    private Integer firstInterviewScore; //ㅇ
     @Column
-    private String firstInterviewResult;
+    private String firstInterviewResult; //ㅇ
 
     @Column
-    private Date secondInterviewDate;
+    private Date secondInterviewDate; //ㅇ
     @Column
-    private String secondInterviewer;
+    private String secondInterviewer; //ㅇ
     @Column
-    private Integer secondInterviewScore;
+    private Integer secondInterviewScore; //ㅇ
     @Column
-    private String secondInterviewResult;
+    private String secondInterviewResult; //ㅇ
     @Column
-    private String jobsNo;
+    private String jobsNo; //ㅇ
 
     @Column(nullable = false, updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")

@@ -4,13 +4,11 @@ import com.example.processservice.client.JobServiceClient;
 import com.example.processservice.dto.InterviewDto;
 import com.example.processservice.dto.WrittenDto;
 import com.example.processservice.jpa.InterviewEntity;
+import com.example.processservice.jpa.JobEntity;
 import com.example.processservice.jpa.WrittenEntity;
 import com.example.processservice.service.InterviewService;
 import com.example.processservice.service.WrittenService;
-import com.example.processservice.vo.RequestPutInterview;
-import com.example.processservice.vo.RequestPutWritten;
-import com.example.processservice.vo.ResponseJob;
-import com.example.processservice.vo.ResponseWritten;
+import com.example.processservice.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -24,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,11 +144,7 @@ public class ProcessController {
         return "1차 면접 채점 성공!";
     }
 
-    //1차 면접관 결과
-    @PutMapping("/process/first-interview/result")
-    public String firstInterviewResult(){
-        return "작성중";
-    }
+
 
     //여기부터 2차 면접 -> 2차 면접관 할당
     @PutMapping("/process/second-interview/allocate")
@@ -187,27 +183,118 @@ public class ProcessController {
         return "2차 면접 채점 성공";
     }
 
-    @PutMapping("/process/second-interview/result")
-    public String secondInterviewResult(){
-        return "작성중";
-    }
 
     // 자신이 담당인 공고 가져오기 ->feign
-    @GetMapping("/process/{empNo}")
-    public ResponseEntity getJobs(@PathVariable String empNo){
-        // Open feign
-        List<ResponseJob> jobList = null;
-        // Circuit Breaker
-        log.info("------------------------------------------------------Start Feign");
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
-        jobList = circuitBreaker.run(() -> jobServiceClient.getJobs(empNo),
-                throwable -> new ArrayList<>());
-        log.info("------------------------------------------------------End Feign");
-
-        return ResponseEntity.status(HttpStatus.OK).body(jobList);
-    }
+//    @GetMapping("/process/{empNo}")
+//    public ResponseEntity getJobs(@PathVariable String empNo){
+//        // Open feign
+//        List<ResponseJob> jobList = null;
+//        // Circuit Breaker
+//        log.info("------------------------------------------------------Start Feign");
+//        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("my-circuitbreaker");
+//        jobList = circuitBreaker.run(() -> jobServiceClient.getJobs(empNo),
+//                throwable -> new ArrayList<>());
+//        log.info("------------------------------------------------------End Feign");
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(jobList);
+//    }
 
     // 자신이 담당하는 공고별 지원자 조회?
     // 자신이 담당하는 공고별 지원자 점수 조회?
 
+    /* 기업코드를 기준으로 기업의 전체 진행중인 공고 리스트 GET*/
+//    @GetMapping("/process/{corpNo}")
+//    public ResponseEntity<List<ResponeJobByCorpNo>> getJobsBycorp(@PathVariable String corpNo) throws Exception{
+//        Iterable<JobEntity> jobList = interviewService.getJobsByCorpNo(corpNo);
+//        List<ResponeJobByCorpNo> result = new ArrayList<>();
+//
+//        jobList.forEach(v->{
+//            result.add(new ModelMapper().map(v, ResponeJobByCorpNo.class));
+//        });
+//        return ResponseEntity.status(HttpStatus.OK).body(result);
+//    }
+
+
+    /*1차 면접 합불 결정 */
+        @PutMapping("/process/first-interview/result")
+        public String updateFirstInterviewResult(@RequestBody @Valid RequestFirstInterviewResult firstInterviewResult){
+            ModelMapper mapper = new ModelMapper();
+            mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+            InterviewDto firstInterviewResultDto= mapper.map(firstInterviewResult, InterviewDto.class);
+            firstInterviewResultDto.setSecondInterviewResult(firstInterviewResult.getFirstInterviewResult());
+            firstInterviewResultDto.setApplyNum(firstInterviewResult.getApplyNum());
+            firstInterviewResultDto.setUserId(firstInterviewResultDto.getUserId());
+
+            InterviewEntity interviewEntity = interviewService.firstInterviewResult(firstInterviewResultDto);
+            if(interviewEntity == null){
+                return "1차 면접 합불 체크 실패";
+            }
+            return "1차 면접 합불 체크 성공";
+        }
+
+    /*2차 면접 합불 결정 */
+    @PutMapping("/process/second-interview/result")
+    public String updateFirstInterviewResult(@RequestBody @Valid RequestSecondInterviewResult secondInterviewResult){
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        InterviewDto secondInterviewResultDto= mapper.map(secondInterviewResult, InterviewDto.class);
+        secondInterviewResultDto.setSecondInterviewResult(secondInterviewResult.getSecondInterviewResult());
+        secondInterviewResultDto.setApplyNum(secondInterviewResult.getApplyNum());
+        secondInterviewResultDto.setUserId(secondInterviewResultDto.getUserId());
+
+        InterviewEntity interviewEntity = interviewService.secondInterviewResult(secondInterviewResultDto);
+        if(interviewEntity == null){
+            return "2차 면접 합불 체크 실패";
+        }
+        return "2차 면접 합불 체크 성공";
+    }
+
+    /* 회사별 필기전형 보여주기*/
+//    @GetMapping("/process/{corpNo}/written-test")
+//    public List<ResponseWrittenTest> getWrittenTest(@PathVariable("corpNo") String corpNo){
+//        Iterable<WrittenEntity> writtenList = writtenService.getWrittenAllCorpNo(corpNo);
+//
+//        List<ResponseWrittenTest> result = new ArrayList<>();
+//
+//        writtenList.forEach(v ->{
+//            result.add(new ModelMapper().map(v, ResponseWrittenTest.class));
+//
+//        });
+//        return result;
+//    }
+
+
+    /* 공고별 1차 면접 리스트 보여주기 */
+    @GetMapping("/process/first-interview/{jobsNo}")
+    public List<ResponseFirstInterviewList> getFirstInterviewList(@PathVariable("jobsNo") String jobsNo){
+            Iterable<InterviewEntity> interviewList = interviewService.getInterviewListByJobsNo(jobsNo);
+        List<ResponseFirstInterviewList> result = new ArrayList<>();
+
+        interviewList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseFirstInterviewList.class));
+        });
+
+        return result;
+
+    }
+
+    /* 공고별 2차 면접 리스트 보여주기*/
+    @GetMapping("/process/second-interview/{jobsNo}")
+    public List<ResponseSecondInterviewList> getSecondInterviewList(@PathVariable("jobsNo") String jobsNo){
+        Iterable<InterviewEntity> interviewList = interviewService.getInterviewListByJobsNo(jobsNo);
+        List<ResponseSecondInterviewList> result = new ArrayList<>();
+
+        interviewList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseSecondInterviewList.class));
+        });
+
+        return result;
+
+    }
+
 }
+
+
+

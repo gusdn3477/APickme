@@ -3,6 +3,7 @@ package com.example.processservice.service;
 import com.example.processservice.dto.InterviewDto;
 import com.example.processservice.dto.WrittenDto;
 import com.example.processservice.jpa.InterviewEntity;
+import com.example.processservice.jpa.JobEntity;
 
 import java.util.List;
 
@@ -21,4 +22,14 @@ public interface InterviewService {
 
     Iterable<InterviewEntity> createInterviewPeople(List<WrittenDto> writtenDto);
     Iterable<InterviewEntity> getInterviewListByJobsNo(String jobsNo);
+
+    /* 1차면접 합불 결정*/
+    InterviewEntity firstInterviewResult(InterviewDto firstInterviewResultDto);
+    /*2차 면접 합불 결정*/
+    InterviewEntity secondInterviewResult(InterviewDto secondInterviewResultDto);
+
+
+
+
+//    Iterable<JobEntity> getJobsByCorpNo(String corpNo);
 }

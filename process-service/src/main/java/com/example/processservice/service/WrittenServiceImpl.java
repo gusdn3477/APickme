@@ -63,6 +63,8 @@ public class WrittenServiceImpl implements WrittenService{
         return passList;
     }
 
+
+
     // P, F 정하기
     @Override
     public Iterable<WrittenEntity> checkPassOrNot(WrittenDto writtenDto){
@@ -86,4 +88,7 @@ public class WrittenServiceImpl implements WrittenService{
         writtenRepository.saveAll(writtenEntity);
         return writtenEntity;
     }
+
+
+
 }
