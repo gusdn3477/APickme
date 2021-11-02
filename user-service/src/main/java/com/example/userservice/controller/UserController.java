@@ -116,7 +116,8 @@ public class UserController {
         return result;
     }
 
-    /* 지원내역 전체 보기 */
+    /* 지원내역 전체 보기
+    * 모든 지원테이블 값 가져옴  -- 왜 필요한지는 모르겠음 일단 */
     @GetMapping("/apply")
     public ResponseEntity<List<ResponseApply>> getApply(){
         Iterable<ApplyEntity> applyList = userService.getApplyByAll();
@@ -127,7 +128,7 @@ public class UserController {
         });
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-    /* 공고별 지원내역 전체 보기 */
+    /* 공고별 지원내역 전체 보기*/
     @GetMapping("/apply/{jobsNo}")
     public ResponseEntity<List<ResponseApply>> getJobsNoApply(@PathVariable("jobsNo") String jobsNo){
         Iterable<ApplyEntity> jobApplyList = userService.getJobsAllApply(jobsNo);
@@ -141,7 +142,8 @@ public class UserController {
 
 
 
-    /* 사용자 상세 보기 (with 주문 목록) */
+    /* 사용자 상세 보기 (with 주문 목록)
+    * 사용자가 자신의 정보 상세보기*/
     @GetMapping("/users/{userId}")
     public ResponseEntity<ResponseUser> getUser(@PathVariable("userId") String userId) {
         UserDto userDto = userService.getUserByUserId(userId);
@@ -246,18 +248,19 @@ public class UserController {
     }
 
     /*내가 지원한 전체 공고(전형) 내역 리스트로 보기 ( 관리자+ 인사팀전체 + 자기자신만 )*/
-    @GetMapping("/users/apply/{userId}")
-    public List<ResponseApply> getApply(@PathVariable("userId") String userId){
+    /*-------------내가 지원한 회사의 공고들 리스트로 가져오기------------*/
+    @GetMapping("/users/jobs/{userId}")
+    public ResponseEntity getApplyJobs(@PathVariable("userId") String userId){
+        List<ResponseJobShort> applyJobShortList = userService.getJobsByUserId(userId);
+        //userService.getJob
+//
+//        List<ResponseApply> result = new ArrayList<>();
+//
+//        applysList.forEach(v -> {
+//            result.add(new ModelMapper().map(v, ResponseApply.class));
+//        });
 
-        Iterable<ApplyEntity> applysList = userService.getApplyByAll();
-
-        List<ResponseApply> result = new ArrayList<>();
-
-        applysList.forEach(v -> {
-            result.add(new ModelMapper().map(v, ResponseApply.class));
-        });
-
-        return result;
+        return ResponseEntity.status(HttpStatus.OK).body(applyJobShortList);
     }
 
     @GetMapping("/apply/{userId}/{jobsNo}")
