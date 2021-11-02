@@ -222,8 +222,10 @@ public class ProcessController {
         return ResponseEntity.status(HttpStatus.OK).body("데이터 옮기기 성공");
     }
 
-
-
+    // 필기 채점하기 -> 직원의 id가 들어간다. -->  위에 만들어 놓은거에 그냥 들어올때 id넣어주면 될듯?
+    public ResponseEntity gradingId(){
+        return null;
+    }
 
 
 }
