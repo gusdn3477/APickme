@@ -220,8 +220,6 @@ public class UserController {
 
         boolean status = userService.deleteApply(applyDto.getJobsNo(), applyDto.getComfirmPassword(), applyDto.getPassword(), applyDto.getUserId());
 
-
-
         String okMsg = "delete userId , 200 OK";
         String errorMsg = "error~";
 
@@ -253,7 +251,6 @@ public class UserController {
     /*-------------내가 지원한 회사의 공고들 리스트로 가져오기------------*/
     @GetMapping("/users/jobs/{userId}")
     public ResponseEntity getApplyJobs(@PathVariable("userId") String userId){
-
         List<ResponseJobShort> applyJobShortList = userService.getJobsByUserId(userId);
         //userService.getJob
 //

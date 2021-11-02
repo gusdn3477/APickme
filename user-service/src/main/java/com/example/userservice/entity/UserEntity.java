@@ -13,10 +13,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "users")
 public class UserEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
+    @Id
     @Column(nullable = false, length = 50, unique = true)
     private String email;
     @Column(nullable = false, length = 50)
