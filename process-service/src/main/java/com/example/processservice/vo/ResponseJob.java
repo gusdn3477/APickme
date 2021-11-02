@@ -1,5 +1,8 @@
 package com.example.processservice.vo;
 
+import lombok.Data;
+
+@Data
 public class ResponseJob {
     //id도 필요할진 모르겠음일단은
     private Long id;

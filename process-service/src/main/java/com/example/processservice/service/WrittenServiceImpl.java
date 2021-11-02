@@ -71,6 +71,7 @@ public class WrittenServiceImpl implements WrittenService{
         return passList;
     }
 
+
     //지원자 리스트를 지원자 테이블에서 가져온다.
     @Override
     public List<WrittenDto> getApplicantList(String jobsNo){
@@ -84,6 +85,7 @@ public class WrittenServiceImpl implements WrittenService{
 
         return result;
     }
+
 
     // P, F 정하기
     @Override
@@ -108,4 +110,7 @@ public class WrittenServiceImpl implements WrittenService{
         writtenRepository.saveAll(writtenEntity);
         return writtenEntity;
     }
+
+
+
 }
