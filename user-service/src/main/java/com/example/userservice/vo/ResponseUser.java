@@ -13,7 +13,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseUser {
     private String email;
-    private String applyName;
+    private String name;
     private String userId;
     private String address;
     private String phoneNum;

@@ -119,7 +119,6 @@ public class UserServiceImpl implements UserService {
         usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userUpdateEntity = usermapper.map(userUpdateDto, UserEntity.class);
 
-        userUpdateEntity.setId(userEntity.getId());
         userUpdateEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userUpdateDto.getPassword()));
 
         userRepository.save(userUpdateEntity);

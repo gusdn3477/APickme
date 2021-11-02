@@ -218,8 +218,6 @@ public class UserController {
 
         boolean status = userService.deleteApply(applyDto.getJobsNo(), applyDto.getComfirmPassword(), applyDto.getPassword(), applyDto.getUserId());
 
-
-
         String okMsg = "delete userId , 200 OK";
         String errorMsg = "error~";
 
@@ -248,7 +246,7 @@ public class UserController {
     }
 
     /*내가 지원한 전체 공고(전형) 내역 리스트로 보기 ( 관리자+ 인사팀전체 + 자기자신만 )*/
-    @GetMapping("/apply/{userId}")
+    @GetMapping("/users/apply/{userId}")
     public List<ResponseApply> getApply(@PathVariable("userId") String userId){
 
         Iterable<ApplyEntity> applysList = userService.getApplyByAll();
