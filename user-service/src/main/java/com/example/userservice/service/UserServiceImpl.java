@@ -4,9 +4,13 @@ import com.example.userservice.client.OrderServiceClient;
 import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.ApplyEntity;
+import com.example.userservice.entity.JobEntity;
 import com.example.userservice.entity.UserEntity;
+import com.example.userservice.jpa.JobRepository;
 import com.example.userservice.jpa.UserRepository;
 import com.example.userservice.jpa.ApplyRepository;
+import com.example.userservice.vo.ResponseJobDetail;
+import com.example.userservice.vo.ResponseJobShort;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,6 +41,7 @@ public class UserServiceImpl implements UserService {
     OrderServiceClient orderServiceClient;
     CircuitBreakerFactory circuitBreakerFactory;
     JavaMailSender mailSender;
+    JobRepository jobRepository;
 
 //    @Autowired
 //    JavaMailSender mailSender;
@@ -47,7 +53,8 @@ public class UserServiceImpl implements UserService {
                            RestTemplate restTemplate,
                            OrderServiceClient orderServiceClient,
                            CircuitBreakerFactory circuitBreakerFactory,
-                           ApplyRepository applyRepository, JavaMailSender javaMailSender) {
+                           ApplyRepository applyRepository, JavaMailSender javaMailSender,
+                           JobRepository jobRepository) {
         this.userRepository = userRepository;
         this.applyRepository = applyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -56,6 +63,7 @@ public class UserServiceImpl implements UserService {
         this.orderServiceClient = orderServiceClient;
         this.circuitBreakerFactory = circuitBreakerFactory;
         this.mailSender = javaMailSender;
+        this.jobRepository = jobRepository;
     }
 
     @Override
@@ -119,7 +127,6 @@ public class UserServiceImpl implements UserService {
         usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserEntity userUpdateEntity = usermapper.map(userUpdateDto, UserEntity.class);
 
-        userUpdateEntity.setId(userEntity.getId());
         userUpdateEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userUpdateDto.getPassword()));
 
         userRepository.save(userUpdateEntity);
@@ -295,5 +302,25 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return true;
+    }
+
+    //내가 지원한 항목(공고) 전체 가져오기
+    @Override
+    public List<ResponseJobShort> getJobsByUserId(String userId) {
+        Iterable<ApplyEntity> applyDtos = applyRepository.findAllByUserId(userId);
+
+        List<String> applyJobsList = new ArrayList<>();
+
+        applyDtos.forEach(v->{
+            applyJobsList.add(v.getJobsNo());
+        });
+
+        Iterable<JobEntity> jobEntity = jobRepository.findAllByJobsNoIn(applyJobsList);
+
+        List<ResponseJobShort> jobList = new ArrayList<>();
+        jobEntity.forEach(v->{
+            jobList.add(new ModelMapper().map(v,ResponseJobShort.class));
+        });
+        return jobList;
     }
 }

@@ -1,12 +1,16 @@
 package com.example.processservice.service;
 
+import com.example.processservice.dto.ApplyDto;
 import com.example.processservice.dto.WrittenDto;
+import com.example.processservice.jpa.ApplyEntity;
 import com.example.processservice.jpa.WrittenEntity;
+
+import java.util.List;
 
 public interface WrittenService {
 
 //    필기전형자 생성
-    WrittenEntity createWrittenPerson(WrittenDto writtenDto);
+    WrittenEntity createWrittenPerson(List<WrittenDto> writtenEntity);
 
     Iterable<WrittenEntity> getWrittenListByJobsNoAndEmpNo(WrittenDto writtenDto);
     Iterable<WrittenEntity> checkPassOrNot(WrittenDto writtenDto);
@@ -15,5 +19,9 @@ public interface WrittenService {
 
 
 
+
     //Iterable<WrittenEntity> getWrittenAllCorpNo(String corpNo);
+
+    List<WrittenDto> getApplicantList(String jobsNo);
+
 }

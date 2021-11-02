@@ -1,6 +1,9 @@
 package com.example.processservice.service;
 
+import com.example.processservice.dto.ApplyDto;
 import com.example.processservice.dto.WrittenDto;
+import com.example.processservice.jpa.ApplyEntity;
+import com.example.processservice.jpa.ApplyRepository;
 import com.example.processservice.jpa.WrittenEntity;
 import com.example.processservice.jpa.WrittenRepository;
 import lombok.Data;
@@ -10,7 +13,10 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Data
 @Slf4j
@@ -18,22 +24,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class WrittenServiceImpl implements WrittenService{
 
     WrittenRepository writtenRepository;
+    ApplyRepository applyRepository;
 
     @Autowired
-    public WrittenServiceImpl(WrittenRepository writtenRepository){
+    public WrittenServiceImpl(WrittenRepository writtenRepository, ApplyRepository applyRepository){
         this.writtenRepository = writtenRepository;
+        this.applyRepository = applyRepository;
     }
 
     // 면접자 개인 생성 => 단체도 만들면 좋을듯
     @Override
-    public WrittenEntity createWrittenPerson(WrittenDto writtenDto){
+    public WrittenEntity createWrittenPerson(List<WrittenDto> writtenDtos){
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        WrittenEntity writtenEntity = mapper.map(writtenDto, WrittenEntity.class);
+        List<WrittenEntity> writtenList = writtenDtos.stream().map(p -> mapper.map(p, WrittenEntity.class)).collect(Collectors.toList());
 
-        writtenRepository.save(writtenEntity);
-        return writtenEntity;
+        writtenRepository.saveAll(writtenList);
+        return null;
     }
 
     @Override
@@ -63,6 +71,20 @@ public class WrittenServiceImpl implements WrittenService{
         return passList;
     }
 
+
+    //지원자 리스트를 지원자 테이블에서 가져온다.
+    @Override
+    public List<WrittenDto> getApplicantList(String jobsNo){
+
+        Iterable<ApplyEntity> applyEntities = applyRepository.findByJobsNo(jobsNo);
+
+        List<WrittenDto> result = new ArrayList<>();
+        applyEntities.forEach(v -> {
+            result.add(new ModelMapper().map(v, WrittenDto.class));
+        });
+
+        return result;
+    }
 
 
     // P, F 정하기

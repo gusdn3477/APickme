@@ -1,5 +1,6 @@
 package com.example.userservice.jpa;
 
+import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.entity.ApplyEntity;
 import org.springframework.data.repository.CrudRepository;
 
@@ -15,4 +16,5 @@ public interface ApplyRepository extends CrudRepository<ApplyEntity , String> {
 
     ApplyEntity findByUserId(String userId);
 
+    Iterable<ApplyEntity> findAllByUserId(String userId);
 }

@@ -1,21 +1,24 @@
 package com.example.processservice.jpa;
 
 import lombok.Data;
-import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
 @Entity
 @Table(name="interview")
+@EntityListeners(AuditingEntityListener.class)
 public class InterviewEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 50, unique = true)
     private Long id;
+
 
     @Column(nullable = false, length = 20, unique = true)
     private String applyNum; //ㅇ
@@ -26,6 +29,17 @@ public class InterviewEntity implements Serializable {
 
     @Column(nullable = false, length = 20)
     private String empNo; //ㅇ
+
+    @Column(nullable = false, length = 50, unique = true)
+    private String applyNum;
+
+//    @Id
+    @Column(nullable = false, length = 50, unique = true)
+    private String userId;
+
+    @Column(length = 50)
+    private String empNo;
+
     @Column
     private Date firstInterviewDate; //ㅇ
     @Column
@@ -46,8 +60,8 @@ public class InterviewEntity implements Serializable {
     @Column
     private String jobsNo; //ㅇ
 
-    @Column(nullable = false, updatable = false, insertable = false)
-    @ColumnDefault(value = "CURRENT_TIMESTAMP")
-    private Date createdAt;
+    @Column(insertable = false, updatable = false,
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
 }

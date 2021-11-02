@@ -1,8 +1,10 @@
 package com.example.processservice.controller;
 
 import com.example.processservice.client.JobServiceClient;
+import com.example.processservice.dto.ApplyDto;
 import com.example.processservice.dto.InterviewDto;
 import com.example.processservice.dto.WrittenDto;
+import com.example.processservice.jpa.ApplyEntity;
 import com.example.processservice.jpa.InterviewEntity;
 import com.example.processservice.jpa.JobEntity;
 import com.example.processservice.jpa.WrittenEntity;
@@ -184,7 +186,11 @@ public class ProcessController {
     }
 
 
+
     // 자신이 담당인 공고 가져오기 ->feign
+
+//    // 자신이 담당인 공고 가져오기 -> 이제 필요 없다!!!!!
+
 //    @GetMapping("/process/{empNo}")
 //    public ResponseEntity getJobs(@PathVariable String empNo){
 //        // Open feign
@@ -199,8 +205,26 @@ public class ProcessController {
 //        return ResponseEntity.status(HttpStatus.OK).body(jobList);
 //    }
 
-    // 자신이 담당하는 공고별 지원자 조회?
-    // 자신이 담당하는 공고별 지원자 점수 조회?
+
+    // 자신이 담당하는 공고별 지원자 조회?  -> 이제 필요 없다!!!!!
+    // 자신이 담당하는 공고별 지원자 점수 조회?   -> 이제 필요 없다!!!!!
+
+    // 공고마감시 필기전형으로 지원자 데이터 넘기기
+    @GetMapping("/process/{jobsNo}")
+    public ResponseEntity setWritten(@PathVariable String jobsNo){
+
+        List<WrittenDto> applyList= writtenService.getApplicantList(jobsNo);
+        writtenService.createWrittenPerson(applyList);
+
+        return ResponseEntity.status(HttpStatus.OK).body("데이터 옮기기 성공");
+    }
+
+    // 필기 채점하기 -> 직원의 id가 들어간다. -->  위에 만들어 놓은거에 그냥 들어올때 id넣어주면 될듯?
+    public ResponseEntity gradingId(){
+        return null;
+    }
+
+
 
     /* 기업코드를 기준으로 기업의 전체 진행중인 공고 리스트 GET*/
 //    @GetMapping("/process/{corpNo}")
