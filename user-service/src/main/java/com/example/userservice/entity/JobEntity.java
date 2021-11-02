@@ -21,9 +21,9 @@ public class JobEntity implements Serializable {
     @Column(nullable = false, length = 50, unique = true)
     private String jobsNo;
 
-    @Column(length = 10)
+    @Column(length = 50)
     private String corpNo;
-    @Column(length = 10)
+    @Column(length = 50)
     private String empNo;
     @Column(nullable= false, length = 100)
     private String jobsTitle;
