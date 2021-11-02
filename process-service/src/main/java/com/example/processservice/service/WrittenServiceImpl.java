@@ -111,6 +111,11 @@ public class WrittenServiceImpl implements WrittenService{
         return writtenEntity;
     }
 
+    // 필기 전형자 조회(합/불 여부 볼 수 있게끔)
+    public WrittenEntity getWrittenPersonByJobsNoAndUserId(WrittenDto writtenDto){
+
+        return getWrittenRepository().findByJobsNoAndUserId(writtenDto.getJobsNo(), writtenDto.getUserId());
+    }
 
 
 }
