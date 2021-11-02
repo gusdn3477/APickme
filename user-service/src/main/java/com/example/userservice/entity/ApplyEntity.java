@@ -3,7 +3,7 @@ package com.example.userservice.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener; // 이게 있어야 날짜 있어도 자동 생성 -> 진희님 말씀
 
 import javax.persistence.*;
 import java.util.Date;

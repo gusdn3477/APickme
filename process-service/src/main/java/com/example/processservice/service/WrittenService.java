@@ -11,13 +11,12 @@ public interface WrittenService {
 
 //    필기전형자 생성
     WrittenEntity createWrittenPerson(List<WrittenDto> writtenEntity);
+    WrittenEntity getWrittenPersonByJobsNoAndUserId(WrittenDto writtenDto);
 
     Iterable<WrittenEntity> getWrittenListByJobsNoAndEmpNo(WrittenDto writtenDto);
     Iterable<WrittenEntity> checkPassOrNot(WrittenDto writtenDto);
     Iterable<WrittenEntity> writtenScore(WrittenDto writtenDto);
     Iterable<WrittenEntity> getWrittenPassList(String writtenResult); // 합격자 리스트
-
-
 
 
     //Iterable<WrittenEntity> getWrittenAllCorpNo(String corpNo);

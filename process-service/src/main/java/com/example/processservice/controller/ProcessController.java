@@ -1,12 +1,9 @@
 package com.example.processservice.controller;
 
 import com.example.processservice.client.JobServiceClient;
-import com.example.processservice.dto.ApplyDto;
 import com.example.processservice.dto.InterviewDto;
 import com.example.processservice.dto.WrittenDto;
-import com.example.processservice.jpa.ApplyEntity;
 import com.example.processservice.jpa.InterviewEntity;
-import com.example.processservice.jpa.JobEntity;
 import com.example.processservice.jpa.WrittenEntity;
 import com.example.processservice.service.InterviewService;
 import com.example.processservice.service.WrittenService;
@@ -15,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -289,6 +285,18 @@ public class ProcessController {
 //        return result;
 //    }
 
+    /* 공고별 필기 합격자 상세보기(합불 여부 보려고 만듦) -현우  */
+    @GetMapping("/process/written/{jobsNo}/{userId}")
+    public ResponseEntity getWrittenList(@PathVariable("jobsNo") String jobsNo, @PathVariable("userId") String userId){
+
+        WrittenDto writtenDto = new WrittenDto();
+        writtenDto.setJobsNo(jobsNo);
+        writtenDto.setUserId(userId);
+        WrittenEntity writtenEntity = writtenService.getWrittenPersonByJobsNoAndUserId(writtenDto);
+
+        ResponseWritten result = new ModelMapper().map(writtenEntity, ResponseWritten.class);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 
     /* 공고별 1차 면접 리스트 보여주기 */
     @GetMapping("/process/first-interview/{jobsNo}")
@@ -301,7 +309,6 @@ public class ProcessController {
         });
 
         return result;
-
     }
 
     /* 공고별 2차 면접 리스트 보여주기*/

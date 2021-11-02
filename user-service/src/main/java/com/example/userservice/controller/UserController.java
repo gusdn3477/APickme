@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -49,7 +47,6 @@ public class UserController {
         return env.getProperty("greeting.message");
     }
 
-
     /*일반 사용자 회원가입*/
     @PostMapping("/users")
     public ResponseEntity createUser(@RequestBody @Valid RequestUser user) {
@@ -63,7 +60,6 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
-
 
 
     /*일반 사용자(지원자) 회원삭제(탈퇴)*/
@@ -128,6 +124,7 @@ public class UserController {
         });
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
     /* 공고별 지원내역 전체 보기*/
     @GetMapping("/apply/{jobsNo}")
     public ResponseEntity<List<ResponseApply>> getJobsNoApply(@PathVariable("jobsNo") String jobsNo){
