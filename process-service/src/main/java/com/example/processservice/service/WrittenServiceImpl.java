@@ -76,7 +76,7 @@ public class WrittenServiceImpl implements WrittenService{
     @Override
     public List<WrittenDto> getApplicantList(String jobsNo){
 
-        Iterable<ApplyEntity> applyEntities = applyRepository.findByJobsNo(jobsNo);
+        Iterable<ApplyEntity> applyEntities = applyRepository.findAllByJobsNo(jobsNo);
 
         List<WrittenDto> result = new ArrayList<>();
         applyEntities.forEach(v -> {

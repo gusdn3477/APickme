@@ -19,17 +19,6 @@ public class InterviewEntity implements Serializable {
     @Column(nullable = false, length = 50, unique = true)
     private Long id;
 
-
-    @Column(nullable = false, length = 20, unique = true)
-    private String applyNum; //ㅇ
-
-//    @Id
-    @Column(nullable = false, length = 20, unique = true)
-    private String userId; //ㅇ
-
-    @Column(nullable = false, length = 20)
-    private String empNo; //ㅇ
-
     @Column(nullable = false, length = 50, unique = true)
     private String applyNum;
 
