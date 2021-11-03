@@ -154,4 +154,59 @@ public class JobController {
 
 //    @DeleteMapping("/jobs/")
 //    public
+
+    /*달력 관련 추가 */
+    @GetMapping("jobsall/{corpNo}")
+    public List<ResponseCalender> getJobsByCorpNo(@PathVariable("corpNo") String corpNo){
+        List<ResponseCalender> jobCorpList = jobService.getCorpAllJob(corpNo);
+
+        List<ResponseCalender> result = new ArrayList<>();
+        jobCorpList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseCalender.class));
+        });
+
+        return result;
+    }
+
+    @GetMapping("/{corpNo}/jobsall")
+    public List<ResponseCalender> getCorpJobAll(@PathVariable("corpNo") String corpNo){
+        Iterable<JobEntity> jobEntities = jobService.getCorpAllJobs(corpNo);
+
+        List<ResponseCalender> jobList = new ArrayList<>();
+
+        int i = 0;
+        int j=3;
+        //while(jobEntities.iterator().hasNext())
+        while(j!=0){
+            String title = jobEntities.iterator().next().getJobsTitle();
+            Date start = jobEntities.iterator().next().getApplyStart();
+            Date end = jobEntities.iterator().next().getApplyEnd();
+            Date start2 = jobEntities.iterator().next().getIntv1Start();
+            Date end2 = jobEntities.iterator().next().getIntv1End();
+            Date start3 = jobEntities.iterator().next().getIntv2Start();
+            Date end3 = jobEntities.iterator().next().getIntv2End();
+            if(end3 == null){
+                end3 =start3;
+            }
+
+
+            ResponseCalender rc = new ResponseCalender();
+            rc.setTitle(title); rc.setStart(start); rc.setEnd(end);
+            jobList.add(rc);
+            i++;
+            ResponseCalender rc2 = new ResponseCalender();
+            rc2.setTitle(title); rc2.setStart(start2); rc2.setEnd(end2);
+            jobList.add(rc2);
+            i++;
+            ResponseCalender rc3 = new ResponseCalender();
+            rc3.setTitle(title); rc3.setStart(start3); rc3.setEnd(end3);
+            jobList.add(rc3);
+            i++;
+
+            j--;
+        }
+
+        return jobList;
+    }
+
 }

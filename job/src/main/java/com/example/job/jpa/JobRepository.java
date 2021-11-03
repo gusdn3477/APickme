@@ -1,11 +1,12 @@
 package com.example.job.jpa;
 
 import org.springframework.data.repository.*;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.Date;
 
-public interface JobRepository extends CrudRepository<JobEntity, String>{
-    Iterable<JobEntity> findAllByCorpNo(String corpNo);
+import java.util.Date;
+import java.util.List;
+
+public interface JobRepository<R, S> extends CrudRepository<JobEntity, String>{
+    List<JobEntity> findAllByCorpNo(String corpNo);
     JobEntity findByJobsNo(String jobsNo);
     Iterable<JobEntity> findByApplyStartBeforeAndApplyEndAfter(Date curTime, Date endTime);
     JobEntity findByJobsNoAndEmpNo(String jobsNo, String empNo);
