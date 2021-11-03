@@ -54,7 +54,8 @@ public class WrittenServiceImpl implements WrittenService{
     @Override
     public Iterable<WrittenEntity> writtenScore(WrittenDto writtenDto){
 
-        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoAndEmpNo(writtenDto.getJobsNo(), writtenDto.getEmpNo());
+        //Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoAndEmpNo(writtenDto.getJobsNo(), writtenDto.getEmpNo());
+        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNo(writtenDto.getJobsNo());
         if (writtenEntity == null){
             return null;
         }
@@ -66,9 +67,9 @@ public class WrittenServiceImpl implements WrittenService{
     }
 
     @Override
-    public Iterable<WrittenEntity> getWrittenPassList(String writtenResult){
+    public Iterable<WrittenEntity> getWrittenPassList(String writtenResult, String jobsNo){
 
-        Iterable<WrittenEntity> passList = writtenRepository.findByWrittenResult(writtenResult);
+        Iterable<WrittenEntity> passList = writtenRepository.findByWrittenResultAndJobsNo(writtenResult, jobsNo);
         return passList;
     }
 
@@ -93,7 +94,8 @@ public class WrittenServiceImpl implements WrittenService{
     public Iterable<WrittenEntity> checkPassOrNot(WrittenDto writtenDto){
 
         AtomicInteger cnt = new AtomicInteger(writtenDto.getCount());
-        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoAndEmpNoOrderByWrittenScoreDesc(writtenDto.getJobsNo(), writtenDto.getEmpNo());
+        //Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoAndEmpNoOrderByWrittenScoreDesc(writtenDto.getJobsNo(), writtenDto.getEmpNo());
+        Iterable<WrittenEntity> writtenEntity = writtenRepository.findByJobsNoOrderByWrittenScoreDesc(writtenDto.getJobsNo());
         if(writtenEntity == null){
             return null;
         }
@@ -106,6 +108,7 @@ public class WrittenServiceImpl implements WrittenService{
             else{
                 v.setWrittenResult(("F"));
             }
+            v.setEmpNo(writtenDto.getEmpNo());
         });
 
         writtenRepository.saveAll(writtenEntity);

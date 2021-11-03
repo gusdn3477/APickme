@@ -55,7 +55,7 @@ public class ProcessController {
     }
 
     @PutMapping("/process/written-test/score")
-    public ResponseEntity<List<ResponseWritten>> writtenTestScore(@RequestBody RequestPutWritten requestPutWritten){
+    public ResponseEntity<List<ResponseWritten>> writtenTestScore(@RequestBody RequestPutWrittenShort requestPutWritten){
 
         log.info("필기 자동 채점 서비스");
         ModelMapper mapper = new ModelMapper();
@@ -91,10 +91,10 @@ public class ProcessController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @PostMapping("/process/written-test")
-    public String writtenTest(){
+    @GetMapping("/process/written-test/{jobsNo}")
+    public String writtenTest(@PathVariable String jobsNo){
         //합격자 명단 받아서 interview 테이블에 데이터 넣기
-        Iterable<WrittenEntity> writtenList = writtenService.getWrittenPassList("P");
+        Iterable<WrittenEntity> writtenList = writtenService.getWrittenPassList("P", jobsNo);
         List<WrittenDto> result = new ArrayList<>();
         writtenList.forEach(v -> {
             result.add(new ModelMapper().map(v, WrittenDto.class));
