@@ -83,6 +83,9 @@ public class JobEntity implements Serializable {
     @Column(length = 100)
     private String workDetail;
 
+    @Column(columnDefinition = "varchar(5) default 'F'")
+    private String closed;
+
 
 
 

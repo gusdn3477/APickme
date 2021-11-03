@@ -23,4 +23,5 @@ public interface WrittenService {
 
     List<WrittenDto> getApplicantList(String jobsNo);
 
+    WrittenEntity setJobsClose(String jobsNo);
 }

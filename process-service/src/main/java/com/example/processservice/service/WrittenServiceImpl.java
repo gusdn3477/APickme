@@ -2,10 +2,7 @@ package com.example.processservice.service;
 
 import com.example.processservice.dto.ApplyDto;
 import com.example.processservice.dto.WrittenDto;
-import com.example.processservice.jpa.ApplyEntity;
-import com.example.processservice.jpa.ApplyRepository;
-import com.example.processservice.jpa.WrittenEntity;
-import com.example.processservice.jpa.WrittenRepository;
+import com.example.processservice.jpa.*;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -25,11 +23,14 @@ public class WrittenServiceImpl implements WrittenService{
 
     WrittenRepository writtenRepository;
     ApplyRepository applyRepository;
+    JobRepository jobRepository;
 
     @Autowired
-    public WrittenServiceImpl(WrittenRepository writtenRepository, ApplyRepository applyRepository){
+    public WrittenServiceImpl(WrittenRepository writtenRepository, ApplyRepository applyRepository,
+                              JobRepository jobRepository){
         this.writtenRepository = writtenRepository;
         this.applyRepository = applyRepository;
+        this.jobRepository = jobRepository;
     }
 
     // 면접자 개인 생성 => 단체도 만들면 좋을듯
@@ -117,5 +118,13 @@ public class WrittenServiceImpl implements WrittenService{
         return getWrittenRepository().findByJobsNoAndUserId(writtenDto.getJobsNo(), writtenDto.getUserId());
     }
 
+    //공고 마감표시하기 T/F
+    @Override
+    public WrittenEntity setJobsClose(String jobsNo) {
+        Optional<JobEntity> job = jobRepository.findById(jobsNo);
+        job.get().setClosed("T");
+        jobRepository.save(new ModelMapper().map(job.get(),JobEntity.class));
 
+        return null;
+    }
 }

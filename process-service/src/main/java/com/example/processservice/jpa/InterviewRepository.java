@@ -12,4 +12,5 @@ public interface InterviewRepository extends CrudRepository<InterviewEntity, Lon
     InterviewEntity findBySecondInterviewerAndApplyNum(String secondInterviewer, String applyNum);
 
     InterviewEntity findByApplyNumAndUserId(String applyNum, String userId);
+    InterviewEntity findByJobsNoAndUserId(String jobsNo, String userId);
 }

@@ -24,7 +24,7 @@ public class WrittenEntity implements Serializable {
     private String applyNum;
 
 //    @Id
-    @Column(nullable = false, length = 50, unique = true)
+    @Column(nullable = false, length = 50)
     private String userId;
 
     @Column( length = 50)
