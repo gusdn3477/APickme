@@ -29,5 +29,6 @@ public class ResponeJobByCorpNo {
     private Date intv2Start;
     private Date intv2End;
     private String workDetail;
+    private String closed;
 
 }

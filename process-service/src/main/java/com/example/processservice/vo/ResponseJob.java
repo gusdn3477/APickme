@@ -13,4 +13,5 @@ public class ResponseJob {
     private String employType;
     //일단은 string으로 받을예정
     private String applyEnd;
+    private String closed;
 }

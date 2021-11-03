@@ -20,4 +20,5 @@ public class ResponseInterview {
     private String secondInterviewer;
     private Integer secondInterviewScore;
     private String secondInterviewResult;
+
 }

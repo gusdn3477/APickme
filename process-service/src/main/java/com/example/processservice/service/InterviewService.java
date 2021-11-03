@@ -28,8 +28,8 @@ public interface InterviewService {
     /*2차 면접 합불 결정*/
     InterviewEntity secondInterviewResult(InterviewDto secondInterviewResultDto);
 
-
-
+    // 면접결과 확인하기 위해 사용
+    InterviewEntity getInvPersonByJobsNoAndUserId(InterviewDto interviewDto);
 
 //    Iterable<JobEntity> getJobsByCorpNo(String corpNo);
 }

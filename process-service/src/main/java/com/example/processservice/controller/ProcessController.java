@@ -205,12 +205,15 @@ public class ProcessController {
     // 자신이 담당하는 공고별 지원자 조회?  -> 이제 필요 없다!!!!!
     // 자신이 담당하는 공고별 지원자 점수 조회?   -> 이제 필요 없다!!!!!
 
-    // 공고마감시 필기전형으로 지원자 데이터 넘기기
+    // 공고마감시 필기전형으로 지원자 데이터 넘기기(공고마감) -- 진희
     @GetMapping("/process/{jobsNo}")
     public ResponseEntity setWritten(@PathVariable String jobsNo){
 
+        //가져와서 넣어주고
         List<WrittenDto> applyList= writtenService.getApplicantList(jobsNo);
         writtenService.createWrittenPerson(applyList);
+        //마감 T 표시하기
+        writtenService.setJobsClose(jobsNo);
 
         return ResponseEntity.status(HttpStatus.OK).body("데이터 옮기기 성공");
     }
@@ -323,6 +326,19 @@ public class ProcessController {
 
         return result;
 
+    }
+
+    /* 공고별 면접 1차 합격자 상세보기(합불 여부 보려고 만듦) -진  */
+    @GetMapping("/process/interview/{jobsNo}/{userId}")
+    public ResponseEntity getInv1List(@PathVariable("jobsNo") String jobsNo, @PathVariable("userId") String userId){
+
+        InterviewDto interviewDto = new InterviewDto();
+        interviewDto.setJobsNo(jobsNo);
+        interviewDto.setUserId(userId);
+        InterviewEntity interviewEntity = interviewService.getInvPersonByJobsNoAndUserId(interviewDto);
+
+        ResponseInterview result = new ModelMapper().map(interviewEntity, ResponseInterview.class);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }

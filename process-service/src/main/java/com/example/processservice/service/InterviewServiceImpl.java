@@ -155,7 +155,9 @@ public class InterviewServiceImpl implements InterviewService {
         return interviewEntity;
     }
 
-
-
-
+    // 면접 전형자 조회(합/불 여부 볼 수 있게끔)
+    @Override
+    public InterviewEntity getInvPersonByJobsNoAndUserId(InterviewDto interviewDto) {
+        return getInterviewRepository().findByJobsNoAndUserId(interviewDto.getJobsNo(),interviewDto.getUserId());
+    }
 }
