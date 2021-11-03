@@ -26,6 +26,7 @@ public class RequestJobInfo {
     private Date intv1End;
     private Date intv2Start;
     private Date intv2End;
+    private String closed;
 
     //밑에는 전형 관련
     private Float writtenMultiple;

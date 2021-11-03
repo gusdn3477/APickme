@@ -25,6 +25,7 @@ public class JobDto implements Serializable{
     private Date intv1End;
     private Date intv2Start;
     private Date intv2End2;
+    private String closed;
 
 
 
