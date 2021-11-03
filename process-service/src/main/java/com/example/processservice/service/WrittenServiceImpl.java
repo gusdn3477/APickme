@@ -67,9 +67,9 @@ public class WrittenServiceImpl implements WrittenService{
     }
 
     @Override
-    public Iterable<WrittenEntity> getWrittenPassList(String writtenResult){
+    public Iterable<WrittenEntity> getWrittenPassList(String writtenResult, String jobsNo){
 
-        Iterable<WrittenEntity> passList = writtenRepository.findByWrittenResult(writtenResult);
+        Iterable<WrittenEntity> passList = writtenRepository.findByWrittenResultAndJobsNo(writtenResult, jobsNo);
         return passList;
     }
 
