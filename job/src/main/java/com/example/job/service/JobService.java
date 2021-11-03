@@ -4,6 +4,7 @@ import com.example.job.dto.JobDto;
 import com.example.job.dto.JobProcessDto;
 import com.example.job.jpa.JobEntity;
 import com.example.job.jpa.JobProcessEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -16,8 +17,14 @@ public interface JobService {
     JobEntity getJob(String jobsNo);
     Iterable<JobEntity> getApplyAvailable(Date curTime,Date endTime);
     JobEntity updateJob(JobDto jobDto, JobProcessDto jobProcessDto);
+
+    @Transactional
     void deleteJob(String jobsNo);
+
+    @Transactional
     void deleteJobProcess(String jobsNo);
     JobProcessEntity updateProcess(JobProcessDto jobProcessDto);
+
+    JobProcessEntity getProcess(String jobsNo);
 //    필요한 서비스 추가 예정
 }

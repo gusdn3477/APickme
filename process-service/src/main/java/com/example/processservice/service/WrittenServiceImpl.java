@@ -46,6 +46,11 @@ public class WrittenServiceImpl implements WrittenService{
     }
 
     @Override
+    public Iterable<WrittenEntity> getWrittenListByJobsNo(String jobsNo){
+        return writtenRepository.findByJobsNo(jobsNo);
+    }
+
+    @Override
     public Iterable<WrittenEntity> getWrittenListByJobsNoAndEmpNo(WrittenDto writtenDto){ // 공고번호에 해당하는 지원자 조회
         return writtenRepository.findByJobsNoAndEmpNo(writtenDto.getJobsNo(), writtenDto.getEmpNo());
     }
@@ -60,6 +65,7 @@ public class WrittenServiceImpl implements WrittenService{
             return null;
         }
         writtenEntity.forEach(v -> {
+            v.setEmpNo(writtenDto.getEmpNo()); // 일단 반복되더라도 이렇게 하려고 합니다.yy
             v.setWrittenScore((int)(Math.random()*101));
         });
         writtenRepository.saveAll(writtenEntity);

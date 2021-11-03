@@ -18,7 +18,7 @@ public interface WrittenService {
     Iterable<WrittenEntity> writtenScore(WrittenDto writtenDto);
     Iterable<WrittenEntity> getWrittenPassList(String writtenResult, String jobsNo); // 합격자 리스트
 
-
+    Iterable<WrittenEntity> getWrittenListByJobsNo(String jobsNo);
     //Iterable<WrittenEntity> getWrittenAllCorpNo(String corpNo);
 
     List<WrittenDto> getApplicantList(String jobsNo);

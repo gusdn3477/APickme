@@ -5,10 +5,7 @@ import com.example.job.dto.JobProcessDto;
 import com.example.job.jpa.JobEntity;
 import com.example.job.jpa.JobProcessEntity;
 import com.example.job.service.JobService;
-import com.example.job.vo.RequestDeleteJob;
-import com.example.job.vo.RequestJobDetail;
-import com.example.job.vo.RequestJobInfo;
-import com.example.job.vo.ResponseJob;
+import com.example.job.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -144,6 +141,15 @@ public class JobController {
             result = "삭제 성공";
         }
         return result;
+    }
+
+//    여기 안했습니다. 내일 할 예정
+    @GetMapping("/jobprocess/{jobsNo}")
+    public ResponseEntity<ResponseJobProcess> getJobProcess(@PathVariable("jobsNo") String jobsNo){
+
+        JobProcessEntity jobProcessEntity = jobService.getProcess(jobsNo);
+        ResponseJobProcess responseJobProcess = new ModelMapper().map(jobProcessEntity, ResponseJobProcess.class);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJobProcess);
     }
 
 //    @DeleteMapping("/jobs/")
