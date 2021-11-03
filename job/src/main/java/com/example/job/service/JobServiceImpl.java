@@ -116,17 +116,18 @@ public class JobServiceImpl implements JobService{
     @Override
     @Transactional
     public void deleteJob(String jobsNo){
-
         jobRepository.deleteByJobsNo(jobsNo);
         jobProcessRepository.deleteByJobsNo(jobsNo);
-        }
+    }
 
     @Override
     @Transactional
-    public void deleteJobProcess(String jobsNo){jobRepository.deleteByJobsNo(jobsNo);}
+    public void deleteJobProcess(String jobsNo){
+        jobRepository.deleteByJobsNo(jobsNo);
+    }
 
-
-
-
-
+    @Override
+    public JobProcessEntity getProcess(String jobsNo){
+        return jobProcessRepository.findByJobsNo(jobsNo);
+    }
 }

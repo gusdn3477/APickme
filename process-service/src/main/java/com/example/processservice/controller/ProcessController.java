@@ -62,9 +62,9 @@ public class ProcessController {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 //
         WrittenDto writtenDto = mapper.map(requestPutWritten, WrittenDto.class);
-
         writtenService.writtenScore(writtenDto);
-        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNoAndEmpNo(writtenDto);
+        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(writtenDto.getJobsNo());
+//        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNoAndEmpNo(writtenDto);
         List<ResponseWritten> result = new ArrayList<>();
         writtenList.forEach(v -> {
             result.add(new ModelMapper().map(v, ResponseWritten.class));
@@ -288,7 +288,7 @@ public class ProcessController {
 //        return result;
 //    }
 
-    /* 공고별 필기 합격자 상세보기(합불 여부 보려고 만듦) -현우  */
+    /* 공고별 필기 합격자 상세보기(합불 여부 보려고 만듦) -현우  사실 userId대신 empNo긴 합니다.. 일단 추후에 수정하져..*/
     @GetMapping("/process/written/{jobsNo}/{userId}")
     public ResponseEntity getWrittenList(@PathVariable("jobsNo") String jobsNo, @PathVariable("userId") String userId){
 
@@ -299,6 +299,18 @@ public class ProcessController {
 
         ResponseWritten result = new ModelMapper().map(writtenEntity, ResponseWritten.class);
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    /* 공고별 필기 리스트 보여주기 */
+    @GetMapping("/process/written/{jobsNo}")
+    public List<ResponseWritten> getWrittenList(@PathVariable("jobsNo") String jobsNo){
+        Iterable<WrittenEntity> writtenList = writtenService.getWrittenListByJobsNo(jobsNo);
+        List<ResponseWritten> result = new ArrayList<>();
+        writtenList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseWritten.class));
+        });
+
+        return result;
     }
 
     /* 공고별 1차 면접 리스트 보여주기 */
