@@ -55,7 +55,7 @@ public class ProcessController {
     }
 
     @PutMapping("/process/written-test/score")
-    public ResponseEntity<List<ResponseWritten>> writtenTestScore(@RequestBody RequestPutWritten requestPutWritten){
+    public ResponseEntity<List<ResponseWritten>> writtenTestScore(@RequestBody RequestPutWrittenShort requestPutWritten){
 
         log.info("필기 자동 채점 서비스");
         ModelMapper mapper = new ModelMapper();
