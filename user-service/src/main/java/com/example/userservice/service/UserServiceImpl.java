@@ -257,6 +257,13 @@ public class UserServiceImpl implements UserService {
         return applyDto;
     }
 
+    // 지원한 모든 지원서 가져오기
+    @Override
+    public Iterable<ApplyEntity> getApplys(String userId) {
+        Iterable<ApplyEntity> applyEntities = applyRepository.findAllByUserId(userId);
+        return applyEntities;
+    }
+
     @Override
     public void findPwd(String email) {
 

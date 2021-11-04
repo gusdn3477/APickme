@@ -50,5 +50,7 @@ public interface UserService extends UserDetailsService {
     boolean checkEmail(String email);
 
     List<ResponseJobShort> getJobsByUserId(String userId);
+
+    Iterable<ApplyEntity> getApplys(String userId);
 }
 
