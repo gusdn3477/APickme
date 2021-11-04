@@ -5,10 +5,7 @@ import com.example.job.dto.JobProcessDto;
 import com.example.job.jpa.JobEntity;
 import com.example.job.jpa.JobProcessEntity;
 import com.example.job.service.JobService;
-import com.example.job.vo.RequestDeleteJob;
-import com.example.job.vo.RequestJobDetail;
-import com.example.job.vo.RequestJobInfo;
-import com.example.job.vo.ResponseJob;
+import com.example.job.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -146,6 +143,70 @@ public class JobController {
         return result;
     }
 
+//    여기 안했습니다. 내일 할 예정
+    @GetMapping("/jobprocess/{jobsNo}")
+    public ResponseEntity<ResponseJobProcess> getJobProcess(@PathVariable("jobsNo") String jobsNo){
+
+        JobProcessEntity jobProcessEntity = jobService.getProcess(jobsNo);
+        ResponseJobProcess responseJobProcess = new ModelMapper().map(jobProcessEntity, ResponseJobProcess.class);
+        return ResponseEntity.status(HttpStatus.OK).body(responseJobProcess);
+    }
+
 //    @DeleteMapping("/jobs/")
 //    public
+
+    /*달력 관련 추가 */
+    @GetMapping("jobsall/{corpNo}")
+    public List<ResponseCalender> getJobsByCorpNo(@PathVariable("corpNo") String corpNo){
+        List<ResponseCalender> jobCorpList = jobService.getCorpAllJob(corpNo);
+
+        List<ResponseCalender> result = new ArrayList<>();
+        jobCorpList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseCalender.class));
+        });
+
+        return result;
+    }
+
+    @GetMapping("/{corpNo}/jobsall")
+    public List<ResponseCalender> getCorpJobAll(@PathVariable("corpNo") String corpNo){
+        Iterable<JobEntity> jobEntities = jobService.getCorpAllJobs(corpNo);
+
+        List<ResponseCalender> jobList = new ArrayList<>();
+
+        int i = 0;
+        int j=3;
+        //while(jobEntities.iterator().hasNext())
+        while(j!=0){
+            String title = jobEntities.iterator().next().getJobsTitle();
+            Date start = jobEntities.iterator().next().getApplyStart();
+            Date end = jobEntities.iterator().next().getApplyEnd();
+            Date start2 = jobEntities.iterator().next().getIntv1Start();
+            Date end2 = jobEntities.iterator().next().getIntv1End();
+            Date start3 = jobEntities.iterator().next().getIntv2Start();
+            Date end3 = jobEntities.iterator().next().getIntv2End();
+            if(end3 == null){
+                end3 =start3;
+            }
+
+
+            ResponseCalender rc = new ResponseCalender();
+            rc.setTitle(title); rc.setStart(start); rc.setEnd(end);
+            jobList.add(rc);
+            i++;
+            ResponseCalender rc2 = new ResponseCalender();
+            rc2.setTitle(title); rc2.setStart(start2); rc2.setEnd(end2);
+            jobList.add(rc2);
+            i++;
+            ResponseCalender rc3 = new ResponseCalender();
+            rc3.setTitle(title); rc3.setStart(start3); rc3.setEnd(end3);
+            jobList.add(rc3);
+            i++;
+
+            j--;
+        }
+
+        return jobList;
+    }
+
 }
