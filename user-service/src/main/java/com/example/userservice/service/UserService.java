@@ -4,6 +4,7 @@ import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.ApplyEntity;
 import com.example.userservice.entity.UserEntity;
+import com.example.userservice.vo.RequestUserApply;
 import com.example.userservice.vo.ResponseJobShort;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -50,5 +51,9 @@ public interface UserService extends UserDetailsService {
     boolean checkEmail(String email);
 
     List<ResponseJobShort> getJobsByUserId(String userId);
+
+    Iterable<ApplyEntity> getApplys(String userId);
+
+    ApplyDto getApply(RequestUserApply info);
 }
 

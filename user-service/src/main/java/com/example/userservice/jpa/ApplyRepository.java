@@ -17,4 +17,6 @@ public interface ApplyRepository extends CrudRepository<ApplyEntity , String> {
     ApplyEntity findByUserId(String userId);
 
     Iterable<ApplyEntity> findAllByUserId(String userId);
+
+    ApplyEntity findByUserIdAndJobsNo(String userId, String jobsNo);
 }
