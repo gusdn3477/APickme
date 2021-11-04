@@ -269,9 +269,9 @@ public class UserController {
         return false;
     }
 
-    // 자신이 지원한 지원정보 전체 목록으로 불러오기  - 진희
-    @GetMapping("users/apply/{userId}")
-    public List<ResponseApply> getApplyByUserId(@PathVariable("userId") String userId){
+    // 자신이 지원한 지원정보 전체 목록으로 불러오기  - 진희 --> 전체가져오는건 필요없을거 같고
+    @GetMapping("users/applys/{userId}")
+    public List<ResponseApply> getApplysByUserId(@PathVariable("userId") String userId){
         Iterable<ApplyEntity> applysList = userService.getApplys(userId);
 
         List<ResponseApply> result = new ArrayList<>();
@@ -281,6 +281,15 @@ public class UserController {
         });
         return result;
     }
+
+    // 공고별 자신이 지원한 지원상세 모달 용 1개 가져오는것임 - 진희
+    @PostMapping("users/apply/detail")
+    public ResponseApply getApplyByUserId(@RequestBody RequestUserApply info){
+        ApplyDto apply = userService.getApply(info);
+
+        return new ModelMapper().map(apply, ResponseApply.class);
+    }
+
 
     /*내가 지원한 전체 공고(전형) 내역 리스트로 보기 ( 관리자+ 인사팀전체 + 자기자신만 )
     * 기존에 있었는데 무슨 용도인지 몰라서 바꿨었는데 다시 살려놓겠습니다 일단은 */
