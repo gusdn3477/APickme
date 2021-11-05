@@ -160,4 +160,36 @@ public class InterviewServiceImpl implements InterviewService {
     public InterviewEntity getInvPersonByJobsNoAndUserId(InterviewDto interviewDto) {
         return getInterviewRepository().findByJobsNoAndUserId(interviewDto.getJobsNo(),interviewDto.getUserId());
     }
+
+
+    //추가된 부분
+    @Override
+    public InterviewEntity scoreFirstInterview(InterviewDto interviewDto){
+
+        InterviewEntity interviewEntity = interviewRepository.findByApplyNum(interviewDto.getApplyNum());
+        if(interviewEntity == null){
+            return null;
+        }
+        interviewEntity.setFirstInterviewScore(interviewDto.getFirstInterviewScore());
+        interviewEntity.setFirstInterviewer(interviewDto.getFirstInterviewer());
+        interviewRepository.save(interviewEntity);
+
+        return interviewEntity;
+    }
+
+    @Override
+    public InterviewEntity scoreSecondInterview(InterviewDto interviewDto){
+
+        InterviewEntity interviewEntity = interviewRepository.findByApplyNum(interviewDto.getApplyNum());
+        if(interviewEntity == null){
+            return null;
+        }
+        interviewEntity.setSecondInterviewScore(interviewDto.getSecondInterviewScore());
+        interviewEntity.setSecondInterviewer(interviewDto.getSecondInterviewer());
+        interviewRepository.save(interviewEntity);
+
+        return interviewEntity;
+
+    }
+
 }

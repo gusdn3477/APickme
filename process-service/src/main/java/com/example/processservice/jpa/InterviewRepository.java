@@ -11,6 +11,8 @@ public interface InterviewRepository extends CrudRepository<InterviewEntity, Lon
     InterviewEntity findByFirstInterviewerAndApplyNum(String firstInterviewer, String applyNum); // 이 부분을 지원번호로 바꿔야 할듯?
     InterviewEntity findBySecondInterviewerAndApplyNum(String secondInterviewer, String applyNum);
 
+    //바뀐 부분
+
     InterviewEntity findByApplyNumAndUserId(String applyNum, String userId);
     InterviewEntity findByJobsNoAndUserId(String jobsNo, String userId);
 }
