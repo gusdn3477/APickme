@@ -31,5 +31,9 @@ public interface InterviewService {
     // 면접결과 확인하기 위해 사용
     InterviewEntity getInvPersonByJobsNoAndUserId(InterviewDto interviewDto);
 
+    //추가된 부분
+    InterviewEntity scoreFirstInterview(InterviewDto interviewDto);
+    InterviewEntity scoreSecondInterview(InterviewDto interviewDto);
+
 //    Iterable<JobEntity> getJobsByCorpNo(String corpNo);
 }
