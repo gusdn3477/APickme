@@ -246,19 +246,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(okMsg);
     }
 
-    /*내가 지원한 전체 공고(전형) 내역 리스트로 보기 ( 관리자+ 인사팀전체 + 자기자신만 )*/
+
     /*-------------내가 지원한 회사의 공고들 리스트로 가져오기------------*/
     @GetMapping("/users/jobs/{userId}")
     public ResponseEntity getApplyJobs(@PathVariable("userId") String userId){
-        List<ResponseJobShort> applyJobShortList = userService.getJobsByUserId(userId);
-        //userService.getJob
-//
-//        List<ResponseApply> result = new ArrayList<>();
-//
-//        applysList.forEach(v -> {
-//            result.add(new ModelMapper().map(v, ResponseApply.class));
-//        });
 
+        List<ResponseJobShort> applyJobShortList = userService.getJobsByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(applyJobShortList);
     }
 
@@ -279,6 +272,7 @@ public class UserController {
     }
 
 
+
     /*공고별 지원자수 count*/
     @GetMapping("/apply/count/{corpNo}")
     public List<ResponseApplyCount> getApplysByCorpNo(@PathVariable("corpNo") String corpNo){
@@ -289,6 +283,43 @@ public class UserController {
 
         return jobList;
 
+    }
+
+
+    // 자신이 지원한 지원정보 전체 목록으로 불러오기  - 진희 --> 전체가져오는건 필요없을거 같고
+    @GetMapping("users/applys/{userId}")
+    public List<ResponseApply> getApplysByUserId(@PathVariable("userId") String userId){
+        Iterable<ApplyEntity> applysList = userService.getApplys(userId);
+
+        List<ResponseApply> result = new ArrayList<>();
+
+        applysList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseApply.class));
+        });
+        return result;
+    }
+
+    // 공고별 자신이 지원한 지원상세 모달 용 1개 가져오는것임 - 진희
+    @PostMapping("users/apply/detail")
+    public ResponseApply getApplyByUserId(@RequestBody RequestUserApply info){
+        ApplyDto apply = userService.getApply(info);
+
+        return new ModelMapper().map(apply, ResponseApply.class);
+    }
+
+
+    /*내가 지원한 전체 공고(전형) 내역 리스트로 보기 ( 관리자+ 인사팀전체 + 자기자신만 )
+    * 기존에 있었는데 무슨 용도인지 몰라서 바꿨었는데 다시 살려놓겠습니다 일단은 */
+    @GetMapping("users/apply/{userId}")
+    public List<ResponseApply> getApply(@PathVariable("userId") String userId){
+        Iterable<ApplyEntity> applysList = userService.getApplyByAll();
+
+        List<ResponseApply> result = new ArrayList<>();
+
+        applysList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseApply.class));
+        });
+        return result;
     }
 
 }

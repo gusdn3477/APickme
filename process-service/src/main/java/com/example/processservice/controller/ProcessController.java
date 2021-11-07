@@ -135,7 +135,8 @@ public class ProcessController {
         interviewDto.setApplyNum(requestPutInterview.getApplyNum());
         interviewDto.setFirstInterviewScore(requestPutInterview.getFirstInterviewScore());
 
-        InterviewEntity interviewEntity = interviewService.scoreFirstInterviewer(interviewDto);
+//        InterviewEntity interviewEntity = interviewService.scoreFirstInterviewer(interviewDto);
+        InterviewEntity interviewEntity = interviewService.scoreFirstInterview(interviewDto);
         if(interviewEntity == null){
             return "1차 면접 채점 실패!";
         }
@@ -156,7 +157,8 @@ public class ProcessController {
         interviewDto.setFirstInterviewer(requestPutInterview.getSecondInterviewer());
         interviewDto.setApplyNum(requestPutInterview.getApplyNum());
 
-        InterviewEntity interviewEntity = interviewService.allocateSecondInterviewer(interviewDto);
+//        InterviewEntity interviewEntity = interviewService.allocateSecondInterviewer(interviewDto);
+        InterviewEntity interviewEntity = interviewService.scoreSecondInterview(interviewDto);
         if(interviewEntity == null){
             return "2차 면접관 할당 실패!";
         }

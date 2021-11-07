@@ -12,6 +12,8 @@ import com.example.userservice.jpa.JpajpaRepository;
 import com.example.userservice.jpa.UserRepository;
 import com.example.userservice.jpa.ApplyRepository;
 import com.example.userservice.vo.ResponseApplyCount;
+import com.example.userservice.vo.RequestUserApply;
+import com.example.userservice.vo.ResponseJobDetail;
 import com.example.userservice.vo.ResponseJobShort;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -261,6 +263,19 @@ public class UserServiceImpl implements UserService {
         ApplyDto applyDto = mapper.map(applyEntity,ApplyDto.class);
 
         return applyDto;
+    }
+
+    // 지원한 모든 지원서 가져오기
+    @Override
+    public Iterable<ApplyEntity> getApplys(String userId) {
+        Iterable<ApplyEntity> applyEntities = applyRepository.findAllByUserId(userId);
+        return applyEntities;
+    }
+
+    //지원서 가져오기
+    public ApplyDto getApply(RequestUserApply info){
+       ApplyEntity applyEntity = applyRepository.findByUserIdAndJobsNo(info.getUserId(), info.getJobsNo());
+       return new ModelMapper().map(applyEntity, ApplyDto.class);
     }
 
     @Override
