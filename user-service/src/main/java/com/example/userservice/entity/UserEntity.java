@@ -34,6 +34,8 @@ public class UserEntity {
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private Date registerDate;
 
+    private String id;
+
     @Builder
     public UserEntity(String applyName, String email){
         this.applyName = applyName;

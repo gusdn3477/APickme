@@ -178,5 +178,22 @@ public class JobServiceImpl implements JobService{
         return jobList;
     }
 
+    @Override
+    public List<ResponseCalender> getAllJobss() {
+        List<JobEntity> jobEntities = jobJpaRepository.findAll();
+        List<ResponseCalender> jobList = new ArrayList<>();
+
+        for(int i =0;i<jobEntities.size();i++){
+            String title = jobEntities.get(i).getJobsTitle();
+            Date start = jobEntities.get(i).getApplyStart();
+            Date end = jobEntities.get(i).getApplyEnd();
+
+            ResponseCalender rc = new ResponseCalender();
+            rc.setTitle(title+" 지원기간"); rc.setStart(start); rc.setEnd(end);
+            jobList.add(rc);
+        }
+        return jobList;
+    }
+
 
 }
