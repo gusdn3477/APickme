@@ -6,5 +6,5 @@ public interface JobJpaRepository extends JobRepository<JobEntity, String> {
 
     List<JobEntity> findAllByCorpNo(String corpNo);
 
-
+    List<JobEntity> findAll();
 }

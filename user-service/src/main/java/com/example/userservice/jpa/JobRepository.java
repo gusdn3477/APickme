@@ -11,6 +11,10 @@ public interface JobRepository extends CrudRepository<JobEntity, String>{
 
 
     Iterable<JobEntity> findAllByJobsNoIn(List<String> applyJobsList);
+
+
+
+    JobEntity findJobsTitleByjobsNo(String jobsNo);
 }
 //아직 모집중인 공고 보기
 //전체 공고 보기

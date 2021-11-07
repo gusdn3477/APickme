@@ -1,15 +1,17 @@
 package com.example.userservice.service;
 
 import com.example.userservice.client.OrderServiceClient;
+import com.example.userservice.dto.ApplyCountDto;
 import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.ApplyEntity;
 import com.example.userservice.entity.JobEntity;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.jpa.JobRepository;
+import com.example.userservice.jpa.JpajpaRepository;
 import com.example.userservice.jpa.UserRepository;
 import com.example.userservice.jpa.ApplyRepository;
-import com.example.userservice.vo.ResponseJobDetail;
+import com.example.userservice.vo.ResponseApplyCount;
 import com.example.userservice.vo.ResponseJobShort;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -27,8 +29,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
@@ -42,7 +46,7 @@ public class UserServiceImpl implements UserService {
     CircuitBreakerFactory circuitBreakerFactory;
     JavaMailSender mailSender;
     JobRepository jobRepository;
-
+    JpajpaRepository jpajpaRepository;
 //    @Autowired
 //    JavaMailSender mailSender;
 
@@ -54,7 +58,8 @@ public class UserServiceImpl implements UserService {
                            OrderServiceClient orderServiceClient,
                            CircuitBreakerFactory circuitBreakerFactory,
                            ApplyRepository applyRepository, JavaMailSender javaMailSender,
-                           JobRepository jobRepository) {
+                           JobRepository jobRepository,
+                           JpajpaRepository jpajpaRepository) {
         this.userRepository = userRepository;
         this.applyRepository = applyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -64,6 +69,7 @@ public class UserServiceImpl implements UserService {
         this.circuitBreakerFactory = circuitBreakerFactory;
         this.mailSender = javaMailSender;
         this.jobRepository = jobRepository;
+        this.jpajpaRepository = jpajpaRepository;
     }
 
     @Override
@@ -323,4 +329,123 @@ public class UserServiceImpl implements UserService {
         });
         return jobList;
     }
+
+    /* 기업의 공고별 지원자 카운트 하기 위한 것 */
+//    @Override
+//    public List<ResponseApplyCount> getApplysByCorpNo(String corpNo) {
+//
+//        /*기업 번호, 공고번호로 applys 테이블에서 Entitiy를 조회해온 리스트*/
+//        List<ApplyEntity> applyEntities = jpajpaRepository.findAllByCorpNo(corpNo);
+//        int jobsApplyCount = applyEntities.size(); //같은기업 총 공고지원 개수
+//       //    기업 > 공고 > 지원
+//
+//        JobEntity jentity;
+//
+//       List<ResponseApplyCount> list = new ArrayList<>();
+//
+//        ResponseApplyCount rac2 = new ResponseApplyCount();
+//
+//        JobEntity j2entity;
+//        String jobsNo2 = applyEntities.get(0).getJobsNo();
+//         j2entity = jobRepository.findJobsTitleByjobsNo(jobsNo2);
+//        String name2 = j2entity.getJobsTitle();
+//
+//        rac2.setName(name2); rac2.setUv(1);
+//        list.add(rac2);
+//
+//    if(applyEntities.size() >=2) {
+//        //공고 no , 공고제목 뽑아오기 - > 이러면
+//        for (int i = 1; i < applyEntities.size(); i++) {
+//            String jobsNo = applyEntities.get(i).getJobsNo();
+//            jentity = jobRepository.findJobsTitleByjobsNo(jobsNo);
+//            String name = jentity.getJobsTitle();
+//            System.out.println(jobsNo + "  :  " + name);
+////entity 개수만큼 0번부터 jobsNo를 가져와서 그 jobsNo와 jobsNo의 title을 가져온다.
+//
+//
+//
+//            boolean temp = true;
+//            for (int j = 0; j < list.size(); j++) {
+//                if (list.get(j).getName().equals(name)) {
+//                    list.get(j).setUv(list.get(j).getUv() + 1);
+//                    temp = false;
+//                    break;
+//                }
+//                else if(temp == true){
+//                    ResponseApplyCount rac = new ResponseApplyCount();
+//                    rac.setName(name); rac.setUv(1);
+//                    list.add(rac);
+//                    temp = false;
+//                    break;
+//                }
+//            }
+//
+//
+//        }
+//
+//    }//if
+//
+//        return list;
+//    }
+
+    /* 기업의 공고별 지원자 카운트 하기 위한 것 */
+    @Override
+    public List<ResponseApplyCount> getApplysByCorpNo(String corpNo) {
+
+        /*기업 번호, 공고번호로 applys 테이블에서 Entitiy를 조회해온 리스트*/
+        List<ApplyEntity> applyEntities = jpajpaRepository.findAllByCorpNo(corpNo);
+        int jobsApplyCount = applyEntities.size(); //같은기업 총 공고지원 개수
+        //    기업 > 공고 > 지원
+
+        JobEntity jentity;
+
+        List<ResponseApplyCount> list = new ArrayList<>();
+
+        ResponseApplyCount rac2 = new ResponseApplyCount();
+
+        JobEntity j2entity;
+        String jobsNo2 = applyEntities.get(0).getJobsNo();
+        j2entity = jobRepository.findJobsTitleByjobsNo(jobsNo2);
+        String name2 = j2entity.getJobsTitle();
+
+        rac2.setName(name2); rac2.setUv(1);
+        list.add(rac2);
+
+        if(applyEntities.size() >=2) {
+            //공고 no , 공고제목 뽑아오기 - > 이러면
+            for (int i = 1; i < applyEntities.size(); i++) {
+                String jobsNo = applyEntities.get(i).getJobsNo();
+                jentity = jobRepository.findJobsTitleByjobsNo(jobsNo);
+                String name = jentity.getJobsTitle();
+                System.out.println(jobsNo + "  :  " + name);
+//entity 개수만큼 0번부터 jobsNo를 가져와서 그 jobsNo와 jobsNo의 title을 가져온다.
+
+
+
+                boolean temp = true;
+                for (int j = 0; j < list.size(); j++) {
+                    if (list.get(j).getName().equals(name)) {
+                        list.get(j).setUv(list.get(j).getUv() + 1);
+                        temp = false;
+                        break;
+                    }
+                }
+
+                 if(temp == true){
+                    ResponseApplyCount rac = new ResponseApplyCount();
+                    rac.setName(name); rac.setUv(1);
+                    list.add(rac);
+                    temp = false;
+
+                }
+
+            }
+
+        }//if
+
+
+
+        return list;
+    }
+
 }

@@ -31,5 +31,7 @@ public interface JobService {
 
     /*달력 관련*/
     List<ResponseCalender> getCorpAllJob(String corpNo);
+    /*달력 관련*/
+    List<ResponseCalender> getAllJobss();
 //    필요한 서비스 추가 예정
 }

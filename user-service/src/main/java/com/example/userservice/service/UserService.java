@@ -4,11 +4,10 @@ import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.ApplyEntity;
 import com.example.userservice.entity.UserEntity;
+import com.example.userservice.vo.ResponseApplyCount;
 import com.example.userservice.vo.ResponseJobShort;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -50,5 +49,8 @@ public interface UserService extends UserDetailsService {
     boolean checkEmail(String email);
 
     List<ResponseJobShort> getJobsByUserId(String userId);
+
+    /* 공고별 apply세기*/
+    List<ResponseApplyCount> getApplysByCorpNo(String corpNo);
 }
 

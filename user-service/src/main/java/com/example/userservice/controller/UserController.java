@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -26,6 +27,7 @@ public class UserController {
 
     private final Environment env;
     private final UserService userService;
+
 
     @Autowired
     public UserController(Environment env, UserService userService) {
@@ -275,4 +277,18 @@ public class UserController {
 
         return false;
     }
+
+
+    /*공고별 지원자수 count*/
+    @GetMapping("/apply/count/{corpNo}")
+    public List<ResponseApplyCount> getApplysByCorpNo(@PathVariable("corpNo") String corpNo){
+       // Iterable<ApplyEntity> applyEntities = userService.getApplysByCorpNo(corpNo);
+
+        List<ResponseApplyCount> jobList = new ArrayList<>();
+        jobList = userService.getApplysByCorpNo(corpNo);
+
+        return jobList;
+
+    }
+
 }
