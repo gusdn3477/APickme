@@ -241,22 +241,23 @@ public class ProcessController {
 
 
     /*1차 면접 합불 결정 */
-        @PutMapping("/process/first-interview/result")
-        public String updateFirstInterviewResult(@RequestBody @Valid RequestFirstInterviewResult firstInterviewResult){
-            ModelMapper mapper = new ModelMapper();
-            mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+    @PutMapping("/process/first-interview/result")
+    public String updateFirstInterviewResult(@RequestBody @Valid RequestFirstInterviewResult firstInterviewResult){
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-            InterviewDto firstInterviewResultDto= mapper.map(firstInterviewResult, InterviewDto.class);
-            firstInterviewResultDto.setSecondInterviewResult(firstInterviewResult.getFirstInterviewResult());
-            firstInterviewResultDto.setApplyNum(firstInterviewResult.getApplyNum());
-            firstInterviewResultDto.setUserId(firstInterviewResultDto.getUserId());
+        InterviewDto firstInterviewResultDto= mapper.map(firstInterviewResult, InterviewDto.class);
+        firstInterviewResultDto.setFirstInterviewResult(firstInterviewResult.getFirstInterviewResult());
+//            firstInterviewResultDto.setSecondInterviewResult(firstInterviewResult.getFirstInterviewResult());
+        firstInterviewResultDto.setApplyNum(firstInterviewResult.getApplyNum());
+        firstInterviewResultDto.setUserId(firstInterviewResultDto.getUserId());
 
-            InterviewEntity interviewEntity = interviewService.firstInterviewResult(firstInterviewResultDto);
-            if(interviewEntity == null){
-                return "1차 면접 합불 체크 실패";
-            }
-            return "1차 면접 합불 체크 성공";
+        InterviewEntity interviewEntity = interviewService.firstInterviewResult(firstInterviewResultDto);
+        if(interviewEntity == null){
+            return "1차 면접 합불 체크 실패";
         }
+        return "1차 면접 합불 체크 성공";
+    }
 
     /*2차 면접 합불 결정 */
     @PutMapping("/process/second-interview/result")
