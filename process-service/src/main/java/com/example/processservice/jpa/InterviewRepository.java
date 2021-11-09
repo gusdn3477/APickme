@@ -15,4 +15,8 @@ public interface InterviewRepository extends CrudRepository<InterviewEntity, Lon
 
     InterviewEntity findByApplyNumAndUserId(String applyNum, String userId);
     InterviewEntity findByJobsNoAndUserId(String jobsNo, String userId);
+
+    //2021-11-09 추가
+    Iterable<InterviewEntity> findByJobsNoOrderByFirstInterviewScoreDesc(String jobsNo);
+    Iterable<InterviewEntity> findByJobsNoOrderBySecondInterviewScoreDesc(String jobsNo);
 }

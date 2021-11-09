@@ -4,6 +4,7 @@ import com.example.processservice.dto.InterviewDto;
 import com.example.processservice.dto.WrittenDto;
 import com.example.processservice.jpa.InterviewEntity;
 import com.example.processservice.jpa.JobEntity;
+import com.example.processservice.jpa.WrittenEntity;
 
 import java.util.List;
 
@@ -34,6 +35,11 @@ public interface InterviewService {
     //추가된 부분
     InterviewEntity scoreFirstInterview(InterviewDto interviewDto);
     InterviewEntity scoreSecondInterview(InterviewDto interviewDto);
+
+    //채점(2021-11-09 수정)
+    Iterable<InterviewEntity> checkPassOrNotFirst(InterviewDto interviewDto);
+    Iterable<InterviewEntity> checkPassOrNotSecond(InterviewDto interviewDto);
+//    InterviewEntity getInterviewPersonByJobsNoAndUserId(InterviewDto interviewDto);
 
 //    Iterable<JobEntity> getJobsByCorpNo(String corpNo);
 }
