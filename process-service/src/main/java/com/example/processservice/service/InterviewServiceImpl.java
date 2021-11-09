@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 @Slf4j
@@ -192,4 +193,48 @@ public class InterviewServiceImpl implements InterviewService {
 
     }
 
+    //채점(2021-11-09 수정)
+    @Override
+    public Iterable<InterviewEntity> checkPassOrNotFirst(InterviewDto interviewDto){
+        AtomicInteger cnt = new AtomicInteger(interviewDto.getCount());
+        Iterable<InterviewEntity> interviewEntity = interviewRepository.findByJobsNoOrderByFirstInterviewScoreDesc(interviewDto.getJobsNo());
+        if(interviewEntity == null){
+            return null;
+        }
+        interviewEntity.forEach(v -> {
+            if(cnt.get() > 0){
+                v.setFirstInterviewResult("P");
+                cnt.addAndGet(-1);
+            }
+            else{
+                v.setFirstInterviewResult("F");
+            }
+            v.setFirstInterviewer(interviewDto.getFirstInterviewer());
+        });
+
+        interviewRepository.saveAll(interviewEntity);
+        return interviewEntity;
+    }
+
+    @Override
+    public Iterable<InterviewEntity> checkPassOrNotSecond(InterviewDto interviewDto){
+        AtomicInteger cnt = new AtomicInteger(interviewDto.getCount());
+        Iterable<InterviewEntity> interviewEntity = interviewRepository.findByJobsNoOrderBySecondInterviewScoreDesc(interviewDto.getJobsNo());
+        if(interviewEntity == null){
+            return null;
+        }
+        interviewEntity.forEach(v -> {
+            if(cnt.get() > 0){
+                v.setSecondInterviewResult("P");
+                cnt.addAndGet(-1);
+            }
+            else{
+                v.setSecondInterviewResult("F");
+            }
+            v.setSecondInterviewer(interviewDto.getSecondInterviewer());
+        });
+
+        interviewRepository.saveAll(interviewEntity);
+        return interviewEntity;
+    }
 }

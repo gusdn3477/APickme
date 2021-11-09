@@ -241,39 +241,39 @@ public class ProcessController {
 
 
     /*1차 면접 합불 결정 */
-        @PutMapping("/process/first-interview/result")
-        public String updateFirstInterviewResult(@RequestBody @Valid RequestFirstInterviewResult firstInterviewResult){
-            ModelMapper mapper = new ModelMapper();
-            mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+    @PutMapping("/process/first-interview/result")
+    public ResponseEntity<List<ResponseInterview>> updateFirstInterviewResult(@RequestBody @Valid RequestFirstInterviewResult firstInterviewResult){
+        log.info("필기 자동 합/불 서비스");
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//
+        InterviewDto interviewDto = mapper.map(firstInterviewResult, InterviewDto.class);
+        interviewService.checkPassOrNotFirst(interviewDto);
 
-            InterviewDto firstInterviewResultDto= mapper.map(firstInterviewResult, InterviewDto.class);
-            firstInterviewResultDto.setSecondInterviewResult(firstInterviewResult.getFirstInterviewResult());
-            firstInterviewResultDto.setApplyNum(firstInterviewResult.getApplyNum());
-            firstInterviewResultDto.setUserId(firstInterviewResultDto.getUserId());
-
-            InterviewEntity interviewEntity = interviewService.firstInterviewResult(firstInterviewResultDto);
-            if(interviewEntity == null){
-                return "1차 면접 합불 체크 실패";
-            }
-            return "1차 면접 합불 체크 성공";
-        }
+        Iterable<InterviewEntity> interviewList = interviewService.getInterviewListByJobsNo(interviewDto.getJobsNo());
+        List<ResponseInterview> result = new ArrayList<>();
+        interviewList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseInterview.class));
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 
     /*2차 면접 합불 결정 */
     @PutMapping("/process/second-interview/result")
-    public String updateFirstInterviewResult(@RequestBody @Valid RequestSecondInterviewResult secondInterviewResult){
+    public ResponseEntity<List<ResponseInterview>> updateSecondInterviewResult(@RequestBody @Valid RequestSecondInterviewResult secondInterviewResult){
+        log.info("2차 면접 자동 합/불 서비스");
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//
+        InterviewDto interviewDto = mapper.map(secondInterviewResult, InterviewDto.class);
+        interviewService.checkPassOrNotSecond(interviewDto);
 
-        InterviewDto secondInterviewResultDto= mapper.map(secondInterviewResult, InterviewDto.class);
-        secondInterviewResultDto.setSecondInterviewResult(secondInterviewResult.getSecondInterviewResult());
-        secondInterviewResultDto.setApplyNum(secondInterviewResult.getApplyNum());
-        secondInterviewResultDto.setUserId(secondInterviewResultDto.getUserId());
-
-        InterviewEntity interviewEntity = interviewService.secondInterviewResult(secondInterviewResultDto);
-        if(interviewEntity == null){
-            return "2차 면접 합불 체크 실패";
-        }
-        return "2차 면접 합불 체크 성공";
+        Iterable<InterviewEntity> interviewList = interviewService.getInterviewListByJobsNo(interviewDto.getJobsNo());
+        List<ResponseInterview> result = new ArrayList<>();
+        interviewList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseInterview.class));
+        });
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     /* 회사별 필기전형 보여주기*/
