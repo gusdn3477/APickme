@@ -23,5 +23,6 @@ public class ResponseJobShort {
     private String employType;
     private String workDetail; //업무내용
     private Date applyEnd; //지원마감일
+    private String corpName;
 
 }
