@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -312,5 +313,13 @@ public class UserController {
         });
         return result;
     }
+    /*영모 모달용*/
+    @GetMapping("users/apply/{userId}/{jobsNo}")
+    public ResponseApply getApplyByUserId(@PathVariable("userId") String userId, @PathVariable("jobsNo") String jobsNo){
+        RequestUserApply requestUserApply = new RequestUserApply(); requestUserApply.setUserId(userId); requestUserApply.setJobsNo(jobsNo);
 
+        ApplyDto apply = userService.getApply(requestUserApply);
+
+        return new ModelMapper().map(apply, ResponseApply.class);
+    }
 }
