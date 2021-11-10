@@ -176,7 +176,8 @@ public class ProcessController {
         interviewDto.setApplyNum(requestPutInterview.getApplyNum());
         interviewDto.setSecondInterviewScore(requestPutInterview.getSecondInterviewScore());
 
-        InterviewEntity interviewEntity = interviewService.scoreSecondInterviewer(interviewDto);
+        InterviewEntity interviewEntity = interviewService.scoreSecondInterview(interviewDto);
+//        InterviewEntity interviewEntity = interviewService.scoreSecondInterviewer(interviewDto);
         if(interviewEntity == null){
             return "2차 면접 채점 실패";
         }

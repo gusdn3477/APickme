@@ -343,6 +343,7 @@ public class UserServiceImpl implements UserService {
         jobEntity.forEach(v->{
             jobList.add(new ModelMapper().map(v,ResponseJobShort.class));
         });
+
         for(int i=0;i<jobList.size();i++){
             String corpNo = jobList.get(i).getCorpNo();
             CorpEntity corp = corpRepository.findByCorpNo(corpNo);
