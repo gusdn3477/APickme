@@ -8,5 +8,6 @@ public class RequestFirstInterviewResult {
     private String userId;
     private String jobsNo;
     private Integer count;
+    private String firstInterviewer;
     private String firstInterviewResult;
 }

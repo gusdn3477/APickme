@@ -6,5 +6,6 @@ import lombok.Data;
 public class ResponseFirstInterviewResult {
     private String applyNum;
     private String userId;
+    private String firstInterviewer;
     private String firstInterviewResult;
 }

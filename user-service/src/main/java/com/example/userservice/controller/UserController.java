@@ -140,8 +140,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-
-
     /* 사용자 상세 보기 (with 주문 목록)
     * 사용자가 자신의 정보 상세보기*/
     @GetMapping("/users/{userId}")
@@ -152,7 +150,6 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(returnValue);
     }
-
 
     /* 지원자 공고 지원하기*/
     @PostMapping("/users/apply")
@@ -256,12 +253,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(applyJobShortList);
     }
 
-    @GetMapping("/apply/{userId}/{jobsNo}")
-    public List<ResponseApplyDetail> getApplyDetails(@PathVariable("userId") String userId, @PathVariable("jobsNo") String jobsNo){
-
-        return null;
-    }
-
     @PostMapping("/users/checkemail")
     public Boolean checkEmail(@RequestBody @Valid RequestCheckEmail Info){
 
@@ -271,8 +262,6 @@ public class UserController {
 
         return false;
     }
-
-
 
     /*공고별 지원자수 count*/
     @GetMapping("/apply/count/{corpNo}")
@@ -286,9 +275,8 @@ public class UserController {
 
     }
 
-
     // 자신이 지원한 지원정보 전체 목록으로 불러오기  - 진희 --> 전체가져오는건 필요없을거 같고
-    @GetMapping("users/applys/{userId}")
+    @GetMapping("/users/applys/{userId}")
     public List<ResponseApply> getApplysByUserId(@PathVariable("userId") String userId){
         Iterable<ApplyEntity> applysList = userService.getApplys(userId);
 
@@ -301,7 +289,7 @@ public class UserController {
     }
 
     // 공고별 자신이 지원한 지원상세 모달 용 1개 가져오는것임 - 진희
-    @PostMapping("users/apply/detail")
+    @PostMapping("/users/apply/detail")
     public ResponseApply getApplyByUserId(@RequestBody RequestUserApply info){
         ApplyDto apply = userService.getApply(info);
 
@@ -311,7 +299,7 @@ public class UserController {
 
     /*내가 지원한 전체 공고(전형) 내역 리스트로 보기 ( 관리자+ 인사팀전체 + 자기자신만 )
     * 기존에 있었는데 무슨 용도인지 몰라서 바꿨었는데 다시 살려놓겠습니다 일단은 */
-    @GetMapping("users/apply/{userId}")
+    @GetMapping("/users/apply/{userId}")
     public List<ResponseApply> getApply(@PathVariable("userId") String userId){
         Iterable<ApplyEntity> applysList = userService.getApplyByAll();
 
@@ -323,12 +311,13 @@ public class UserController {
         return result;
     }
     /*영모 모달용*/
-    @GetMapping("users/apply/{userId}/{jobsNo}")
+    @GetMapping("/users/apply/{userId}/{jobsNo}")
     public ResponseApply getApplyByUserId(@PathVariable("userId") String userId, @PathVariable("jobsNo") String jobsNo){
-        RequestUserApply requestUserApply = new RequestUserApply(); requestUserApply.setUserId(userId); requestUserApply.setJobsNo(jobsNo);
 
+        RequestUserApply requestUserApply = new RequestUserApply();
+        requestUserApply.setUserId(userId);
+        requestUserApply.setJobsNo(jobsNo);
         ApplyDto apply = userService.getApply(requestUserApply);
-
         return new ModelMapper().map(apply, ResponseApply.class);
     }
 }
