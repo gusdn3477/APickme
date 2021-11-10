@@ -5,12 +5,10 @@ import com.example.userservice.dto.ApplyCountDto;
 import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.ApplyEntity;
+import com.example.userservice.entity.CorpEntity;
 import com.example.userservice.entity.JobEntity;
 import com.example.userservice.entity.UserEntity;
-import com.example.userservice.jpa.JobRepository;
-import com.example.userservice.jpa.JpajpaRepository;
-import com.example.userservice.jpa.UserRepository;
-import com.example.userservice.jpa.ApplyRepository;
+import com.example.userservice.jpa.*;
 import com.example.userservice.vo.ResponseApplyCount;
 import com.example.userservice.vo.RequestUserApply;
 import com.example.userservice.vo.ResponseJobDetail;
@@ -49,6 +47,7 @@ public class UserServiceImpl implements UserService {
     JavaMailSender mailSender;
     JobRepository jobRepository;
     JpajpaRepository jpajpaRepository;
+    CorpRepository corpRepository;
 //    @Autowired
 //    JavaMailSender mailSender;
 
@@ -61,7 +60,8 @@ public class UserServiceImpl implements UserService {
                            CircuitBreakerFactory circuitBreakerFactory,
                            ApplyRepository applyRepository, JavaMailSender javaMailSender,
                            JobRepository jobRepository,
-                           JpajpaRepository jpajpaRepository) {
+                           JpajpaRepository jpajpaRepository,
+                           CorpRepository corpRepository) {
         this.userRepository = userRepository;
         this.applyRepository = applyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService {
         this.mailSender = javaMailSender;
         this.jobRepository = jobRepository;
         this.jpajpaRepository = jpajpaRepository;
+        this.corpRepository = corpRepository;
     }
 
     @Override
@@ -342,6 +343,13 @@ public class UserServiceImpl implements UserService {
         jobEntity.forEach(v->{
             jobList.add(new ModelMapper().map(v,ResponseJobShort.class));
         });
+        for(int i=0;i<jobList.size();i++){
+            String corpNo = jobList.get(i).getCorpNo();
+            CorpEntity corp = corpRepository.findByCorpNo(corpNo);
+            String corpName = corp.getCorpName();
+            jobList.get(i).setCorpName(corpName);
+        }
+
         return jobList;
     }
 
