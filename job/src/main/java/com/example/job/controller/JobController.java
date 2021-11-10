@@ -69,6 +69,18 @@ public class JobController {
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+    @GetMapping("/{corpNo}/jobs/closed")
+    public ResponseEntity<List<ResponseJob>> getClosedJob(@PathVariable("corpNo") String corpNo){
+        String closed = "T";
+        Iterable<JobEntity> jobCorpList = jobService.getCorpClosedJobs(corpNo,closed);
+
+        List<ResponseJob> result = new ArrayList<>();
+        jobCorpList.forEach(v -> {
+            result.add(new ModelMapper().map(v, ResponseJob.class));
+        });
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 
     @GetMapping("/jobs/{jobsNo}")
     public ResponseEntity<JobEntity> getJobDetail(@PathVariable("jobsNo") String jobsNo){

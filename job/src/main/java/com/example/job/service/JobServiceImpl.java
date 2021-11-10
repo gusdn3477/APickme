@@ -74,6 +74,9 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
+    public Iterable<JobEntity> getCorpClosedJobs(String corpNo, String closed) { return jobRepository.findByCorpNoAndClosed(corpNo,closed); }
+
+    @Override
     public JobEntity getJob(String jobsNo){
         return jobRepository.findByJobsNo(jobsNo);
     }
