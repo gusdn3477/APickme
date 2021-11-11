@@ -14,4 +14,8 @@ public class ResponseFirstInterviewList {
     private String firstInterviewer;
     private Integer firstInterviewScore;
     private String firstInterviewResult;
+    private Date secondInterviewDate;
+    private String secondInterviewer;
+    private Integer secondInterviewScore;
+    private String secondInterviewResult;
 }
