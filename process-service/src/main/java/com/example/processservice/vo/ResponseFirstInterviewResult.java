@@ -8,4 +8,7 @@ public class ResponseFirstInterviewResult {
     private String userId;
     private String firstInterviewer;
     private String firstInterviewResult;
+    private String secondInterviewer;
+    private String secondInterviewResult;
+
 }
