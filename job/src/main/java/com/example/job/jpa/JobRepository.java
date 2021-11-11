@@ -12,6 +12,7 @@ public interface JobRepository<R, S> extends CrudRepository<JobEntity, String>{
     JobEntity findByJobsNoAndEmpNo(String jobsNo, String empNo);
     void deleteByJobsNo(String jobsNo);
     JobEntity findByEmpNoAndCorpNo(String empNo, String corpNo);
+    Iterable<JobEntity> findByCorpNoAndClosed(String corpNo, String closed);
 
 
 }
