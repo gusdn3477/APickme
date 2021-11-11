@@ -14,4 +14,6 @@ public class ResponseSecondInterviewList {
     private String secondInterviewer;
     private Integer secondInterviewScore;
     private String secondInterviewResult;
+    private String firstInterviewResult; // <=======이거 없어서 값을 못받아왔었음=================================
+
 }
