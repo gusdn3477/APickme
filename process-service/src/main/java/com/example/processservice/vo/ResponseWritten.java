@@ -12,4 +12,5 @@ public class ResponseWritten {
     private String jobsNo;
     private Integer writtenScore;
     private String writtenResult;
+    private String writtenCheck;
 }

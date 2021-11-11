@@ -21,14 +21,10 @@ public class InterviewEntity implements Serializable {
 
     @Column(nullable = false, length = 50, unique = true)
     private String applyNum;
-
-//    @Id
     @Column(nullable = false, length = 50)
     private String userId;
-
     @Column(length = 50)
     private String empNo;
-
     @Column
     private Date firstInterviewDate; //ㅇ
     @Column
@@ -37,6 +33,8 @@ public class InterviewEntity implements Serializable {
     private Integer firstInterviewScore; //ㅇ
     @Column
     private String firstInterviewResult; //ㅇ
+    @Column
+    private String firstCheck;
 
     @Column
     private Date secondInterviewDate; //ㅇ
@@ -48,6 +46,8 @@ public class InterviewEntity implements Serializable {
     private String secondInterviewResult; //ㅇ
     @Column
     private String jobsNo; //ㅇ
+    @Column
+    private String secondCheck;
 
     @Column(insertable = false, updatable = false,
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
