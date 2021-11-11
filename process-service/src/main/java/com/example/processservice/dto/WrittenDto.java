@@ -13,4 +13,5 @@ public class WrittenDto implements Serializable {
     private String writtenResult;
     private String jobsNo;
     private Integer count; // 합격자 수
+    private String writtenCheck;
 }

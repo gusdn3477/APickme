@@ -114,6 +114,7 @@ public class WrittenServiceImpl implements WrittenService{
             else{
                 v.setWrittenResult(("F"));
             }
+            v.setWrittenCheck(writtenDto.getEmpNo());
             v.setEmpNo(writtenDto.getEmpNo());
         });
 

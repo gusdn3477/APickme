@@ -18,4 +18,7 @@ public class ResponseFirstInterviewList {
     private String secondInterviewer;
     private Integer secondInterviewScore;
     private String secondInterviewResult;
+    private String firstCheck;
+    private String secondCheck;
+
 }

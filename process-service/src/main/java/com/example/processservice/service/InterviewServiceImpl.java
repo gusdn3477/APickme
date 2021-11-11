@@ -209,7 +209,8 @@ public class InterviewServiceImpl implements InterviewService {
             else{
                 v.setFirstInterviewResult("F");
             }
-            v.setFirstInterviewer(interviewDto.getFirstInterviewer());
+            v.setFirstCheck(interviewDto.getFirstInterviewer());
+//            v.setFirstInterviewer(interviewDto.getFirstInterviewer());
         });
 
         interviewRepository.saveAll(interviewEntity);
@@ -231,7 +232,8 @@ public class InterviewServiceImpl implements InterviewService {
             else{
                 v.setSecondInterviewResult("F");
             }
-            v.setSecondInterviewer(interviewDto.getSecondInterviewer());
+            v.setSecondCheck(interviewDto.getSecondInterviewer());
+//            v.setSecondInterviewer(interviewDto.getSecondInterviewer());
         });
 
         interviewRepository.saveAll(interviewEntity);

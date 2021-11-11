@@ -10,6 +10,7 @@ public class ResponseWrittenTest {
     private String WrittenResult;
     private String jobsNo;
     private String empNo;
+    private String writtenCheck;
 }
 
 

@@ -35,6 +35,8 @@ public class WrittenEntity implements Serializable {
     private Integer writtenScore;
     @Column
     private String writtenResult;
+    @Column
+    private String writtenCheck;
     //@Column( updatable = false, insertable = false)
     //@ColumnDefault(value = "CURRENT_TIMESTAMP")
     //@CreatedDate
