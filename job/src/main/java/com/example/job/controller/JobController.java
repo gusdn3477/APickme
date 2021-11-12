@@ -168,7 +168,7 @@ public class JobController {
 //    public
 
     /* 인사담당자 달력 관련 추가 */
-    @GetMapping("jobsall/{corpNo}")
+    @GetMapping("/jobsall/{corpNo}")
     public List<ResponseCalender> getJobsByCorpNo(@PathVariable("corpNo") String corpNo){
         List<ResponseCalender> jobCorpList = jobService.getCorpAllJob(corpNo);
 
@@ -181,7 +181,7 @@ public class JobController {
     }
 
     //* 지원자 달력 관련 추가 */
-    @GetMapping("jobsall/user")
+    @GetMapping("/jobsall/user")
     public List<ResponseCalender> getJobsAll(){
         List<ResponseCalender> jobsList = jobService.getAllJobss();
         return jobsList;
