@@ -1,7 +1,6 @@
 package com.example.userservice.service;
 
 import com.example.userservice.client.OrderServiceClient;
-import com.example.userservice.dto.ApplyCountDto;
 import com.example.userservice.dto.ApplyDto;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.ApplyEntity;
@@ -11,7 +10,6 @@ import com.example.userservice.entity.UserEntity;
 import com.example.userservice.jpa.*;
 import com.example.userservice.vo.ResponseApplyCount;
 import com.example.userservice.vo.RequestUserApply;
-import com.example.userservice.vo.ResponseJobDetail;
 import com.example.userservice.vo.ResponseJobShort;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -29,10 +27,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.StreamSupport;
 
 @Service
 @Slf4j
@@ -199,22 +195,26 @@ public class UserServiceImpl implements UserService {
     public Iterable<ApplyEntity> getJobsAllApply(String jobsNo) {return applyRepository.findAllByJobsNo(jobsNo);}
 
     @Override
-    public boolean deleteApply(String jobsNo, String comfirmPassword, String password, String userId) {
-        UserEntity userEntity = userRepository.findByUserId(userId);
-
-        ModelMapper mapper = new ModelMapper();
-        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserDto userDeleteDto = mapper.map(userEntity, UserDto.class);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        if(encoder.matches(password, userDeleteDto.getEncryptedPwd())){
-            applyRepository.deleteByJobsNo(jobsNo);
-            return true;
-        }else{
-            return false;
-        }
-
+    public void deleteApply(String userId, String jobsNo) {
+        applyRepository.deleteByUserIdAndJobsNo(userId, jobsNo);
     }
+
+//    @Override
+//    public boolean deleteApply(String jobsNo, String comfirmPassword, String password, String userId) {
+//        UserEntity userEntity = userRepository.findByUserId(userId);
+//
+//        ModelMapper mapper = new ModelMapper();
+//        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        UserDto userDeleteDto = mapper.map(userEntity, UserDto.class);
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//
+//        if(encoder.matches(password, userDeleteDto.getEncryptedPwd())){
+//            applyRepository.deleteByJobsNo(jobsNo);
+//            return true;
+//        }else{
+//            return false;
+//        }
+//    }
 
     @Override
     public ApplyDto getApplyByJobsNo(String jobsNo) {

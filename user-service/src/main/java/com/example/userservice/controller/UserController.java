@@ -77,7 +77,6 @@ public class UserController {
 
         String okMsg = "OK";
         String errorMsg = "NO";
-
         if(status) {
             return ResponseEntity.status(HttpStatus.OK).body(okMsg);
         }else{
@@ -215,16 +214,18 @@ public class UserController {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         ApplyDto applyDto = mapper.map(apply, ApplyDto.class);
 
-        boolean status = userService.deleteApply(applyDto.getJobsNo(), applyDto.getComfirmPassword(), applyDto.getPassword(), applyDto.getUserId());
+        userService.deleteApply(applyDto.getUserId(), applyDto.getJobsNo());
+
+//        boolean status = userService.deleteApply(applyDto.getJobsNo(), applyDto.getComfirmPassword(), applyDto.getPassword(), applyDto.getUserId());
 
         String okMsg = "delete userId , 200 OK";
         String errorMsg = "error~";
-
-        if(status) {
-            return ResponseEntity.status(HttpStatus.OK).body(okMsg);
-        }else{
-            return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+//        if(status) {
+//            return ResponseEntity.status(HttpStatus.OK).body(okMsg);
+//        }else{
+//            return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
+//        }
 
     }
 
