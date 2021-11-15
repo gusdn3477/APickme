@@ -29,7 +29,8 @@ public interface UserService extends UserDetailsService {
     void findPwd(String email);
     Iterable<ApplyEntity> getApplyByAll();
     Iterable<ApplyEntity> getJobsAllApply(String jobsNo);
-    boolean deleteApply(String jobsNo, String comfirmPassword, String password, String userId);
+    void deleteApply(String userId, String jobsNo);
+//    boolean deleteApply(String jobsNo, String comfirmPassword, String password, String userId);
 
     ApplyDto getApplyByJobsNo(String jobsNo);
     ApplyDto updateByJobsNo(ApplyDto applyDto, ApplyDto applyDetails);
