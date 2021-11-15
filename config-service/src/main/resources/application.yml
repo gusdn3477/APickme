@@ -14,11 +14,11 @@ spring:
   #          uri: file://C:\Users\Admin\Desktop\jieun\tmax\tmax_cloud\git-local-repo
   #          username: park940313@naver.com
   #          password: [password]
-#  rabbitmq:
-#    host: 127.0.0.1
-#    port: 5672
-#    username: guest
-#    password: guest
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
 
 management:
