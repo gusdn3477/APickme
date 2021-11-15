@@ -39,8 +39,8 @@ spring:
             enable: true
             required: true
 
-#  profiles:
-#    include: oauth
+  profiles:
+    include: oauth
 
 
 #  jpa:
