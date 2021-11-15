@@ -15,6 +15,7 @@
     <description>config-service</description>
     <properties>
         <java.version>11</java.version>
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
         <spring-cloud.version>2020.0.3</spring-cloud.version>
     </properties>
     <dependencies>
@@ -28,21 +29,27 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+<<<<<<< HEAD
+
+=======
+>>>>>>> bbb0513466e2a56f4aada65337a4943b93474901
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+<<<<<<< HEAD
 
-        <!--rabbitmq-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>
+<<<<<<< HEAD
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
         </dependency>
+<<<<<<< HEAD
 
     </dependencies>
     <dependencyManagement>

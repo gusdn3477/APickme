@@ -5,11 +5,11 @@ server:
 spring:
   application:
     name: user-service
-  rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: guest
-    password: guest
+#  rabbitmq:
+#    host: 127.0.0.1
+#    port: 5672
+#    username: guest
+#    password: guest
   h2:
     console:
       enabled: true
@@ -42,8 +42,8 @@ spring:
           starttls:
             enable: true
             required: true
-  profiles:
-    include: oauth
+#  profiles:
+#    include: oauth
 
 #  zipkin:
 #    base-url: http://localhost:9411
@@ -64,9 +64,9 @@ eureka:
 greeting:
   message: Welcome to the simple E-commerce.
 
-token:
-  expiration_time: 86400000
-  secret: user_token
+#token:
+#  expiration_time: 86400000
+#  secret: user_token
 #secret은 토큰을 생성할 때 어떤 키를 가지고 생성할것인지 지정
 management:
   endpoints:
