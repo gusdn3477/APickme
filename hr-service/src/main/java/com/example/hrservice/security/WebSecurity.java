@@ -1,7 +1,6 @@
 package com.example.hrservice.security;
 
 import com.example.hrservice.service.HrService;
-import com.example.hrservice.service.KakaoOAuth2UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,14 +15,12 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private HrService hrService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private Environment env;
-    private KakaoOAuth2UserService kakaoOAuth2UserService;
 
     public WebSecurity(Environment env, HrService hrService,
-                       BCryptPasswordEncoder bCryptPasswordEncoder,KakaoOAuth2UserService kakaoOAuth2UserService) {
+                       BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.env = env;
         this.hrService = hrService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.kakaoOAuth2UserService = kakaoOAuth2UserService;
     }
 
     @Override
@@ -42,7 +39,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(getAuthenticationFilter());
 
-        http.oauth2Login().userInfoEndpoint().userService(kakaoOAuth2UserService);
         http.headers().frameOptions().disable();
         //http.formLogin();
         http.logout();
