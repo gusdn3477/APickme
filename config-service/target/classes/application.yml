@@ -9,16 +9,16 @@ spring:
       server:
         git:
           #uri: file://C:\MSA_study_Git\Work\git-local-repo
-          uri: https://github.com/hariBoWoo/tmax-Final-config
-          default-label: main
+          uri: https://github.com/hariBoWoo/tmax-Final-config.git
+#          default-label: main
   #          uri: file://C:\Users\Admin\Desktop\jieun\tmax\tmax_cloud\git-local-repo
   #          username: park940313@naver.com
   #          password: [password]
-#  rabbitmq:
-#    host: 127.0.0.1
-#    port: 5672
-#    username: guest
-#    password: guest
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
 
 management:
