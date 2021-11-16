@@ -26,7 +26,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-
+        http.authorizeRequests().antMatchers("/hr/**").permitAll();
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
         http.authorizeRequests().antMatchers("/swagger-ui.html", "/swagger-ui/**").permitAll();
         http.authorizeRequests().antMatchers("/v3/**").permitAll();
@@ -36,7 +36,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/**")
                 //.hasIpAddress(env.getProperty("gateway.ip"))
-                .hasIpAddress("")
+                .access("hasIpAddress('172.30.144.1') or hasIpAddress('172.18.0.5') or hasIpAddress('127.0.0.1')")
+//                .hasIpAddress("hasIpAddress('172.30.144.1') or hasIpAddress('172.18.0.5') or hasIpAddress('127.0.0.1')")
                 .and()
                 .addFilter(getAuthenticationFilter());
 
