@@ -9,6 +9,9 @@ public interface JobRepository<R, S> extends CrudRepository<JobEntity, String>{
     List<JobEntity> findAllByCorpNo(String corpNo);
     JobEntity findByJobsNo(String jobsNo);
     Iterable<JobEntity> findByApplyStartBeforeAndApplyEndAfter(Date curTime, Date endTime);
+    // 공고 생성 날짜로 검색
+    Iterable<JobEntity> findAllByOrderByCreatedAtDesc();
+    Iterable<JobEntity> findByCreatedAt(Date date);
     JobEntity findByJobsNoAndEmpNo(String jobsNo, String empNo);
     void deleteByJobsNo(String jobsNo);
     JobEntity findByEmpNoAndCorpNo(String empNo, String corpNo);

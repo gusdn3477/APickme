@@ -133,9 +133,7 @@ public class UserServiceImpl implements UserService {
         UserEntity userUpdateEntity = usermapper.map(userUpdateDto, UserEntity.class);
 
         userUpdateEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userUpdateDto.getPassword()));
-
         userRepository.save(userUpdateEntity);
-
 
         return null;
     }
@@ -188,7 +186,10 @@ public class UserServiceImpl implements UserService {
 
     //희상추가 = > 모든 지원자 보기
     @Override
-    public Iterable<ApplyEntity> getApplyByAll() {return applyRepository.findAll();}
+    public Iterable<ApplyEntity> getApplyByAll() {
+//        return applyRepository.findAllByOrderByApplyDateTime();
+        return applyRepository.findAll();
+    }
 
     //희상추가 => 공고별 지원자 보기
     @Override
@@ -350,7 +351,33 @@ public class UserServiceImpl implements UserService {
             String corpName = corp.getCorpName();
             jobList.get(i).setCorpName(corpName);
         }
+        return jobList;
+    }
 
+    @Override
+    public List<ResponseJobShort> getJobsByUserIdOrderByApplyDateTime(String userId){
+//        Iterable<ApplyEntity> applyDtos = applyRepository.findAllByUserId(userId);
+        Iterable<ApplyEntity> applyDtos = applyRepository.findAllByUserIdOrderByApplyDateTime(userId);
+
+        List<String> applyJobsList = new ArrayList<>();
+
+        applyDtos.forEach(v->{
+            applyJobsList.add(v.getJobsNo());
+        });
+
+        Iterable<JobEntity> jobEntity = jobRepository.findAllByJobsNoIn(applyJobsList);
+
+        List<ResponseJobShort> jobList = new ArrayList<>();
+        jobEntity.forEach(v->{
+            jobList.add(new ModelMapper().map(v,ResponseJobShort.class));
+        });
+
+        for(int i=0;i<jobList.size();i++){
+            String corpNo = jobList.get(i).getCorpNo();
+            CorpEntity corp = corpRepository.findByCorpNo(corpNo);
+            String corpName = corp.getCorpName();
+            jobList.get(i).setCorpName(corpName);
+        }
         return jobList;
     }
 

@@ -20,7 +20,7 @@ public interface JobService {
     Iterable<JobEntity> getApplyAvailable(Date curTime,Date endTime);
     JobEntity updateJob(JobDto jobDto, JobProcessDto jobProcessDto);
     Iterable<JobEntity> getCorpClosedJobs(String corpNo,String closed);
-
+    Iterable<JobEntity> getJobsByCreatedAt();
     @Transactional
     void deleteJob(String jobsNo);
 

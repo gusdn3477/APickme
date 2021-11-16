@@ -38,6 +38,7 @@ public interface UserService extends UserDetailsService {
     boolean checkPwd(UserDto dto);
     boolean checkEmail(String email);
     List<ResponseJobShort> getJobsByUserId(String userId);
+    List<ResponseJobShort> getJobsByUserIdOrderByApplyDateTime(String userId);
     /* 공고별 apply세기*/
     List<ResponseApplyCount> getApplysByCorpNo(String corpNo);
     Iterable<ApplyEntity> getApplys(String userId);
