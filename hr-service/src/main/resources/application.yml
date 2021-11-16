@@ -38,10 +38,6 @@ spring:
             enable: true
             required: true
 
-#  profiles:
-#    include: oauth
-
-
 #  jpa:
 #    hibernate:
 #      ddl-auto: update
