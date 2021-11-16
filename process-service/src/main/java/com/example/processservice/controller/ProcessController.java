@@ -355,6 +355,21 @@ public class ProcessController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    /* 공고별 합격자 명단 리스트를 보기위해 만듬 -영모*/
+    @GetMapping("/process/final/{jobsNo}")
+    public List<ResponseInterviewFinal> getInterviewFinal(@PathVariable("jobsNo") String jobsNo){
+
+        List<ResponseInterviewFinal> interviewList = interviewService.getInterviewFinal(jobsNo);
+
+
+
+
+        return interviewList;
+    }
+
+
+
+
 }
 
 

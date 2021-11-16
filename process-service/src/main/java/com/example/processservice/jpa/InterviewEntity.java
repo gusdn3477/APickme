@@ -1,5 +1,6 @@
 package com.example.processservice.jpa;
 
+import com.example.processservice.vo.ResponseInterviewFinal;
 import lombok.Data;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Iterator;
 
 @Data
 @Entity
@@ -52,5 +54,6 @@ public class InterviewEntity implements Serializable {
     @Column(insertable = false, updatable = false,
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
+
 
 }

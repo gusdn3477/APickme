@@ -1,6 +1,5 @@
 package com.example.processservice.service;
 
-import com.example.processservice.dto.ApplyDto;
 import com.example.processservice.dto.WrittenDto;
 import com.example.processservice.jpa.*;
 import lombok.Data;
