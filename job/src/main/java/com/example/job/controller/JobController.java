@@ -48,8 +48,8 @@ public class JobController {
     //공고 조회
     @GetMapping("/jobs")
     public ResponseEntity<List<ResponseJob>> getJob(){
-        Iterable<JobEntity> jobList = jobService.getAllJobs();
-
+//        Iterable<JobEntity> jobList = jobService.getAllJobs();
+        Iterable<JobEntity> jobList = jobService.getJobsByCreatedAt();
         List<ResponseJob> result = new ArrayList<>();
         jobList.forEach(v -> {
             result.add(new ModelMapper().map(v, ResponseJob.class));

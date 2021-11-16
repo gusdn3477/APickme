@@ -82,6 +82,11 @@ public class JobServiceImpl implements JobService{
     }
 
     @Override
+    public Iterable<JobEntity> getJobsByCreatedAt(){
+        return jobRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    @Override
     public Iterable<JobEntity> getApplyAvailable(Date curTime, Date endTime){
         return jobRepository.findByApplyStartBeforeAndApplyEndAfter(curTime, endTime);
 
