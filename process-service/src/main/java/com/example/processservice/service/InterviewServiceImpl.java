@@ -254,9 +254,7 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     public List<ResponseInterviewFinal>  getInterviewFinal(String jobsNo) {
 
-
         List<ApplyEntity> applyEntities = applyInterviewRepository.findAllByJobsNo(jobsNo);
-
         List<ResponseInterviewFinal> applyList = new ArrayList<>();
 
 
@@ -307,20 +305,7 @@ public class InterviewServiceImpl implements InterviewService {
             }
         }
 
-
-//        for(int i=0;i<size;i++){
-//            String applyNum = applyList.get(i).getApplyNum();
-//            InterviewEntity interviewEntity = interviewRepository.findByApplyNum(applyNum);
-//            // InterviewEntity interviewEntity = interviewRepository.findByApplyNumAndJobsNo(applyNum,jobsNo);
-//            if(interviewEntity.getFirstInterviewScore() == null);
-//            if(interviewEntity.getSecondInterviewScore() == null) interviewEntity.setSecondInterviewScore(-1);
-//            int firstInterviewScore = interviewEntity.getFirstInterviewScore();
-//            int secondInterviewScore = interviewEntity.getSecondInterviewScore();
-//            applyList.get(i).setFirstInterviewScore(firstInterviewScore);
-//            applyList.get(i).setSecondInterviewScore(secondInterviewScore);
-//
-//        }
-        if(applyList.isEmpty()) return null;
+//        if(applyList.isEmpty()) return null;
 
 
         return applyList;
