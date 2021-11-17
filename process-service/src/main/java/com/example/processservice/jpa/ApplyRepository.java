@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
 
-public interface ApplyRepository extends CrudRepository<ApplyEntity , String> {
+public interface ApplyRepository<A, S> extends CrudRepository<ApplyEntity , String> {
     Iterable<ApplyEntity> findAllByJobsNo(String jobsNo);
 
     @Transactional

@@ -5,6 +5,7 @@ import com.example.processservice.dto.WrittenDto;
 import com.example.processservice.jpa.InterviewEntity;
 import com.example.processservice.jpa.JobEntity;
 import com.example.processservice.jpa.WrittenEntity;
+import com.example.processservice.vo.ResponseInterviewFinal;
 
 import java.util.List;
 
@@ -42,4 +43,8 @@ public interface InterviewService {
 //    InterviewEntity getInterviewPersonByJobsNoAndUserId(InterviewDto interviewDto);
 
 //    Iterable<JobEntity> getJobsByCorpNo(String corpNo);
+
+    //합격자명단(2021-11-16 작성)
+    List<ResponseInterviewFinal>  getInterviewFinal(String jobsNo);
+
 }
