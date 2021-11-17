@@ -250,9 +250,7 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     public List<ResponseInterviewFinal>  getInterviewFinal(String jobsNo) {
 
-
         List<ApplyEntity> applyEntities = applyInterviewRepository.findAllByJobsNo(jobsNo);
-
         List<ResponseInterviewFinal> applyList = new ArrayList<>();
 
 
