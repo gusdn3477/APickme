@@ -11,4 +11,5 @@ public class ResponseInterviewFinal {
     private String applyContact;
     private String applyEmail;
     private String applyNum;
+    private Integer writtenScore;
 }
