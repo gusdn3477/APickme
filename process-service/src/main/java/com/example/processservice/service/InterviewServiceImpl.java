@@ -3,6 +3,7 @@ package com.example.processservice.service;
 import com.example.processservice.dto.InterviewDto;
 import com.example.processservice.dto.WrittenDto;
 import com.example.processservice.jpa.*;
+import com.example.processservice.vo.ResponseInterviewFinal;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -22,10 +23,15 @@ public class InterviewServiceImpl implements InterviewService {
     InterviewRepository interviewRepository;
     WrittenRepository writtenRepository;
     JobRepository jobRepository;
+    ApplyRepository applyRepository;
+    ApplyInterviewRepository applyInterviewRepository;
+
 
     @Autowired
-    public InterviewServiceImpl(InterviewRepository interviewRepository) {
+    public InterviewServiceImpl(InterviewRepository interviewRepository,
+                                ApplyInterviewRepository applyInterviewRepository) {
         this.interviewRepository = interviewRepository;
+        this.applyInterviewRepository= applyInterviewRepository;
     }
 
     @Override
@@ -239,4 +245,51 @@ public class InterviewServiceImpl implements InterviewService {
         interviewRepository.saveAll(interviewEntity);
         return interviewEntity;
     }
+
+    /* 공고별 합격자 명단 보기 - 11-16 영모*/
+    @Override
+    public List<ResponseInterviewFinal>  getInterviewFinal(String jobsNo) {
+
+
+        List<ApplyEntity> applyEntities = applyInterviewRepository.findAllByJobsNo(jobsNo);
+
+        List<ResponseInterviewFinal> applyList = new ArrayList<>();
+
+
+
+        int size = applyEntities.size();
+
+        for(int i=0;i<size;i++){
+            String applyName = applyEntities.get(i).getApplyName();
+            String applyEmail = applyEntities.get(i).getApplyEmail();
+            String applyContact = applyEntities.get(i).getApplyContact();
+            String applyNum = applyEntities.get(i).getApplyNum();
+
+            ResponseInterviewFinal rif = new ResponseInterviewFinal();
+            rif.setApplyEmail(applyEmail); rif.setApplyContact(applyContact);
+            rif.setApplyName(applyName); rif.setApplyNum(applyNum);
+
+            applyList.add(rif);
+        }
+
+
+        for(int i=0;i<size;i++){
+            String applyNum = applyList.get(i).getApplyNum();
+            InterviewEntity interviewEntity = interviewRepository.findByApplyNum(applyNum);
+           // InterviewEntity interviewEntity = interviewRepository.findByApplyNumAndJobsNo(applyNum,jobsNo);
+            if(interviewEntity.getFirstInterviewScore() == null);
+            if(interviewEntity.getSecondInterviewScore() == null) interviewEntity.setSecondInterviewScore(-1);
+            int firstInterviewScore = interviewEntity.getFirstInterviewScore();
+            int secondInterviewScore = interviewEntity.getSecondInterviewScore();
+            applyList.get(i).setFirstInterviewScore(firstInterviewScore);
+            applyList.get(i).setSecondInterviewScore(secondInterviewScore);
+
+        }
+
+        if(applyList.isEmpty()) return null;
+
+
+        return applyList;
+    }
+
 }
