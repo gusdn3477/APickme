@@ -12,4 +12,6 @@ public interface WrittenRepository extends CrudRepository<WrittenEntity, Long> {
 
 
     Iterable<WrittenEntity> findByJobsNoOrderByWrittenScoreDesc(String jobsNo);
+
+    WrittenEntity findByApplyNum(String applyNum);
 }

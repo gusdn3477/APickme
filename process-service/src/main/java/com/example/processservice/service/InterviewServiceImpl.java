@@ -29,9 +29,13 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Autowired
     public InterviewServiceImpl(InterviewRepository interviewRepository,
-                                ApplyInterviewRepository applyInterviewRepository) {
+                                ApplyInterviewRepository applyInterviewRepository,
+                                WrittenRepository writtenRepository,
+                                JobRepository jobRepository) {
         this.interviewRepository = interviewRepository;
         this.applyInterviewRepository= applyInterviewRepository;
+        this.writtenRepository = writtenRepository;
+        this.jobRepository = jobRepository;
     }
 
     @Override
@@ -276,16 +280,46 @@ public class InterviewServiceImpl implements InterviewService {
         for(int i=0;i<size;i++){
             String applyNum = applyList.get(i).getApplyNum();
             InterviewEntity interviewEntity = interviewRepository.findByApplyNum(applyNum);
-           // InterviewEntity interviewEntity = interviewRepository.findByApplyNumAndJobsNo(applyNum,jobsNo);
-            if(interviewEntity.getFirstInterviewScore() == null);
-            if(interviewEntity.getSecondInterviewScore() == null) interviewEntity.setSecondInterviewScore(-1);
-            int firstInterviewScore = interviewEntity.getFirstInterviewScore();
-            int secondInterviewScore = interviewEntity.getSecondInterviewScore();
-            applyList.get(i).setFirstInterviewScore(firstInterviewScore);
-            applyList.get(i).setSecondInterviewScore(secondInterviewScore);
+            WrittenEntity writtenEntity = writtenRepository.findByApplyNum(applyNum);
+            int firstInterviewScore;
+            int secondInterviewScore;
+            int writtenScore;
 
+            if(interviewEntity.getFirstInterviewScore() == null){
+                applyList.get(i).setFirstInterviewScore(-1);
+            }else{
+                firstInterviewScore = interviewEntity.getFirstInterviewScore();
+                applyList.get(i).setFirstInterviewScore(firstInterviewScore);
+            }
+
+            if(interviewEntity.getSecondInterviewScore() == null){
+                interviewEntity.setSecondInterviewScore(-1);
+            }else{
+                secondInterviewScore = interviewEntity.getSecondInterviewScore();
+                applyList.get(i).setSecondInterviewScore(secondInterviewScore);
+            }
+
+            if(writtenEntity.getWrittenScore() == null){
+                writtenEntity.setWrittenScore(-1);
+            }else{
+                writtenScore = writtenEntity.getWrittenScore();
+                applyList.get(i).setWrittenScore(writtenScore);
+            }
         }
 
+
+//        for(int i=0;i<size;i++){
+//            String applyNum = applyList.get(i).getApplyNum();
+//            InterviewEntity interviewEntity = interviewRepository.findByApplyNum(applyNum);
+//            // InterviewEntity interviewEntity = interviewRepository.findByApplyNumAndJobsNo(applyNum,jobsNo);
+//            if(interviewEntity.getFirstInterviewScore() == null);
+//            if(interviewEntity.getSecondInterviewScore() == null) interviewEntity.setSecondInterviewScore(-1);
+//            int firstInterviewScore = interviewEntity.getFirstInterviewScore();
+//            int secondInterviewScore = interviewEntity.getSecondInterviewScore();
+//            applyList.get(i).setFirstInterviewScore(firstInterviewScore);
+//            applyList.get(i).setSecondInterviewScore(secondInterviewScore);
+//
+//        }
         if(applyList.isEmpty()) return null;
 
 
