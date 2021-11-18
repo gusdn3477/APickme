@@ -127,6 +127,7 @@ public class UserServiceImpl implements UserService {
         userUpdateDto.setAddress(userDetails.getAddress());
         userUpdateDto.setPhoneNum(userDetails.getPhoneNum());
         userUpdateDto.setPassword(userDetails.getPassword());
+        userUpdateDto.setApplyName(userDetails.getApplyName());
 
         ModelMapper usermapper = new ModelMapper();
         usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
