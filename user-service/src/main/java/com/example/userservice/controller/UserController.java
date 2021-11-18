@@ -269,7 +269,7 @@ public class UserController {
     public List<ResponseApplyCount> getApplysByCorpNo(@PathVariable("corpNo") String corpNo){
        // Iterable<ApplyEntity> applyEntities = userService.getApplysByCorpNo(corpNo);
 
-        List<ResponseApplyCount> jobList = new ArrayList<>();
+        List<ResponseApplyCount> jobList;
         jobList = userService.getApplysByCorpNo(corpNo);
 
         return jobList;
