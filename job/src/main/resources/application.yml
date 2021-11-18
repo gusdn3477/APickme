@@ -6,7 +6,7 @@ spring:
     name: job-service
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://database-1.c4rcauqgpkcf.ap-northeast-3.rds.amazonaws.com:3306/tmax
+    url: jdbc:mariadb://rds-seoul-finalproject.c4zzcvkkrxzn.ap-northeast-2.rds.amazonaws.com:3306/tmax
     username: admin
     password: rnjswlsgml!
 #    driver-class-name: org.h2.Driver

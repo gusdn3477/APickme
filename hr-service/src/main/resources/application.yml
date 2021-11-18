@@ -20,7 +20,7 @@ spring:
     generate-ddl: true
 
   datasource:
-    url: jdbc:mariadb://database-1.c4rcauqgpkcf.ap-northeast-3.rds.amazonaws.com:3306/tmax
+    url: jdbc:mariadb://rds-seoul-finalproject.c4zzcvkkrxzn.ap-northeast-2.rds.amazonaws.com:3306/tmax
     driver-class-name: org.mariadb.jdbc.Driver
     username: admin
     password: rnjswlsgml!
