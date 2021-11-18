@@ -116,7 +116,7 @@ public class UserController {
 
     /* 지원내역 전체 보기
     * 모든 지원테이블 값 가져옴  -- 왜 필요한지는 모르겠음 일단 */
-    @GetMapping("/apply")
+    @GetMapping("/users/apply")
     public ResponseEntity<List<ResponseApply>> getApply(){
         Iterable<ApplyEntity> applyList = userService.getApplyByAll();
         List<ResponseApply> result = new ArrayList<>();
@@ -128,7 +128,7 @@ public class UserController {
     }
 
     /* 공고별 지원내역 전체 보기*/
-    @GetMapping("/apply/{jobsNo}")
+    @GetMapping("/users/apply/{jobsNo}")
     public ResponseEntity<List<ResponseApply>> getJobsNoApply(@PathVariable("jobsNo") String jobsNo){
         Iterable<ApplyEntity> jobApplyList = userService.getJobsAllApply(jobsNo);
         List<ResponseApply> result = new ArrayList<>();
@@ -265,7 +265,7 @@ public class UserController {
     }
 
     /*공고별 지원자수 count*/
-    @GetMapping("/apply/count/{corpNo}")
+    @GetMapping("/users/apply/count/{corpNo}")
     public List<ResponseApplyCount> getApplysByCorpNo(@PathVariable("corpNo") String corpNo){
        // Iterable<ApplyEntity> applyEntities = userService.getApplysByCorpNo(corpNo);
 
