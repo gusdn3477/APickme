@@ -118,16 +118,37 @@ public class UserServiceImpl implements UserService {
 
     }
     /* 일반 사용자(지원자) 수정*/ //UserDto가 데이터베이스에서 userId로 찾아온 userDto , userDetails는 RequestBOdy 에 수정할 dto
+//    @Override
+//    public UserDto updateByUserId(UserDto userDto, UserDto userDetails) {
+//        UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
+//        ModelMapper mapper = new ModelMapper();
+//        UserDto userUpdateDto = mapper.map(userEntity, UserDto.class);
+//
+//        userUpdateDto.setAddress(userDetails.getAddress());
+//        userUpdateDto.setPhoneNum(userDetails.getPhoneNum());
+//        userUpdateDto.setPassword(userDetails.getPassword());
+//        userUpdateDto.setApplyName(userDetails.getApplyName());
+//
+//        ModelMapper usermapper = new ModelMapper();
+//        usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+//        UserEntity userUpdateEntity = usermapper.map(userUpdateDto, UserEntity.class);
+//
+//        userUpdateEntity.setEncryptedPwd(bCryptPasswordEncoder.encode(userUpdateDto.getPassword()));
+//        userRepository.save(userUpdateEntity);
+//
+//        return null;
+//    }
+
     @Override
-    public UserDto updateByUserId(UserDto userDto, UserDto userDetails) {
+    public UserDto updateByUserId(UserDto userDto) {
         UserEntity userEntity = userRepository.findByUserId(userDto.getUserId());
         ModelMapper mapper = new ModelMapper();
         UserDto userUpdateDto = mapper.map(userEntity, UserDto.class);
 
-        userUpdateDto.setAddress(userDetails.getAddress());
-        userUpdateDto.setPhoneNum(userDetails.getPhoneNum());
-        userUpdateDto.setPassword(userDetails.getPassword());
-        userUpdateDto.setApplyName(userDetails.getApplyName());
+        userUpdateDto.setAddress(userDto.getAddress());
+        userUpdateDto.setPhoneNum(userDto.getPhoneNum());
+        userUpdateDto.setPassword(userDto.getPassword());
+        userUpdateDto.setApplyName(userDto.getApplyName());
 
         ModelMapper usermapper = new ModelMapper();
         usermapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);

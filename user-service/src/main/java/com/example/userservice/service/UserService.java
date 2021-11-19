@@ -23,7 +23,7 @@ public interface UserService extends UserDetailsService {
     /*일반사용자(지원자) 탈퇴*/
     boolean deleteUser(String userId, String email, String password);
     /* 일반사용자(지원자) 수정*/
-    UserDto updateByUserId(UserDto userDto, UserDto userDetails);
+    UserDto updateByUserId(UserDto userDto);
     ApplyDto createApply(ApplyDto applyDto);
     /*비밀번호 찾기*/
     void findPwd(String email);
