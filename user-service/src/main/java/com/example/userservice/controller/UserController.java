@@ -92,9 +92,9 @@ public class UserController {
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDetails = mapper.map(user, UserDto.class);
 
-        UserDto userDto = userService.getUserByUserId(user.getUserId());
+//        UserDto userDto = userService.getUserByUserId(user.getUserId());
 
-        userService.updateByUserId(userDto, userDetails);
+        userService.updateByUserId(userDetails);
 
         String okMsg = "update user , 200 OK";
         return ResponseEntity.status(HttpStatus.OK).body(okMsg);
