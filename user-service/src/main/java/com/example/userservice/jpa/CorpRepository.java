@@ -7,6 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface CorpRepository extends CrudRepository<CorpEntity,String> {
 
     CorpEntity findByCorpNo(String corpNo);
-
 //    String findCorpNameByCorpNo(String corpNo);
 }
