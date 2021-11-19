@@ -12,4 +12,6 @@ public class ResponseInterviewFinal {
     private String applyEmail;
     private String applyNum;
     private Integer writtenScore;
+    private String secondInterviewResult;
+
 }
