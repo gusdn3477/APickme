@@ -282,6 +282,7 @@ public class InterviewServiceImpl implements InterviewService {
             int firstInterviewScore;
             int secondInterviewScore;
             int writtenScore;
+            String secondInterviewResult;
 
             if(interviewEntity.getFirstInterviewScore() == null){
                 applyList.get(i).setFirstInterviewScore(-1);
@@ -295,6 +296,13 @@ public class InterviewServiceImpl implements InterviewService {
             }else{
                 secondInterviewScore = interviewEntity.getSecondInterviewScore();
                 applyList.get(i).setSecondInterviewScore(secondInterviewScore);
+            }
+
+            if(interviewEntity.getSecondInterviewResult() == null){
+                interviewEntity.setSecondInterviewResult("");
+            }else{
+                secondInterviewResult = interviewEntity.getSecondInterviewResult();
+                applyList.get(i).setSecondInterviewResult(secondInterviewResult);
             }
 
             if(writtenEntity.getWrittenScore() == null){
