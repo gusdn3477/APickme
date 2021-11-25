@@ -284,33 +284,41 @@ public class InterviewServiceImpl implements InterviewService {
             int writtenScore;
             String secondInterviewResult;
 
-            if(interviewEntity.getFirstInterviewScore() == null){
-                applyList.get(i).setFirstInterviewScore(-1);
-            }else{
-                firstInterviewScore = interviewEntity.getFirstInterviewScore();
-                applyList.get(i).setFirstInterviewScore(firstInterviewScore);
-            }
+            try{
+                if(interviewEntity == null){}
 
-            if(interviewEntity.getSecondInterviewScore() == null){
-                interviewEntity.setSecondInterviewScore(-1);
-            }else{
-                secondInterviewScore = interviewEntity.getSecondInterviewScore();
-                applyList.get(i).setSecondInterviewScore(secondInterviewScore);
-            }
 
-            if(interviewEntity.getSecondInterviewResult() == null){
-                interviewEntity.setSecondInterviewResult("");
-            }else{
-                secondInterviewResult = interviewEntity.getSecondInterviewResult();
-                applyList.get(i).setSecondInterviewResult(secondInterviewResult);
-            }
+                if(interviewEntity.getFirstInterviewScore() == null){
+                    applyList.get(i).setFirstInterviewScore(-1);
+                }else{
+                    firstInterviewScore = interviewEntity.getFirstInterviewScore();
+                    applyList.get(i).setFirstInterviewScore(firstInterviewScore);
+                }
 
-            if(writtenEntity.getWrittenScore() == null){
-                writtenEntity.setWrittenScore(-1);
-            }else{
-                writtenScore = writtenEntity.getWrittenScore();
-                applyList.get(i).setWrittenScore(writtenScore);
-            }
+
+                if(interviewEntity.getSecondInterviewScore() == null){
+                    interviewEntity.setSecondInterviewScore(-1);
+                }else{
+                    secondInterviewScore = interviewEntity.getSecondInterviewScore();
+                    applyList.get(i).setSecondInterviewScore(secondInterviewScore);
+                }
+
+
+                if(interviewEntity.getSecondInterviewResult() == null){
+                    interviewEntity.setSecondInterviewResult("");
+                }else{
+                    secondInterviewResult = interviewEntity.getSecondInterviewResult();
+                    applyList.get(i).setSecondInterviewResult(secondInterviewResult);
+                }
+
+
+                if(writtenEntity.getWrittenScore() == null){
+                    writtenEntity.setWrittenScore(-1);
+                }else{
+                    writtenScore = writtenEntity.getWrittenScore();
+                    applyList.get(i).setWrittenScore(writtenScore);
+                }
+            }catch (Exception e){}
         }
 
 //        if(applyList.isEmpty()) return null;
