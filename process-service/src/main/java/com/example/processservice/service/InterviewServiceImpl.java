@@ -285,8 +285,12 @@ public class InterviewServiceImpl implements InterviewService {
             String secondInterviewResult;
 
             try{
-                if(interviewEntity == null){}
-
+                if(writtenEntity.getWrittenScore() == null){
+                    writtenEntity.setWrittenScore(-1);
+                }else{
+                    writtenScore = writtenEntity.getWrittenScore();
+                    applyList.get(i).setWrittenScore(writtenScore);
+                }
 
                 if(interviewEntity.getFirstInterviewScore() == null){
                     applyList.get(i).setFirstInterviewScore(-1);
@@ -312,13 +316,7 @@ public class InterviewServiceImpl implements InterviewService {
                 }
 
 
-                if(writtenEntity.getWrittenScore() == null){
-                    writtenEntity.setWrittenScore(-1);
-                }else{
-                    writtenScore = writtenEntity.getWrittenScore();
-                    applyList.get(i).setWrittenScore(writtenScore);
-                }
-            }catch (Exception e){}
+            }catch (Exception e){e.printStackTrace();}
         }
 
 //        if(applyList.isEmpty()) return null;
