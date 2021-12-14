@@ -11,3 +11,5 @@
 
 ### 사용법
 - Frontend의 경우, npm install 후 사용해 주세요.
+- 편의를 위하여 기존 분리되어 있던 프론트엔드와 백엔드의 레포지토리를 하나로 합쳤고, 그 과정에서 프론트엔드 부분의 커밋 내역이 사라졌으므로, 아래에 링크 첨부합니다.
+- https://github.com/gusdn3477/Tmax_MainProject_Front
