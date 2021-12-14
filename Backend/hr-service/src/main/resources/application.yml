@@ -4,11 +4,6 @@ server:
 spring:
   application:
     name: hr-service
-#  datasource:
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:mem:testdb
-#    username: sa
-#    password: sa
   jpa:
     hibernate:
       ddl-auto: update
@@ -28,8 +23,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: tmaxFinal@gmail.com
-    password: fjxnyscaqrtuvztb
+    username: #
+    password: #
     properties:
       mail:
         smtp:
@@ -49,20 +44,6 @@ spring:
 #      path: /h2-console
 #    generate-ddl: true
 #    show-sql: true
-
-#  rabbitmq:
-#    host: 127.0.0.1
-#    port: 5672
-#    username: guest
-#    password: guest
-
-
-#  zipkin:
-#    base-url: http://localhost:9411
-#    enabled: true
-#  sleuth:
-#    sampler:
-#      probability: 1.0
 
 eureka:
   client:
