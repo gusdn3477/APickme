@@ -27,13 +27,17 @@ DNS를 사용하여 [http://a-pick-me.ga/](http://a-pick-me.ga/) 라는 주소�
 - job-service : 공고에 관한 서비스를 제공합니다. 인사담당자의 경우 공고 생성, 수정, 삭제 등을 할 수 있으며 지원자의 경우 공고 전체보기, 공고 상세보기 등의 기능을 이용할 수 있습니다.
 - process-service : 각 공고가 마감된 후 진행하는 전형을 관리합니다. 필기, 1차/2차 면접으로 이루어져 있으며, 해당 전형에 해당하는 채점, 합/불 결정 등을 제공하는 서비스입니다.
 
-🌱 **스킬 및 라이브러리**
+🌱 **기술 스택**
 
 `Spring Security` `Spring Cloud Eureka` `Docker` `Jenkins` `Intellij` `JPA`
+
+🌱 **구성도**
+
+![image](https://user-images.githubusercontent.com/46596758/150808589-74e925eb-a085-4cd1-9d8d-6ef47e46f67e.png)
+
 
 #### 사용법
 - Frontend의 경우, npm install 후 사용해 주세요.
 - 개발 완료 후, 레포지토리를 하나로 합쳤고, 그로 인하여 프론트엔드 부분의 커밋 내역이 보이지 않습니다. 아래에 기존의 프론트엔드 레포지토리 링크 첨부하겠습니다.
 - https://github.com/gusdn3477/Tmax_MainProject_Front
 
-![image](https://user-images.githubusercontent.com/46596758/150808589-74e925eb-a085-4cd1-9d8d-6ef47e46f67e.png)
