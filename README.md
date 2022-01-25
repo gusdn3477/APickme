@@ -22,6 +22,7 @@ DNS를 사용하여 [http://a-pick-me.ga/](http://a-pick-me.ga/) 라는 주소�
 
 📒 **주요 기능** 
 
+- [API 문서](https://docs.google.com/spreadsheets/d/1G5xZPkkpzmEZ-brbtjgSVZrlYJLIuyp8bvv3MbL2iO4/edit?usp=sharing)
 - user-service : 구직자에 관한 서비스를 제공합니다. 회원가입, 로그인(스프링 시큐리티 활용), 로그아웃, 회원 탈퇴, 회원정보 수정, 공고 지원, 내가 지원한 공고 조회 등과 같이 주로 사용자의 관점에서 필요한 서비스를 이용할 수 있습니다.
 - hr-service : 인사 담당자에 관한 서비스를 제공합니다. 회원가입, 인사 담당자 추가, 공고별 지원자 조회 등이 가능합니다.
 - job-service : 공고에 관한 서비스를 제공합니다. 인사담당자의 경우 공고 생성, 수정, 삭제 등을 할 수 있으며 지원자의 경우 공고 전체보기, 공고 상세보기 등의 기능을 이용할 수 있습니다.
